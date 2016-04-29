@@ -1,0 +1,17 @@
+version: '2'
+services:
+  av-api:
+    build: .
+    ports:
+     - "8000:8000"
+    volumes:
+     - .:/code
+web:
+  build: .
+  links:
+    - mongo
+  ports:
+    - "9000"
+    - "8081"
+mongo:
+  image: mongo
