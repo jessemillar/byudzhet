@@ -1,17 +1,20 @@
 version: '2'
 services:
-  av-api:
+  mongodata:
+    image: mongo
+    volumes:
+      - /data/db
+    command: --break-mongo
+  mongo:
+    image: mongo
+    volumes_from:
+      - mongodata
+    ports:
+      - "27017:27017"
+    command: --smallfiles --rest --auth
+  server:
     build: .
     ports:
      - "8000:8000"
     volumes:
      - .:/code
-web:
-  build: .
-  links:
-    - mongo
-  ports:
-    - "9000"
-    - "8081"
-mongo:
-  image: mongo

@@ -18,7 +18,7 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Get("/health", controllers.Health)
-	// e.Get("/callback", controllers.CallbackHandler)
+	e.Get("/callback", controllers.CallbackHandler)
 
 	e.Static("/*", "content")
 

@@ -1,1 +1,67 @@
-test
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/jpeg" href="https://s.gravatar.com/avatar/3b035bb42f7d63b407e996171bb53e2e?s=180" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-7s5uDGW3AHqw6xtJmNNtr+OBRJUlgkNJEo78P4b0yRw= sha512-nNo+yCHEyn0smMxSswnf/OnX6/KwJuZTlNZBjauKhTK0c+zT+q5JOCx0UFhXQ6rJR9jg6Es8gPuD2uZcYDLqSw=="
+        crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha256-3dkvEK0WLHRJ7/Csr0BZjAWxERc5WH7bdeUya2aXxdU= sha512-+L4yy6FRcDGbXJ9mPG8MT/3UCDzwR9gPeyFNMCtInsol++5m3bk2bXWKdZjvybmohrAsn3Ua5x8gfLnbE1YkOg=="
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jesse Millar</title>
+</head>
+
+<body onload="init()">
+    <div class="container">
+        <div class="row">
+            <button onclick="window.signin();">Login</button>
+
+            <div class="col-xs-10 col-xs-offset-1">
+                <center><i class="icon fa fa-money fa-4x"></i></center>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">$</div>
+                            <input type="number" pattern="[0-9]*" class="form-control" id="cost" placeholder="Amount">
+                            <div class="input-group-addon">.00</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="location" placeholder="Target, Smith's, etc.">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="notes" placeholder="Bought because reasons">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default save-button">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.auth0.com/js/lock-9.1.min.js"></script>
+<script type="text/javascript">
+    var lock = new Auth0Lock('xh5Se7McR1fdQ5ZzRhFxCv1jyJIAyjHr', 'jessemillar.auth0.com');
+
+
+    function signin() {
+        lock.show({
+            callbackURL: 'localhost:8000',
+            responseType: 'code',
+            authParams: {
+                scope: 'openid profile'
+            }
+        });
+    }
+</script>
+
+</html>
