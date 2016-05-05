@@ -18,8 +18,10 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 
 	e.Get("/health", controllers.Health)
-	e.Get("/callback", controllers.CallbackHandler)
+	// e.Get("/callback", controllers.CallbackHandler)
 
-	fmt.Printf("AV API is listening on %s\n", port)
+	e.Static("/*", "content")
+
+	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(fasthttp.New(port))
 }
