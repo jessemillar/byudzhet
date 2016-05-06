@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 06, 2016 at 03:14 PM
+-- Generation Time: May 06, 2016 at 03:44 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -27,14 +27,36 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `transactions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `user` varchar(140) NOT NULL,
   `amount` decimal(10,0) NOT NULL,
   `recipient` varchar(50) NOT NULL,
   `note` text NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(140) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`ID`) REFERENCES `users` (`ID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -12,7 +12,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func CallbackHandler(c echo.Context) error {
+func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 	domain := "jessemillar.auth0.com"
 
 	// Instantiating the OAuth2 package to exchange the Code for a Token
