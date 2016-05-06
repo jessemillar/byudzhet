@@ -17,12 +17,17 @@ textarea {
     font-size: 16px;
 }
 
+body,
+html {
+    background-color: #3D9970;
+}
+
 .container {
     padding-top: 25px;
 }
 
 .icon {
-    color        : #2ECC40;
+    color        : #fff;
     margin-bottom: 25px;
 }
 
