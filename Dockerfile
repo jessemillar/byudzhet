@@ -9,4 +9,4 @@ RUN go install -v
 
 CMD ["/go/bin/byudzhet"]
 
-EXPOSE 8000
+EXPOSE 80
