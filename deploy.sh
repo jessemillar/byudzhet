@@ -8,7 +8,7 @@ echo "Pulling latest version"
 ssh $DEPLOY_USER@$DEPLOY_HOST 'docker pull jessemillar/byudzhet:latest'
 
 echo "Starting the new version"
-ssh $DEPLOY_USER@$DEPLOY_HOST 'docker run -d --restart=always --name byudzhet -p 80:8000 jessemillar/byudzhet:latest -e AUTH0_CLIENT_ID:'$AUTH0_CLIENT_ID' -e AUTH0_CLIENT_SECRET:'$AUTH0_CLIENT_SECRET
+ssh $DEPLOY_USER@$DEPLOY_HOST 'docker run -d --restart=always --name byudzhet -p 80:8000 jessemillar/byudzhet:latest -e AUTH0_CLIENT_ID:\$AUTH0_CLIENT_ID -e AUTH0_CLIENT_SECRET:\$AUTH0_CLIENT_SECRET'
 
 echo "Success!"
 
