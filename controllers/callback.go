@@ -4,6 +4,7 @@ import (
 	// Don't forget this first import or nothing will work
 	_ "crypto/sha512"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -13,6 +14,8 @@ import (
 )
 
 func CallbackHandler(c echo.Context) error {
+	fmt.Println("ID: " + os.Getenv("AUTH0_CLIENT_ID"))
+
 	domain := "jessemillar.auth0.com"
 
 	// Instantiating the OAuth2 package to exchange the Code for a Token
