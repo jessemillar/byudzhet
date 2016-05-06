@@ -3,8 +3,6 @@ machine:
     - docker
 
 dependencies:
-  pre:
-    - CGO_ENABLED=0 go build -a -installsuffix nocgo .
   override:
     - docker build -t github.com/jessemillar/byudzhet .
     - docker run -p 8000:8000 github.com/jessemillar/byudzhet:
