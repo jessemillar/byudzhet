@@ -4,12 +4,12 @@ machine:
 
 dependencies:
   post:
-    - docker build -t github.com/jessemillar/byudzhet .
+    - docker build -t jessemillar/byudzhet .
 
 deployment:
   production:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push docker.io/jessemillar/byudzhet
+      - docker push jessemillar/byudzhet
       - ./deploy.sh
