@@ -9,11 +9,6 @@ dependencies:
         background: true
     - sleep 10
 
-test:
-  override:
-    - "curl http://localhost:8000/health"
-    - "[[ $(curl http://localhost:8000/health) = 'Uh, we had a slight weapons malfunction, but uh... everything's perfectly all right now. We're fine. We're all fine here now, thank you. How are you?' ]]"
-
 deployment:
   production:
     branch: master
