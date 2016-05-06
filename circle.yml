@@ -3,9 +3,18 @@ machine:
     - docker
 
 dependencies:
+  pre:
+    - CGO_ENABLED=0 go build -a -installsuffix nocgo .
   override:
-    - docker info
-    - docker build -t jessemillar/byudzhet .
+    - docker build -t github.com/jessemillar/byudzhet .
+    - docker run -p 8000:8000 github.com/jessemillar/byudzhet:
+        background: true
+    - sleep 10
+
+test:
+  override:
+    - "curl http://localhost:8000/health"
+    - "[[ $(curl http://localhost:8000/health) = 'Uh, we had a slight weapons malfunction, but uh... everything's perfectly all right now. We're fine. We're all fine here now, thank you. How are you?' ]]"
 
 deployment:
   production:
