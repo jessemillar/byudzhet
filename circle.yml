@@ -3,11 +3,8 @@ machine:
     - docker
 
 dependencies:
-  override:
+  post:
     - docker build -t github.com/jessemillar/byudzhet .
-    - docker run -p 8000:8000 github.com/jessemillar/byudzhet:
-        background: true
-    - sleep 10
 
 deployment:
   production:
