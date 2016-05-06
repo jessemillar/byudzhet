@@ -51,10 +51,9 @@
 <script type="text/javascript">
     var lock = new Auth0Lock('xh5Se7McR1fdQ5ZzRhFxCv1jyJIAyjHr', 'jessemillar.auth0.com');
 
-
     function signin() {
         lock.show({
-            callbackURL: 'localhost:8000',
+            callbackURL: 'http://localhost:8000/callback',
             responseType: 'code',
             authParams: {
                 scope: 'openid profile'
