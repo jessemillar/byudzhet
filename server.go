@@ -17,8 +17,6 @@ import (
 func main() {
 	database := os.Getenv("DATABASE_USERNAME") + ":" + os.Getenv("DATABASE_PASSWORD") + "@tcp(" + os.Getenv("DATABASE_HOST") + ":" + os.Getenv("DATABASE_PORT") + ")/" + os.Getenv("DATABASE_NAME")
 
-	fmt.Println(database)
-
 	// Construct a new accessor group and connects it to the database
 	ag := new(accessors.AccessorGroup)
 	ag.Open("mysql", database)

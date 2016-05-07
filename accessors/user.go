@@ -23,7 +23,17 @@ func (ag *AccessorGroup) GetUser(email string) (User, error) {
 	err := ag.Database.QueryRow("SELECT * FROM users WHERE email=?", email).Scan(&user.ID, &user.Email)
 
 	if err == sql.ErrNoRows { // If the user doesn't exist yet
-		_ = ag.MakeUser(email)
+		err2 := ag.MakeUser(email)
+		if err2 != nil {
+			return User{}, err2
+		}
+
+		user2, err2 := ag.GetUser(email)
+		if err2 != nil {
+			return User{}, err2
+		}
+
+		return user2, nil
 	} else if err != nil {
 		return User{}, err
 	}
