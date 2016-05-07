@@ -4,11 +4,14 @@ import (
 	// Don't forget this first import or nothing will work
 	_ "crypto/sha512"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 
+	"github.com/jessemillar/byudzhet/packages/app"
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/engine/standard"
 	"golang.org/x/oauth2"
 )
 
@@ -60,12 +63,15 @@ func CallbackHandler(c echo.Context) error {
 	// We're using https://github.com/astaxie/beego/tree/master/session
 	// The GlobalSessions variable is initialized in another file
 	// Check https://github.com/auth0/auth0-golang/blob/master/examples/regular-web-app/app/app.go
-	// session, _ := app.GlobalSessions.SessionStart(c, c.Request())
-	// defer session.SessionRelease(c)
+	session, _ := app.GlobalSessions.SessionStart(c.Response().(*standard.Response).ResponseWriter, c.Request().(*standard.Request).Request)
+	defer session.SessionRelease(c.Response().(*standard.Response).ResponseWriter)
 
-	// session.Set("id_token", token.Extra("id_token"))
-	// session.Set("access_token", token.AccessToken)
-	// session.Set("profile", profile)
+	session.Set("id_token", token.Extra("id_token"))
+	session.Set("access_token", token.AccessToken)
+	session.Set("profile", profile)
+
+	stuff := session.Get("profile")
+	fmt.Printf("Profile: %+v", stuff)
 
 	// Redirect to logged in page
 	c.Redirect(http.StatusMovedPermanently, "/health")
