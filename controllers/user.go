@@ -8,10 +8,15 @@ import (
 )
 
 func (cg *ControllerGroup) GetUser(c echo.Context) error {
-	_, err := helpers.ValidateJWT(c)
+	user, err := helpers.ValidateJWT(c)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.String(http.StatusOK, "Done")
+	response, err := cg.Accessors.GetUser(user.Email)
+	if err != nil {
+		return c.String(http.StatusBadRequest, err.Error())
+	}
+
+	return c.JSON(http.StatusOK, response)
 }

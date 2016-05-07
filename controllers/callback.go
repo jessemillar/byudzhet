@@ -4,7 +4,6 @@ import (
 	// Don't forget this first import or nothing will work
 	_ "crypto/sha512"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -52,26 +51,11 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	// Unmarshalling the JSON of the Profile
+	// Unmarshal the JSON of the Auth0 profile
 	var profile map[string]interface{}
 	if err := json.Unmarshal(raw, &profile); err != nil {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
-
-	// session, err := helpers.Store.Get(c.Request().(*standard.Request).Request, "session-name")
-	// if err != nil {
-	// 	c.String(http.StatusInternalServerError, err.Error())
-	// }
-	//
-	// session.Values["id_token"] = token.Extra("id_token")
-	// session.Values["access_token"] = token.AccessToken
-	// session.Values["profile"] = profile
-	//
-	// // Save it before we write to the response/return from the handler.
-	// session.Save(c.Request().(*standard.Request).Request, c.Response().(*standard.Response).ResponseWriter)
-
-	// stuff := session.Get("profile")
-	fmt.Printf("Token: %+v\n", token)
 
 	helpers.MakeCookie(c, "id_token", token.Extra("id_token").(string))
 
