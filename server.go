@@ -31,8 +31,9 @@ func main() {
 
 	e.Get("/health", cg.Health)
 	e.Get("/callback", cg.CallbackHandler)
+	e.Get("/user", cg.GetUser)
 
-	e.Static("/*", "content")
+	e.Static("/*", "public")
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))

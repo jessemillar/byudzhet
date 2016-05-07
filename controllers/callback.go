@@ -11,7 +11,6 @@ import (
 
 	"github.com/jessemillar/byudzhet/helpers"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"golang.org/x/oauth2"
 )
 
@@ -39,7 +38,7 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	// Getting now the User information
+	// Getting the user information
 	client := conf.Client(oauth2.NoContext, token)
 	resp, err := client.Get("https://" + domain + "/userinfo")
 	if err != nil {
@@ -59,18 +58,22 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	// Saving the information to the session using https://github.com/astaxie/beego/tree/master/session
-	// The GlobalSessions variable is initialized in another file
-	// Check https://github.com/auth0/auth0-golang/blob/master/examples/regular-web-app/app/app.go
-	session, _ := helpers.GlobalSessions.SessionStart(c.Response().(*standard.Response).ResponseWriter, c.Request().(*standard.Request).Request)
-	defer session.SessionRelease(c.Response().(*standard.Response).ResponseWriter)
+	// session, err := helpers.Store.Get(c.Request().(*standard.Request).Request, "session-name")
+	// if err != nil {
+	// 	c.String(http.StatusInternalServerError, err.Error())
+	// }
+	//
+	// session.Values["id_token"] = token.Extra("id_token")
+	// session.Values["access_token"] = token.AccessToken
+	// session.Values["profile"] = profile
+	//
+	// // Save it before we write to the response/return from the handler.
+	// session.Save(c.Request().(*standard.Request).Request, c.Response().(*standard.Response).ResponseWriter)
 
-	session.Set("id_token", token.Extra("id_token"))
-	session.Set("access_token", token.AccessToken)
-	session.Set("profile", profile)
+	// stuff := session.Get("profile")
+	fmt.Printf("Token: %+v\n", token)
 
-	stuff := session.Get("profile")
-	fmt.Printf("Profile: %+v\n", stuff)
+	helpers.MakeCookie(c, "id_token", token.Extra("id_token").(string))
 
 	// Redirect to logged in page
 	c.Redirect(http.StatusMovedPermanently, "/health")
