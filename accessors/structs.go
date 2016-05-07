@@ -1,10 +1,5 @@
 package accessors
 
-type User struct {
-	ID       int
-	Username string
-}
-
 type Transaction struct {
 	ID        int
 	Timestamp string

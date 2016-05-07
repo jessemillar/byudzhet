@@ -2,9 +2,14 @@ package accessors
 
 import "database/sql"
 
+type User struct {
+	ID    int
+	Email string
+}
+
 // MakeUser adds a user to the database
-func (ag *AccessorGroup) MakeUser(ID string, username string) error {
-	_, err := ag.Database.Query("INSERT INTO users (ID, username) VALUES (?,?)", ID, username)
+func (ag *AccessorGroup) MakeUser(email string) error {
+	_, err := ag.Database.Query("INSERT INTO users (email) VALUES (?)", email)
 	if err != nil {
 		return err
 	}
@@ -13,12 +18,12 @@ func (ag *AccessorGroup) MakeUser(ID string, username string) error {
 }
 
 // GetUser returns a user from the database by userID
-func (ag *AccessorGroup) GetUser(ID int) (User, error) {
+func (ag *AccessorGroup) GetUser(email string) (User, error) {
 	user := &User{}
-	err := ag.Database.QueryRow("SELECT * FROM users WHERE ID=?", ID).Scan(&user.ID, &user.Username)
+	err := ag.Database.QueryRow("SELECT * FROM users WHERE email=?", email).Scan(&user.ID, &user.Email)
 
 	if err == sql.ErrNoRows { // If the user doesn't exist yet
-		return User{}, nil // Return a blank user
+		_ = ag.MakeUser(email)
 	} else if err != nil {
 		return User{}, err
 	}
