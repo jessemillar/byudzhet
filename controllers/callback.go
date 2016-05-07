@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/jessemillar/byudzhet/packages/app"
+	"github.com/jessemillar/byudzhet/helpers"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"golang.org/x/oauth2"
@@ -22,7 +22,7 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("AUTH0_CLIENT_ID"),
 		ClientSecret: os.Getenv("AUTH0_CLIENT_SECRET"),
-		RedirectURL:  "http://byudzhet.jessemillar.com/callback",
+		RedirectURL:  "http://localhost:8000/callback",
 		Scopes:       []string{"openid", "name", "email", "nickname"},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://" + domain + "/authorize",
@@ -59,11 +59,10 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 		return c.String(http.StatusInternalServerError, err.Error())
 	}
 
-	// Saving the information to the session.
-	// We're using https://github.com/astaxie/beego/tree/master/session
+	// Saving the information to the session using https://github.com/astaxie/beego/tree/master/session
 	// The GlobalSessions variable is initialized in another file
 	// Check https://github.com/auth0/auth0-golang/blob/master/examples/regular-web-app/app/app.go
-	session, _ := app.GlobalSessions.SessionStart(c.Response().(*standard.Response).ResponseWriter, c.Request().(*standard.Request).Request)
+	session, _ := helpers.GlobalSessions.SessionStart(c.Response().(*standard.Response).ResponseWriter, c.Request().(*standard.Request).Request)
 	defer session.SessionRelease(c.Response().(*standard.Response).ResponseWriter)
 
 	session.Set("id_token", token.Extra("id_token"))
@@ -71,10 +70,10 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 	session.Set("profile", profile)
 
 	stuff := session.Get("profile")
-	fmt.Printf("Profile: %+v", stuff)
+	fmt.Printf("Profile: %+v\n", stuff)
 
 	// Redirect to logged in page
 	c.Redirect(http.StatusMovedPermanently, "/health")
 
-	return c.String(http.StatusOK, "DONE")
+	return c.String(http.StatusOK, "Callback finished") // We'll never actually hit this...?
 }

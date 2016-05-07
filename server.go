@@ -10,7 +10,7 @@ import (
 	"github.com/jessemillar/byudzhet/accessors"
 	"github.com/jessemillar/byudzhet/controllers"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/fasthttp"
+	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
 )
 
@@ -35,5 +35,5 @@ func main() {
 	e.Static("/*", "content")
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
-	e.Run(fasthttp.New(port))
+	e.Run(standard.New(port))
 }
