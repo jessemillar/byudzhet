@@ -20,7 +20,7 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("AUTH0_CLIENT_ID"),
 		ClientSecret: os.Getenv("AUTH0_CLIENT_SECRET"),
-		RedirectURL:  "http://localhost:8000/callback",
+		RedirectURL:  os.Getenv("AUTH0_CALLBACK"),
 		Scopes:       []string{"openid", "name", "email", "nickname"},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://" + domain + "/authorize",
