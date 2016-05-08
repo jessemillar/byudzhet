@@ -43,7 +43,8 @@ func main() {
 	e.Post("/expense", cg.LogExpense)
 
 	e.Static("/*", "public")
-	e.Get("/", cg.Frontend)
+	e.Get("/", cg.Index)
+	e.Get("/buckets", cg.Buckets)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))
