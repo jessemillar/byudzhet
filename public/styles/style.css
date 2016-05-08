@@ -19,19 +19,16 @@ textarea {
 
 body,
 html {
+    color           : #fff;
     background-color: #3D9970;
+    text-align      : center;
 }
 
 .container {
     padding-top: 25px;
 }
 
-.icon {
-    color        : #fff;
-    margin-bottom: 25px;
-}
-
-.save-button {
+button {
     display: block;
     width  : 100%;
 }
@@ -41,10 +38,8 @@ html {
     bottom          : 0;
     left            : 0;
     width           : 100%;
-    height          : 98px;
+    height          : 49px;
     background-color: #f9f9f9;
-    color           : #c9c9c9;
-    overflow        : none;
     z-index         : 999;
 }
 
@@ -52,15 +47,28 @@ html {
     color: #3D9970;
 }
 
-.navigation-button {
-    display    : inline-block;
-    width      : 32.9%;
-    height     : 100%;
-    padding-top: 15px;
-    text-align : center;
-    font-size  : 45px;
+.navigation-button,
+.navigation-button a,
+.navigation-button a:visited {
+    display   : inline-block;
+    width     : 32.9%;
+    height    : 100%;
+    color     : #c9c9c9;
+    text-align: center;
 }
 
-.icon-description {
-    font-size: 20px;
+.navigation-icon {
+    position : relative;
+    left     : 0;
+    top      : 5px;
+    width    : 100%;
+    font-size: 22px;
+}
+
+.navigation-text {
+    position : relative;
+    bottom   : 0;
+    left     : 0;
+    width    : 100%;
+    font-size: 12px;
 }
