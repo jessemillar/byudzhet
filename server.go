@@ -28,7 +28,7 @@ func main() {
 	cg.Accessors = ag
 
 	t := &helpers.Template{
-		Templates: template.Must(template.ParseGlob("public/*.html")),
+		Templates: template.Must(template.ParseGlob("public/*/*.html")),
 	}
 
 	port := ":8000"
@@ -43,8 +43,10 @@ func main() {
 	e.Post("/expense", cg.LogExpense)
 
 	e.Static("/*", "public")
-	e.Get("/", cg.Index)
-	e.Get("/buckets", cg.Buckets)
+	e.Get("/", helpers.Landing)
+	e.Get("/buckets", helpers.Buckets)
+	e.Get("/expenses", helpers.Expenses)
+	e.Get("/expenses/log", helpers.LogExpense)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))
