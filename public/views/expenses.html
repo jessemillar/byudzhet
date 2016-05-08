@@ -1,4 +1,4 @@
-{{define "expense"}}
+{{define "expenses"}}
 <!DOCTYPE html>
 <html>
 
@@ -7,6 +7,11 @@
 <body onload="init()">
     {{template "navigation"}}
     <div class="container">
+      <div class="row">
+          <div class="col-xs-10 col-xs-offset-1">
+              <button type="button" class="btn btn-default btn-lg">New Bucket</button>
+          </div>
+      </div>
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
                 <form class="form-horizontal">
