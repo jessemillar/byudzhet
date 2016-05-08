@@ -3,7 +3,6 @@ package helpers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -42,7 +41,6 @@ func ValidateJWT(c echo.Context) (User, error) {
 
 	user := User{}
 	json.Unmarshal(body, &user)
-	fmt.Printf("%+v", user)
 
 	return user, nil
 }
