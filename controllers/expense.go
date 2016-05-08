@@ -7,13 +7,13 @@ import (
 	"github.com/labstack/echo"
 )
 
-func (cg *ControllerGroup) GetUser(c echo.Context) error {
+func (cg *ControllerGroup) LogExpense(c echo.Context) error {
 	token, err := helpers.ValidateJWT(c)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.GetUser(token.Email)
+	response, err := cg.Accessors.LogExpense(c, token.Email)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
 	}

@@ -40,6 +40,8 @@ func main() {
 	e.Get("/callback", cg.CallbackHandler)
 	e.Get("/user", cg.GetUser)
 
+	e.Post("/expense", cg.LogExpense)
+
 	e.Static("/*", "public")
 	e.Get("/", cg.Frontend)
 
