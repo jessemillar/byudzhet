@@ -3,12 +3,14 @@ package main
 import (
 	// Don't forget this first import or nothing will work
 	_ "crypto/sha512"
+	"html/template"
 	"os"
 
 	"fmt"
 
 	"github.com/jessemillar/byudzhet/accessors"
 	"github.com/jessemillar/byudzhet/controllers"
+	"github.com/jessemillar/byudzhet/helpers"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
@@ -25,15 +27,21 @@ func main() {
 	cg := new(controllers.ControllerGroup)
 	cg.Accessors = ag
 
+	t := &helpers.Template{
+		Templates: template.Must(template.ParseGlob("public/*.html")),
+	}
+
 	port := ":8000"
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
+	e.SetRenderer(t)
 
 	e.Get("/health", cg.Health)
 	e.Get("/callback", cg.CallbackHandler)
 	e.Get("/user", cg.GetUser)
 
 	e.Static("/*", "public")
+	e.Get("/", cg.Frontend)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))

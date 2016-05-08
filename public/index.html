@@ -1,3 +1,4 @@
+{{define "frontend"}}
 <!DOCTYPE html>
 <html>
 
@@ -74,7 +75,7 @@
 
     function signin() {
         lock.show({
-            callbackURL: 'http://byudzhet.jessemillar.com/callback',
+            callbackURL: {{.}},
             responseType: 'code',
             authParams: {
                 scope: 'openid profile'
@@ -84,3 +85,4 @@
 </script>
 
 </html>
+{{end}}
