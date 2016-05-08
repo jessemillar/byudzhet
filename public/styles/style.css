@@ -51,7 +51,7 @@ button {
 .navigation-button a,
 .navigation-button a:visited {
     display   : inline-block;
-    width     : 24.5%;
+    width     : 24%;
     height    : 100%;
     color     : #c9c9c9;
     text-align: center;
