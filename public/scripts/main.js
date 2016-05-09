@@ -12,5 +12,30 @@
 })(document, window.navigator, "standalone");
 
 function init() {
-    document.getElementById("cost").focus();
+    page = window.location.pathname;
+
+    if (page == "/buckets") {
+        setActiveNavigation("buckets");
+    } else if (page == "/expenses") {
+        setActiveNavigation("expenses");
+    } else if (page == "/income") {
+        setActiveNavigation("income");
+    } else if (page == "/settings") {
+        setActiveNavigation("settings");
+    } else if (page == "/log") {
+        setActiveNavigation("expenses");
+
+        document.getElementById("cost").focus();
+    }
+}
+
+function setActiveNavigation(button) {
+    // Reset all buttons
+    document.getElementById("buckets").className = "navigation-button";
+    document.getElementById("expenses").className = "navigation-button";
+    document.getElementById("income").className = "navigation-button";
+    document.getElementById("settings").className = "navigation-button";
+
+    // Make the button we care about active
+    document.getElementById(button).className += " active";
 }

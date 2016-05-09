@@ -46,7 +46,7 @@ func main() {
 	e.Get("/", helpers.Landing)
 	e.Get("/buckets", helpers.Buckets)
 	e.Get("/expenses", helpers.Expenses)
-	e.Get("/expenses/log", helpers.LogExpense)
+	e.Get("/log", helpers.LogExpense)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))
