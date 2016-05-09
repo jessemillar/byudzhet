@@ -1,17 +1,13 @@
 package accessors
 
-import (
-	"fmt"
-
-	"github.com/labstack/echo"
-)
+import "github.com/labstack/echo"
 
 type Expense struct {
 	ID        int
 	User      int
 	Timestamp string
-	Bucket    int
-	Amount    int
+	Bucket    int `json:",string"`
+	Amount    int `json:",string"`
 	Recipient string
 	Note      string
 }
@@ -29,8 +25,6 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 	}
 
 	expense.User = userID
-
-	fmt.Printf("%+v", expense)
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 

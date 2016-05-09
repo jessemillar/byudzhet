@@ -41,9 +41,9 @@ function setActiveNavigation(button) {
 }
 
 function logExpense() {
-    amount = $("#amount").val()
-    recipient = $("#recipient").val()
-    note = $("#note").val()
+    amount = $("#amount").val();
+    recipient = $("#recipient").val();
+    note = $("#note").val();
 
     body = {
         amount: amount,
@@ -53,7 +53,12 @@ function logExpense() {
 
     console.log(JSON.stringify(body));
 
-    $.post("/expense", JSON.stringify(body), function(data) {
+    $.ajax("/expense", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json"
+    }, function(data) {
         console.log(data);
     });
 }
