@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 07, 2016 at 12:44 PM
+-- Generation Time: May 09, 2016 at 12:22 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `buckets` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
+  `amount` float NOT NULL,
   `name` varchar(140) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
@@ -45,12 +46,19 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `user` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bucket` int(11) NOT NULL,
-  `amount` decimal(10,0) NOT NULL,
+  `amount` float NOT NULL,
   `recipient` varchar(50) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `expenses`
+--
+
+INSERT INTO `expenses` (`ID`, `user`, `timestamp`, `bucket`, `amount`, `recipient`, `note`) VALUES
+(3, 8, '2016-05-08 03:15:23', 0, 27.99, 'Target', 'Poots');
 
 -- --------------------------------------------------------
 
@@ -91,14 +99,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(140) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`ID`, `email`) VALUES
-(1, 'hellojessemillar@gmail.com');
+(8, 'hellojessemillar@gmail.com');
 
 --
 -- Constraints for dumped tables
