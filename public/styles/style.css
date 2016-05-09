@@ -24,8 +24,16 @@ html {
     text-align      : center;
 }
 
+.list-group-item {
+    color: #111;
+}
+
 .row {
     padding-top: 25px;
+}
+
+.list-row {
+    padding-top: 0;
 }
 
 button {
