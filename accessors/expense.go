@@ -1,13 +1,17 @@
 package accessors
 
-import "github.com/labstack/echo"
+import (
+	"fmt"
+
+	"github.com/labstack/echo"
+)
 
 type Expense struct {
 	ID        int
 	User      int
 	Timestamp string
 	Bucket    int
-	Amount    float64
+	Amount    int
 	Recipient string
 	Note      string
 }
@@ -25,6 +29,10 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 	}
 
 	expense.User = userID
+
+	fmt.Printf("%+v", expense)
+
+	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
 	_, err = ag.Database.Query("INSERT INTO expenses (user, bucket, amount, recipient, note) VALUES (?,?,?,?,?)", expense.User, expense.Bucket, expense.Amount, expense.Recipient, expense.Note)
 	if err != nil {

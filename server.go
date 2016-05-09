@@ -11,6 +11,7 @@ import (
 	"github.com/jessemillar/byudzhet/accessors"
 	"github.com/jessemillar/byudzhet/controllers"
 	"github.com/jessemillar/byudzhet/helpers"
+	"github.com/jessemillar/byudzhet/views"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
@@ -43,10 +44,10 @@ func main() {
 	e.Post("/expense", cg.LogExpense)
 
 	e.Static("/*", "public")
-	e.Get("/", helpers.Landing)
-	e.Get("/buckets", helpers.Buckets)
-	e.Get("/expenses", helpers.Expenses)
-	e.Get("/log", helpers.LogExpense)
+	e.Get("/", views.Login)
+	e.Get("/bucket", views.Bucket)
+	e.Get("/expense", views.Expense)
+	e.Get("/log", views.LogExpense)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))
