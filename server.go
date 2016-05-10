@@ -37,20 +37,22 @@ func main() {
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.SetRenderer(t)
 
-	e.Get("/health", cg.Health)
 	e.Get("/callback", cg.CallbackHandler)
-	e.Get("/user", cg.GetUser)
 
-	e.Post("/expense", cg.LogExpense)
-	e.Post("/bucket", cg.MakeBucket)
+	e.Get("/api/health", cg.Health)
+	e.Get("/api/user", cg.GetUser)
+	e.Get("/api/expense", cg.GetExpenses)
+
+	e.Post("/api/expense", cg.LogExpense)
+	e.Post("/api/bucket", cg.MakeBucket)
 
 	// Views
 	e.Static("/*", "public")
 	e.Get("/", views.Login)
-	e.Get("/bucket", views.Bucket)
-	e.Get("/bucket/make", views.MakeBucket)
-	e.Get("/expense", views.Expense)
-	e.Get("/expense/log", views.LogExpense)
+	e.Get("/buckets", views.Bucket)
+	e.Get("/buckets/make", views.MakeBucket)
+	e.Get("/expenses", views.Expense)
+	e.Get("/expenses/log", views.LogExpense)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))

@@ -36,4 +36,37 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 	return Expense{}, nil
 }
 
-// func (ag *AccessorGroup) GetExpense()
+func (ag *AccessorGroup) GetExpenses(c echo.Context, email string) ([]Expense, error) {
+	expenses := []Expense{}
+
+	userID, err := ag.GetUserID(email)
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	// TODO: Select by current month
+	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=?", userID)
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		expense := Expense{}
+
+		err := rows.Scan(&expense.ID, &expense.User, &expense.Timestamp, &expense.Bucket, &expense.Amount, &expense.Recipient, &expense.Note)
+		if err != nil {
+			return []Expense{}, err
+		}
+
+		expenses = append(expenses, expense)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	return expenses, nil
+}

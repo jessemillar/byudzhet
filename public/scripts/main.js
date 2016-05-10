@@ -14,31 +14,31 @@
 function init() {
     page = window.location.pathname;
 
-    if (page == "/bucket") {
-        setActiveNavigation("bucket");
-    } else if (page == "/bucket/make") {
-        setActiveNavigation("bucket");
+    if (page == "/buckets") {
+        setActiveNavigation("buckets");
+    } else if (page == "/buckets/make") {
+        setActiveNavigation("buckets");
 
         document.getElementById("amount").focus();
-    } else if (page == "/expense") {
-        setActiveNavigation("expense");
-    } else if (page == "/expense/log") {
-        setActiveNavigation("expense");
+    } else if (page == "/expenses") {
+        setActiveNavigation("expenses");
+    } else if (page == "/expenses/log") {
+        setActiveNavigation("expenses");
 
         document.getElementById("amount").focus();
     } else if (page == "/income") {
         setActiveNavigation("income");
-    } else if (page == "/setting") {
-        setActiveNavigation("setting");
+    } else if (page == "/settings") {
+        setActiveNavigation("settings");
     }
 }
 
 function setActiveNavigation(button) {
     // Reset all buttons
-    document.getElementById("bucket").className = "navigation-button";
-    document.getElementById("expense").className = "navigation-button";
+    document.getElementById("buckets").className = "navigation-button";
+    document.getElementById("expenses").className = "navigation-button";
     document.getElementById("income").className = "navigation-button";
-    document.getElementById("setting").className = "navigation-button";
+    document.getElementById("settings").className = "navigation-button";
 
     // Make the button we care about active
     document.getElementById(button).className += " active";
@@ -51,13 +51,13 @@ function logExpense() {
         note: $("#note").val()
     };
 
-    $.ajax("/expense", {
+    $.ajax("/api/expense", {
         "data": JSON.stringify(body),
         "type": "POST",
         "processData": false,
         "contentType": "application/json",
         "success": function(data) {
-            window.location.href = "/expense";
+            window.location.href = "/expenses";
         }
     });
 }
@@ -68,13 +68,13 @@ function makeBucket() {
         name: $("#name").val()
     };
 
-    $.ajax("/bucket", {
+    $.ajax("/api/bucket", {
         "data": JSON.stringify(body),
         "type": "POST",
         "processData": false,
         "contentType": "application/json",
         "success": function(data) {
-            window.location.href = "/bucket";
+            window.location.href = "/buckets";
         }
     });
 }
