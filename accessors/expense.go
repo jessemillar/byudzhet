@@ -44,8 +44,7 @@ func (ag *AccessorGroup) GetExpenses(c echo.Context, email string) ([]Expense, e
 		return []Expense{}, err
 	}
 
-	// TODO: Select by current month
-	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=?", userID)
+	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID)
 	if err != nil {
 		return []Expense{}, err
 	}
