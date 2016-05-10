@@ -1,10 +1,6 @@
 package accessors
 
-import (
-	"fmt"
-
-	"github.com/labstack/echo"
-)
+import "github.com/labstack/echo"
 
 type Expense struct {
 	ID        int    `json:"id"`
@@ -41,14 +37,14 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 }
 
 func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, error) {
-	expenses := []Expense{}
+	allExpenses := []Expense{}
 
 	userID, err := ag.GetUserID(email)
 	if err != nil {
 		return []Expense{}, err
 	}
 
-	expenses, err = ag.GetExpenseByUserID(c, expenses, userID)
+	allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, userID)
 	if err != nil {
 		return []Expense{}, err
 	}
@@ -58,19 +54,21 @@ func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, er
 		return []Expense{}, err
 	}
 
-	allSharesUserID := []int{}
-
 	for i := range allShares {
 		if allShares[i].User != userID {
-			allSharesUserID = append(allSharesUserID, allShares[i].User)
+			allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, userID)
+			if err != nil {
+				return []Expense{}, err
+			}
 		} else if allShares[i].Sharee != userID {
-			allSharesUserID = append(allSharesUserID, allShares[i].Sharee)
+			allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, userID)
+			if err != nil {
+				return []Expense{}, err
+			}
 		}
 	}
 
-	fmt.Printf("%+v", allSharesUserID)
-
-	return expenses, nil
+	return allExpenses, nil
 }
 
 func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, id int) ([]Expense, error) {
