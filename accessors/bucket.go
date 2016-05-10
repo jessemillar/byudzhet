@@ -33,4 +33,36 @@ func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error
 	return Bucket{}, nil
 }
 
-// func (ag *AccessorGroup) GetBucket()
+func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, error) {
+	buckets := []Bucket{}
+
+	userID, err := ag.GetUserID(email)
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", userID)
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		bucket := Bucket{}
+
+		err := rows.Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
+		if err != nil {
+			return []Bucket{}, err
+		}
+
+		buckets = append(buckets, bucket)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	return buckets, nil
+}

@@ -36,7 +36,7 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 	return Expense{}, nil
 }
 
-func (ag *AccessorGroup) GetExpenses(c echo.Context, email string) ([]Expense, error) {
+func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, error) {
 	expenses := []Expense{}
 
 	userID, err := ag.GetUserID(email)

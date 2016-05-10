@@ -16,6 +16,8 @@ function init() {
 
     if (page == "/buckets") {
         setActiveNavigation("buckets");
+
+        getBuckets();
     } else if (page == "/buckets/make") {
         setActiveNavigation("buckets");
 
@@ -111,5 +113,11 @@ function makeBucket() {
         "success": function(data) {
             window.location.href = "/buckets";
         }
+    });
+}
+
+function getBuckets() {
+    $.get("/api/bucket", function(data) {
+        console.log(data);
     });
 }
