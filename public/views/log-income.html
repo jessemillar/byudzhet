@@ -1,0 +1,33 @@
+{{define "log-income"}}
+<!DOCTYPE html>
+<html>
+
+{{template "head"}}
+
+<body onload="init()">
+    {{template "navigation"}}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="payer" placeholder="FirstWest, BYU, etc.">
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">$</div>
+                        <input type="number" pattern="[0-9]*" class="form-control" id="amount" placeholder="Amount">
+                        <div class="input-group-addon">.00</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default save-button" onclick="logIncome()">Log Income</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+{{template "auth0" .}}
+
+</html>
+{{end}}

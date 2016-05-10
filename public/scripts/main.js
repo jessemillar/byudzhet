@@ -21,7 +21,7 @@ function init() {
     } else if (page == "/buckets/make") {
         setActiveNavigation("buckets");
 
-        document.getElementById("amount").focus();
+        document.getElementById("name").focus();
     } else if (page == "/expenses") {
         setActiveNavigation("expenses");
 
@@ -30,6 +30,14 @@ function init() {
         setActiveNavigation("expenses");
 
         document.getElementById("amount").focus();
+    } else if (page == "/income") {
+        setActiveNavigation("income");
+
+        getExpenses(populateExpenses);
+    } else if (page == "/income/log") {
+        setActiveNavigation("income");
+
+        document.getElementById("payer").focus();
     } else if (page == "/income") {
         setActiveNavigation("income");
     } else if (page == "/settings") {

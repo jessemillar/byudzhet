@@ -25,22 +25,34 @@ func Buckets(c echo.Context) error {
 	return c.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func Expenses(c echo.Context) error {
-	helpers.CheckCookie(c)
-
-	return c.Render(http.StatusOK, "expenses", os.Getenv("AUTH0_CALLBACK"))
-}
-
 func MakeBucket(c echo.Context) error {
 	helpers.CheckCookie(c)
 
 	return c.Render(http.StatusOK, "make-bucket", os.Getenv("AUTH0_CALLBACK"))
 }
 
+func Expenses(c echo.Context) error {
+	helpers.CheckCookie(c)
+
+	return c.Render(http.StatusOK, "expenses", os.Getenv("AUTH0_CALLBACK"))
+}
+
 func LogExpense(c echo.Context) error {
 	helpers.CheckCookie(c)
 
 	return c.Render(http.StatusOK, "log-expense", os.Getenv("AUTH0_CALLBACK"))
+}
+
+func Income(c echo.Context) error {
+	helpers.CheckCookie(c)
+
+	return c.Render(http.StatusOK, "income", os.Getenv("AUTH0_CALLBACK"))
+}
+
+func LogIncome(c echo.Context) error {
+	helpers.CheckCookie(c)
+
+	return c.Render(http.StatusOK, "log-income", os.Getenv("AUTH0_CALLBACK"))
 }
 
 func Settings(c echo.Context) error {

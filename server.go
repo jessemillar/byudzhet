@@ -55,6 +55,8 @@ func main() {
 	e.Get("/buckets/make", views.MakeBucket)
 	e.Get("/expenses", views.Expenses)
 	e.Get("/expenses/log", views.LogExpense)
+	e.Get("/income", views.Income)
+	e.Get("/income/log", views.LogIncome)
 	e.Get("/settings", views.Settings)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
