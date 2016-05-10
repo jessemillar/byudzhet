@@ -17,7 +17,7 @@ function init() {
     if (page == "/buckets") {
         setActiveNavigation("buckets");
 
-        getBuckets();
+        getBuckets(populateBuckets);
     } else if (page == "/buckets/make") {
         setActiveNavigation("buckets");
 
@@ -25,7 +25,6 @@ function init() {
     } else if (page == "/expenses") {
         setActiveNavigation("expenses");
 
-        getExpensesTotal();
         getExpenses(populateExpenses);
     } else if (page == "/expenses/log") {
         setActiveNavigation("expenses");
@@ -77,12 +76,12 @@ function getExpenses(callback) {
     });
 }
 
-function getExpensesTotal(bucket, callback) {
+function getExpensesTotal(bucketID, callback) {
     getExpenses(function(expenses) {
         var total = 0;
 
         for (var i in expenses) {
-            if (expenses[i].bucket == bucket) {
+            if (expenses[i].bucket == bucketID) {
                 total += parseInt(expenses[i].amount);
             }
         }
@@ -143,40 +142,54 @@ function makeBucket() {
     });
 }
 
-function getBuckets() {
+function getBuckets(callback) {
     $.get("/api/bucket", function(data) {
-        populateBuckets(data)
+        if (callback) {
+            callback(data);
+        } else {
+            return data;
+        }
+    });
+}
+
+function getBucketID(bucket, callback) {
+    $.get("/api/bucket/" + bucket, function(data) {
+        if (callback) {
+            callback(data.id);
+        } else {
+            return data;
+        }
     });
 }
 
 function populateBuckets(buckets) {
-    getExpensesTotal(function(total) {
-        for (var i in buckets) {
-            var col = document.createElement("div");
-            var name = document.createElement("div");
-            var progressCol = document.createElement("div");
-            var progressWrapper = document.createElement("div");
-            var progress = document.createElement("div");
+    for (var i in buckets) {
+        getBucketID(buckets[i].name, function(id) {
+            getExpensesTotal(id, function(total) {
+                var col = document.createElement("div");
+                var name = document.createElement("div");
+                var progressCol = document.createElement("div");
+                var progressWrapper = document.createElement("div");
+                var progress = document.createElement("div");
 
-            col.className = "col-xs-12";
-            name.className = "col-xs-4";
-            progressCol.className = "col-xs-8";
-            progressWrapper.className = "progress";
-            progress.className = "progress-bar progress-bar-warning";
+                col.className = "col-xs-12";
+                name.className = "col-xs-4";
+                progressCol.className = "col-xs-8";
+                progressWrapper.className = "progress";
+                progress.className = "progress-bar progress-bar-warning";
 
-            console.log(buckets[i].amount / total * 10);
+                progress.style.width = total / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
 
-            progress.style.width = buckets[i].amount / total * 10 + "%"; // Populate this with a calculated value
+                name.appendChild(document.createTextNode(buckets[i].name));
 
-            name.appendChild(document.createTextNode(buckets[i].name));
+                progressWrapper.appendChild(progress);
+                progressCol.appendChild(progressWrapper);
 
-            progressWrapper.appendChild(progress);
-            progressCol.appendChild(progressWrapper);
+                col.appendChild(name);
+                col.appendChild(progressCol);
 
-            col.appendChild(name);
-            col.appendChild(progressCol);
-
-            document.getElementById("buckets-list").appendChild(col);
-        }
-    });
+                document.getElementById("buckets-list").appendChild(col);
+            });
+        });
+    }
 }

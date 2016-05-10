@@ -1,6 +1,11 @@
 package accessors
 
-import "github.com/labstack/echo"
+import (
+	"database/sql"
+	"errors"
+
+	"github.com/labstack/echo"
+)
 
 type Bucket struct {
 	ID     int    `json:"id"`
@@ -76,7 +81,9 @@ func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, 
 	}
 
 	err = ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", userID, c.Param("bucket")).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
-	if err != nil {
+	if err == sql.ErrNoRows { // If the user doesn't exist yet
+		return Bucket{}, errors.New("There is no bucket with the name \"" + c.Param("bucket") + "\"")
+	} else if err != nil {
 		return Bucket{}, err
 	}
 

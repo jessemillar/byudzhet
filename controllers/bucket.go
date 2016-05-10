@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/jessemillar/byudzhet/helpers"
@@ -37,8 +36,6 @@ func (cg *ControllerGroup) GetBucket(c echo.Context) error {
 }
 
 func (cg *ControllerGroup) GetBucketByName(c echo.Context) error {
-	fmt.Println("Getting by name")
-
 	token, err := helpers.ValidateJWT(c)
 	if err != nil {
 		return c.String(http.StatusBadRequest, err.Error())
