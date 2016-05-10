@@ -46,6 +46,7 @@ func main() {
 	e.Get("/api/bucket/:bucket", cg.GetBucketByName)
 	e.Get("/api/income", cg.GetIncome)
 
+	e.Post("/api/user", cg.MakeUser)
 	e.Post("/api/expense", cg.LogExpense)
 	e.Post("/api/bucket", cg.MakeBucket)
 	e.Post("/api/income", cg.LogIncome)
@@ -60,6 +61,7 @@ func main() {
 	e.Get("/income", views.Income)
 	e.Get("/income/log", views.LogIncome)
 	e.Get("/settings", views.Settings)
+	e.Get("/settings/share", views.Share)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))

@@ -7,21 +7,6 @@ type User struct {
 	Email string `json:"email"`
 }
 
-// MakeUser adds a user to the database
-func (ag *AccessorGroup) MakeUser(email string) (User, error) {
-	_, err := ag.Database.Query("INSERT INTO users (email) VALUES (?)", email)
-	if err != nil {
-		return User{}, err
-	}
-
-	user, err := ag.GetUser(email)
-	if err != nil {
-		return User{}, err
-	}
-
-	return user, nil
-}
-
 // GetUser returns a user from the database by userID
 func (ag *AccessorGroup) GetUser(email string) (User, error) {
 	user1 := &User{}
@@ -49,4 +34,19 @@ func (ag *AccessorGroup) GetUserID(email string) (int, error) {
 	}
 
 	return user.ID, nil
+}
+
+// MakeUser adds a user to the database
+func (ag *AccessorGroup) MakeUser(email string) (User, error) {
+	_, err := ag.Database.Query("INSERT INTO users (email) VALUES (?)", email)
+	if err != nil {
+		return User{}, err
+	}
+
+	user, err := ag.GetUser(email)
+	if err != nil {
+		return User{}, err
+	}
+
+	return user, nil
 }
