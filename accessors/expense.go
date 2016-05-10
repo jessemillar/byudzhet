@@ -1,6 +1,10 @@
 package accessors
 
-import "github.com/labstack/echo"
+import (
+	"fmt"
+
+	"github.com/labstack/echo"
+)
 
 type Expense struct {
 	ID        int    `json:"id"`
@@ -44,7 +48,33 @@ func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, er
 		return []Expense{}, err
 	}
 
-	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID)
+	expenses, err = ag.GetExpenseByUserID(c, expenses, userID)
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	allShares, err := ag.GetSharing(c, email)
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	allSharesUserID := []int{}
+
+	for i := range allShares {
+		if allShares[i].User != userID {
+			allSharesUserID = append(allSharesUserID, allShares[i].User)
+		} else if allShares[i].Sharee != userID {
+			allSharesUserID = append(allSharesUserID, allShares[i].Sharee)
+		}
+	}
+
+	fmt.Printf("%+v", allSharesUserID)
+
+	return expenses, nil
+}
+
+func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, id int) ([]Expense, error) {
+	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", id)
 	if err != nil {
 		return []Expense{}, err
 	}
