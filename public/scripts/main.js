@@ -206,3 +206,20 @@ function populateBuckets(buckets) {
         });
     }
 }
+
+function logIncome() {
+    body = {
+        amount: $("#amount").val(),
+        payer: $("#payer").val(),
+    };
+
+    $.ajax("/api/income", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/income";
+        }
+    });
+}

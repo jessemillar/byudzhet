@@ -47,6 +47,7 @@ func main() {
 
 	e.Post("/api/expense", cg.LogExpense)
 	e.Post("/api/bucket", cg.MakeBucket)
+	e.Post("/api/income", cg.LogIncome)
 
 	// Views
 	e.Static("/*", "public")
