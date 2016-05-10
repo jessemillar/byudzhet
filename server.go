@@ -51,10 +51,11 @@ func main() {
 	// Views
 	e.Static("/*", "public")
 	e.Get("/", views.Login)
-	e.Get("/buckets", views.Bucket)
+	e.Get("/buckets", views.Buckets)
 	e.Get("/buckets/make", views.MakeBucket)
-	e.Get("/expenses", views.Expense)
+	e.Get("/expenses", views.Expenses)
 	e.Get("/expenses/log", views.LogExpense)
+	e.Get("/settings", views.Settings)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))

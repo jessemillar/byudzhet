@@ -3,8 +3,8 @@ package accessors
 import "database/sql"
 
 type User struct {
-	ID    int
-	Email string
+	ID    int    `json:"id"`
+	Email string `json:"email"`
 }
 
 // MakeUser adds a user to the database
