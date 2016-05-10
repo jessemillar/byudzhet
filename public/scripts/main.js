@@ -33,7 +33,7 @@ function init() {
     } else if (page == "/income") {
         setActiveNavigation("income");
 
-        getExpenses(populateExpenses);
+        getIncome(populateIncome);
     } else if (page == "/income/log") {
         setActiveNavigation("income");
 
@@ -111,25 +111,25 @@ function populateExpenses(expenses) {
     for (var i in expenses) {
         var li = document.createElement("li");
         var row = document.createElement("div");
-        var receipient = document.createElement("div");
+        var recipient = document.createElement("div");
         var note = document.createElement("div");
         var amount = document.createElement("div");
         var amountSpan = document.createElement("span");
 
         li.className = "list-group-item";
         row.className = "row list-row";
-        receipient.className = "col-xs-3";
+        recipient.className = "col-xs-3";
         note.className = "col-xs-7";
         amount.className = "col-xs-2";
         amountSpan.className = "badge";
 
-        receipient.appendChild(document.createTextNode(expenses[i].recipient));
+        recipient.appendChild(document.createTextNode(expenses[i].recipient));
         note.appendChild(document.createTextNode(expenses[i].note));
         amountSpan.appendChild(document.createTextNode("$" + expenses[i].amount));
 
         amount.appendChild(amountSpan);
 
-        row.appendChild(receipient);
+        row.appendChild(recipient);
         row.appendChild(note);
         row.appendChild(amount);
         li.appendChild(row);
@@ -222,4 +222,57 @@ function logIncome() {
             window.location.href = "/income";
         }
     });
+}
+
+function getIncome(callback) {
+    $.get("/api/income", function(data) {
+        if (callback) {
+            callback(data);
+        } else {
+            return data;
+        }
+    });
+}
+
+function getIncomeTotal(bucketID, callback) {
+    getIncome(function(income) {
+        var total = 0;
+
+        for (var i in income) {
+            total += parseInt(expenses[i].amount);
+        }
+
+        if (callback) {
+            callback(total);
+        } else {
+            return total;
+        }
+    });
+}
+
+function populateIncome(income) {
+    for (var i in income) {
+        var li = document.createElement("li");
+        var row = document.createElement("div");
+        var payer = document.createElement("div");
+        var amount = document.createElement("div");
+        var amountSpan = document.createElement("span");
+
+        li.className = "list-group-item";
+        row.className = "row list-row";
+        payer.className = "col-xs-10";
+        amount.className = "col-xs-2";
+        amountSpan.className = "badge";
+
+        payer.appendChild(document.createTextNode(income[i].payer));
+        amountSpan.appendChild(document.createTextNode("$" + income[i].amount));
+
+        amount.appendChild(amountSpan);
+
+        row.appendChild(payer);
+        row.appendChild(amount);
+        li.appendChild(row);
+
+        document.getElementById("income-list").appendChild(li);
+    }
 }
