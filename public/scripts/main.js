@@ -14,28 +14,50 @@
 function init() {
     page = window.location.pathname;
 
-    if (page == "/buckets") {
-        setActiveNavigation("buckets");
-    } else if (page == "/expenses") {
-        setActiveNavigation("expenses");
+    if (page == "/bucket") {
+        setActiveNavigation("bucket");
+    } else if (page == "/expense") {
+        setActiveNavigation("expense");
     } else if (page == "/income") {
         setActiveNavigation("income");
-    } else if (page == "/settings") {
-        setActiveNavigation("settings");
+    } else if (page == "/setting") {
+        setActiveNavigation("setting");
     } else if (page == "/log") {
-        setActiveNavigation("expenses");
+        setActiveNavigation("expense");
 
-        document.getElementById("cost").focus();
+        document.getElementById("amount").focus();
     }
 }
 
 function setActiveNavigation(button) {
     // Reset all buttons
-    document.getElementById("buckets").className = "navigation-button";
-    document.getElementById("expenses").className = "navigation-button";
+    document.getElementById("bucket").className = "navigation-button";
+    document.getElementById("expense").className = "navigation-button";
     document.getElementById("income").className = "navigation-button";
-    document.getElementById("settings").className = "navigation-button";
+    document.getElementById("setting").className = "navigation-button";
 
     // Make the button we care about active
     document.getElementById(button).className += " active";
+}
+
+function logExpense() {
+    amount = $("#amount").val();
+    recipient = $("#recipient").val();
+    note = $("#note").val();
+
+    body = {
+        amount: amount,
+        recipient: recipient,
+        note: note
+    };
+
+    $.ajax("/expense", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/expense";
+        }
+    });
 }

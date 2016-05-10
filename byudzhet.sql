@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 09, 2016 at 12:22 PM
+-- Generation Time: May 09, 2016 at 07:54 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `buckets` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
-  `amount` float NOT NULL,
+  `amount` int(11) NOT NULL,
   `name` varchar(140) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
@@ -46,19 +46,25 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `user` int(11) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bucket` int(11) NOT NULL,
-  `amount` float NOT NULL,
+  `amount` int(11) NOT NULL,
   `recipient` varchar(50) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `expenses`
 --
 
 INSERT INTO `expenses` (`ID`, `user`, `timestamp`, `bucket`, `amount`, `recipient`, `note`) VALUES
-(3, 8, '2016-05-08 03:15:23', 0, 27.99, 'Target', 'Poots');
+(3, 8, '2016-05-08 03:15:23', 0, 28, 'Target', 'Poots'),
+(4, 8, '2016-05-09 23:18:46', 0, 0, '', ''),
+(5, 8, '2016-05-09 23:18:59', 0, 0, '', ''),
+(6, 8, '2016-05-09 23:28:55', 0, 0, '', ''),
+(7, 8, '2016-05-09 23:29:24', 0, 0, '', ''),
+(8, 8, '2016-05-09 23:32:30', 0, 0, '', ''),
+(9, 8, '2016-05-09 23:52:31', 0, 500, 'Target', 'API');
 
 -- --------------------------------------------------------
 
@@ -69,7 +75,7 @@ INSERT INTO `expenses` (`ID`, `user`, `timestamp`, `bucket`, `amount`, `recipien
 CREATE TABLE IF NOT EXISTS `income` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
-  `amount` decimal(10,0) NOT NULL,
+  `amount` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
