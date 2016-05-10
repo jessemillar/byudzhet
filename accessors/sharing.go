@@ -49,14 +49,14 @@ func (ag *AccessorGroup) GetSharing(c echo.Context, email string) ([]Share, erro
 	defer rows.Close()
 
 	for rows.Next() {
-		expense := Share{}
+		share := Share{}
 
-		err := rows.Scan(&expense.ID, &expense.User, &expense.Sharee)
+		err := rows.Scan(&share.ID, &share.User, &share.Sharee)
 		if err != nil {
 			return []Share{}, err
 		}
 
-		allShares = append(allShares, expense)
+		allShares = append(allShares, share)
 	}
 
 	err = rows.Err()

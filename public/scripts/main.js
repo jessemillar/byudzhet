@@ -42,6 +42,8 @@ function init() {
         setActiveNavigation("income");
     } else if (page == "/settings") {
         setActiveNavigation("settings");
+
+        getSharing(populateSharing);
     }
 }
 
@@ -50,7 +52,7 @@ function share() {
         sharee: $("#sharee").val(),
     };
 
-    $.ajax("/api/share", {
+    $.ajax("/api/sharing", {
         "data": JSON.stringify(body),
         "type": "POST",
         "processData": false,
@@ -290,5 +292,54 @@ function populateIncome(income) {
         li.appendChild(row);
 
         document.getElementById("income-list").appendChild(li);
+    }
+}
+
+function getUserEmail(id, callback) {
+    $.get("/api/user/id/" + id, function(data) {
+        if (callback) {
+            callback(data);
+        } else {
+            return data;
+        }
+    });
+}
+
+function getSharing(callback) {
+    $.get("/api/sharing", function(data) {
+        if (callback) {
+            callback(data);
+        } else {
+            return data;
+        }
+    });
+}
+
+function populateSharing(allShares) {
+    console.log(allShares);
+
+    for (var i in allShares) {
+        var li = document.createElement("li");
+        var row = document.createElement("div");
+        var payer = document.createElement("div");
+        var amount = document.createElement("div");
+        var amountSpan = document.createElement("span");
+
+        li.className = "list-group-item";
+        row.className = "row list-row";
+        payer.className = "col-xs-10";
+        amount.className = "col-xs-2";
+        amountSpan.className = "badge";
+
+        payer.appendChild(document.createTextNode(allShares[i].payer));
+        amountSpan.appendChild(document.createTextNode("$" + allShares[i].amount));
+
+        amount.appendChild(amountSpan);
+
+        row.appendChild(payer);
+        row.appendChild(amount);
+        li.appendChild(row);
+
+        document.getElementById("shares-list").appendChild(li);
     }
 }
