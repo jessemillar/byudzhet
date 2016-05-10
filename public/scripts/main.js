@@ -37,6 +37,11 @@ function init() {
     }
 }
 
+function logout() {
+    document.cookie = "id_token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"; // Delete the cookie by making it expire
+    window.location.href = "/";
+}
+
 function setActiveNavigation(button) {
     // Reset all buttons
     document.getElementById("buckets").className = "navigation-button";

@@ -19,13 +19,13 @@ func Login(c echo.Context) error {
 	return c.String(http.StatusOK, "Done")
 }
 
-func Bucket(c echo.Context) error {
+func Buckets(c echo.Context) error {
 	helpers.CheckCookie(c)
 
 	return c.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func Expense(c echo.Context) error {
+func Expenses(c echo.Context) error {
 	helpers.CheckCookie(c)
 
 	return c.Render(http.StatusOK, "expenses", os.Getenv("AUTH0_CALLBACK"))
@@ -41,4 +41,10 @@ func LogExpense(c echo.Context) error {
 	helpers.CheckCookie(c)
 
 	return c.Render(http.StatusOK, "log-expense", os.Getenv("AUTH0_CALLBACK"))
+}
+
+func Settings(c echo.Context) error {
+	helpers.CheckCookie(c)
+
+	return c.Render(http.StatusOK, "settings", os.Getenv("AUTH0_CALLBACK"))
 }
