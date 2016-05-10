@@ -43,6 +43,7 @@ func main() {
 	e.Get("/api/user", cg.GetUser)
 	e.Get("/api/expense", cg.GetExpense)
 	e.Get("/api/bucket", cg.GetBucket)
+	e.Get("/api/bucket/:bucket", cg.GetBucketByName)
 
 	e.Post("/api/expense", cg.LogExpense)
 	e.Post("/api/bucket", cg.MakeBucket)

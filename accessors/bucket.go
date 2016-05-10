@@ -3,10 +3,10 @@ package accessors
 import "github.com/labstack/echo"
 
 type Bucket struct {
-	ID     int
-	User   int
-	Amount int `json:",string"`
-	Name   string
+	ID     int    `json:"id"`
+	User   int    `json:"user"`
+	Amount int    `json:"amount,string"`
+	Name   string `json:"name"`
 }
 
 func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error) {
@@ -65,4 +65,20 @@ func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, erro
 	}
 
 	return buckets, nil
+}
+
+func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, error) {
+	bucket := Bucket{}
+
+	userID, err := ag.GetUserID(email)
+	if err != nil {
+		return Bucket{}, err
+	}
+
+	err = ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", userID, c.Param("bucket")).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
+	if err != nil {
+		return Bucket{}, err
+	}
+
+	return bucket, nil
 }
