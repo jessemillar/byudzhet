@@ -1,12 +1,17 @@
 package accessors
 
-import "github.com/labstack/echo"
+import (
+	"database/sql"
+	"errors"
+
+	"github.com/labstack/echo"
+)
 
 type Bucket struct {
-	ID     int
-	User   int
-	Amount int `json:",string"`
-	Name   string
+	ID     int    `json:"id"`
+	User   int    `json:"user"`
+	Amount int    `json:"amount,string"`
+	Name   string `json:"name"`
 }
 
 func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error) {
@@ -33,4 +38,54 @@ func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error
 	return Bucket{}, nil
 }
 
-// func (ag *AccessorGroup) GetBucket()
+func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, error) {
+	buckets := []Bucket{}
+
+	userID, err := ag.GetUserID(email)
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", userID)
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		bucket := Bucket{}
+
+		err := rows.Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
+		if err != nil {
+			return []Bucket{}, err
+		}
+
+		buckets = append(buckets, bucket)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	return buckets, nil
+}
+
+func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, error) {
+	bucket := Bucket{}
+
+	userID, err := ag.GetUserID(email)
+	if err != nil {
+		return Bucket{}, err
+	}
+
+	err = ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", userID, c.Param("bucket")).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
+	if err == sql.ErrNoRows { // If the user doesn't exist yet
+		return Bucket{}, errors.New("There is no bucket with the name \"" + c.Param("bucket") + "\"")
+	} else if err != nil {
+		return Bucket{}, err
+	}
+
+	return bucket, nil
+}

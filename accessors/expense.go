@@ -3,13 +3,13 @@ package accessors
 import "github.com/labstack/echo"
 
 type Expense struct {
-	ID        int
-	User      int
-	Timestamp string
-	Bucket    int `json:",string"`
-	Amount    int `json:",string"`
-	Recipient string
-	Note      string
+	ID        int    `json:"id"`
+	User      int    `json:"user"`
+	Time      string `json:"time"`
+	Bucket    int    `json:"bucket,string"`
+	Amount    int    `json:"amount,string"`
+	Recipient string `json:"recipient"`
+	Note      string `json:"note"`
 }
 
 func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, error) {
@@ -36,7 +36,7 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 	return Expense{}, nil
 }
 
-func (ag *AccessorGroup) GetExpenses(c echo.Context, email string) ([]Expense, error) {
+func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, error) {
 	expenses := []Expense{}
 
 	userID, err := ag.GetUserID(email)
@@ -54,7 +54,7 @@ func (ag *AccessorGroup) GetExpenses(c echo.Context, email string) ([]Expense, e
 	for rows.Next() {
 		expense := Expense{}
 
-		err := rows.Scan(&expense.ID, &expense.User, &expense.Timestamp, &expense.Bucket, &expense.Amount, &expense.Recipient, &expense.Note)
+		err := rows.Scan(&expense.ID, &expense.User, &expense.Time, &expense.Bucket, &expense.Amount, &expense.Recipient, &expense.Note)
 		if err != nil {
 			return []Expense{}, err
 		}
