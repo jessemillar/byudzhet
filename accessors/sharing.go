@@ -8,25 +8,20 @@ type Share struct {
 	Sharee int `json:"sharee"`
 }
 
-func (ag *AccessorGroup) Share(c echo.Context, userEmail string, shareeEmail string) (Share, error) {
+func (ag *AccessorGroup) Share(c echo.Context, email string) (Share, error) {
 	share := Share{}
 	err := c.Bind(&share)
 	if err != nil {
 		return Share{}, err
 	}
 
-	userID, err := ag.GetUserID(userEmail)
-	if err != nil {
-		return Share{}, err
-	}
-
-	shareeID, err := ag.GetUserID(shareeEmail)
+	userID, err := ag.GetUserID(email)
 	if err != nil {
 		return Share{}, err
 	}
 
 	share.User = userID
-	share.Sharee = shareeID
+	share.Sharee = share.Sharee
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
@@ -46,7 +41,7 @@ func (ag *AccessorGroup) GetSharing(c echo.Context, email string) ([]Share, erro
 		return []Share{}, err
 	}
 
-	rows, err := ag.Database.Query("SELECT * FROM sharing WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID)
+	rows, err := ag.Database.Query("SELECT * FROM sharing WHERE user=? OR sharee=?", userID, userID)
 	if err != nil {
 		return []Share{}, err
 	}

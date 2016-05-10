@@ -45,6 +45,22 @@ function init() {
     }
 }
 
+function share() {
+    body = {
+        sharee: $("#sharee").val(),
+    };
+
+    $.ajax("/api/share", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/settings";
+        }
+    });
+}
+
 function logout() {
     document.cookie = "id_token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"; // Delete the cookie by making it expire
     window.location.href = "/";
