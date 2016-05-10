@@ -51,14 +51,13 @@ function logExpense() {
         note: note
     };
 
-    console.log(JSON.stringify(body));
-
     $.ajax("/expense", {
         "data": JSON.stringify(body),
         "type": "POST",
         "processData": false,
-        "contentType": "application/json"
-    }, function(data) {
-        console.log(data);
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/expense";
+        }
     });
 }
