@@ -40,7 +40,8 @@ func main() {
 	e.Get("/callback", cg.CallbackHandler)
 
 	e.Get("/api/health", cg.Health)
-	e.Get("/api/user", cg.GetUser)
+	e.Get("/api/user/id/:id", cg.GetUserByID)
+	e.Get("/api/user/email/:email", cg.GetUserByEmail)
 	e.Get("/api/expense", cg.GetExpense)
 	e.Get("/api/bucket", cg.GetBucket)
 	e.Get("/api/bucket/:bucket", cg.GetBucketByName)
