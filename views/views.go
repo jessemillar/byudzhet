@@ -38,6 +38,12 @@ func Expense(c echo.Context) error {
 	return c.Render(http.StatusOK, "expense", os.Getenv("AUTH0_CALLBACK"))
 }
 
+func MakeBucket(c echo.Context) error {
+	CheckCookie(c)
+
+	return c.Render(http.StatusOK, "make-bucket", os.Getenv("AUTH0_CALLBACK"))
+}
+
 func LogExpense(c echo.Context) error {
 	CheckCookie(c)
 

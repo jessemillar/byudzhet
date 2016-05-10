@@ -16,16 +16,20 @@ function init() {
 
     if (page == "/bucket") {
         setActiveNavigation("bucket");
+    } else if (page == "/bucket/make") {
+        setActiveNavigation("bucket");
+
+        document.getElementById("amount").focus();
     } else if (page == "/expense") {
         setActiveNavigation("expense");
+    } else if (page == "/expense/log") {
+        setActiveNavigation("expense");
+
+        document.getElementById("amount").focus();
     } else if (page == "/income") {
         setActiveNavigation("income");
     } else if (page == "/setting") {
         setActiveNavigation("setting");
-    } else if (page == "/log") {
-        setActiveNavigation("expense");
-
-        document.getElementById("amount").focus();
     }
 }
 
@@ -41,14 +45,10 @@ function setActiveNavigation(button) {
 }
 
 function logExpense() {
-    amount = $("#amount").val();
-    recipient = $("#recipient").val();
-    note = $("#note").val();
-
     body = {
-        amount: amount,
-        recipient: recipient,
-        note: note
+        amount: $("#amount").val(),
+        recipient: $("#recipient").val(),
+        note: $("#note").val()
     };
 
     $.ajax("/expense", {
@@ -58,6 +58,23 @@ function logExpense() {
         "contentType": "application/json",
         "success": function(data) {
             window.location.href = "/expense";
+        }
+    });
+}
+
+function makeBucket() {
+    body = {
+        amount: $("#amount").val(),
+        name: $("#name").val()
+    };
+
+    $.ajax("/bucket", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/bucket";
         }
     });
 }
