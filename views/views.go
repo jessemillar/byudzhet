@@ -14,9 +14,7 @@ func Login(c echo.Context) error {
 		return c.Render(http.StatusOK, "login", os.Getenv("AUTH0_CALLBACK"))
 	}
 
-	c.Redirect(http.StatusMovedPermanently, "/buckets")
-
-	return c.String(http.StatusOK, "Done")
+	return c.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
 }
 
 func Buckets(c echo.Context) error {
