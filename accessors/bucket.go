@@ -1,7 +1,6 @@
 package accessors
 
 import (
-	"database/sql"
 	"errors"
 
 	"github.com/labstack/echo"
@@ -39,14 +38,42 @@ func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error
 }
 
 func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, error) {
-	buckets := []Bucket{}
+	allBuckets := []Bucket{}
 
 	userID, err := ag.GetUserID(email)
 	if err != nil {
 		return []Bucket{}, err
 	}
 
-	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", userID)
+	allBuckets, err = ag.GetBucketByUserID(c, allBuckets, userID)
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	allShares, err := ag.GetSharing(c, email)
+	if err != nil {
+		return []Bucket{}, err
+	}
+
+	for i := range allShares {
+		if allShares[i].User != userID {
+			allBuckets, err = ag.GetBucketByUserID(c, allBuckets, allShares[i].User)
+			if err != nil {
+				return []Bucket{}, err
+			}
+		} else if allShares[i].Sharee != userID {
+			allBuckets, err = ag.GetBucketByUserID(c, allBuckets, allShares[i].Sharee)
+			if err != nil {
+				return []Bucket{}, err
+			}
+		}
+	}
+
+	return allBuckets, nil
+}
+
+func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, id int) ([]Bucket, error) {
+	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", id)
 	if err != nil {
 		return []Bucket{}, err
 	}
@@ -61,7 +88,7 @@ func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, erro
 			return []Bucket{}, err
 		}
 
-		buckets = append(buckets, bucket)
+		allBuckets = append(allBuckets, bucket)
 	}
 
 	err = rows.Err()
@@ -69,23 +96,50 @@ func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, erro
 		return []Bucket{}, err
 	}
 
-	return buckets, nil
+	return allBuckets, nil
 }
 
 func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, error) {
-	bucket := Bucket{}
-
 	userID, err := ag.GetUserID(email)
 	if err != nil {
 		return Bucket{}, err
 	}
 
-	err = ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", userID, c.Param("bucket")).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
-	if err == sql.ErrNoRows { // If the user doesn't exist yet
-		return Bucket{}, errors.New("There is no bucket with the name \"" + c.Param("bucket") + "\"")
-	} else if err != nil {
+	bucket, err := ag.GetBucketByNameAndID(c, c.Param("name"), userID)
+	if err != nil {
 		return Bucket{}, err
 	}
+
+	allShares, err := ag.GetSharing(c, email)
+	if err != nil {
+		return Bucket{}, err
+	}
+
+	for i := range allShares {
+		if allShares[i].User != userID {
+			bucket, err = ag.GetBucketByNameAndID(c, c.Param("name"), allShares[i].User)
+			if err != nil {
+				return Bucket{}, err
+			}
+
+			return bucket, nil
+		} else if allShares[i].Sharee != userID {
+			bucket, err = ag.GetBucketByNameAndID(c, c.Param("name"), allShares[i].Sharee)
+			if err != nil {
+				return Bucket{}, err
+			}
+
+			return bucket, nil
+		}
+	}
+
+	return Bucket{}, errors.New("There is no bucket with the name \"" + c.Param("name") + "\"")
+}
+
+func (ag *AccessorGroup) GetBucketByNameAndID(c echo.Context, name string, id int) (Bucket, error) {
+	bucket := Bucket{}
+
+	_ = ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", id, name).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
 
 	return bucket, nil
 }

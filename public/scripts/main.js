@@ -107,18 +107,18 @@ function getExpenses(callback) {
     });
 }
 
-function getExpensesTotal(bucketID, callback) {
+function getExpensesTotal(bucket, callback) {
     getExpenses(function(expenses) {
         var total = 0;
 
         for (var i in expenses) {
-            if (expenses[i].bucket == bucketID) {
+            if (expenses[i].bucket == bucket.id) {
                 total += parseInt(expenses[i].amount);
             }
         }
 
         if (callback) {
-            callback(total);
+            callback(total, bucket);
         } else {
             return total;
         }
@@ -183,10 +183,10 @@ function getBuckets(callback) {
     });
 }
 
-function getBucketID(bucket, callback) {
-    $.get("/api/bucket/" + bucket, function(data) {
+function getBucketByName(bucket, callback) {
+    $.get("/api/bucket/" + bucket.name, function(data) {
         if (callback) {
-            callback(data.id);
+            callback(data);
         } else {
             return data;
         }
@@ -195,32 +195,38 @@ function getBucketID(bucket, callback) {
 
 function populateBuckets(buckets) {
     for (var i in buckets) {
-        getBucketID(buckets[i].name, function(id) {
-            getExpensesTotal(id, function(total) {
-                var col = document.createElement("div");
-                var name = document.createElement("div");
-                var progressCol = document.createElement("div");
-                var progressWrapper = document.createElement("div");
-                var progress = document.createElement("div");
+        console.log(buckets[i]);
+        getExpensesTotal(buckets[i], function(total, bucket) {
+            console.log(bucket.name, total)
 
-                col.className = "col-xs-12";
-                name.className = "col-xs-4";
-                progressCol.className = "col-xs-8";
-                progressWrapper.className = "progress";
+            var col = document.createElement("div");
+            var name = document.createElement("div");
+            var progressCol = document.createElement("div");
+            var progressWrapper = document.createElement("div");
+            var progress = document.createElement("div");
+
+            col.className = "col-xs-12";
+            name.className = "col-xs-4";
+            progressCol.className = "col-xs-8";
+            progressWrapper.className = "progress";
+
+            if (total > bucket.amount) {
+                progress.className = "progress-bar progress-bar-danger";
+            } else {
                 progress.className = "progress-bar progress-bar-warning";
+            }
 
-                progress.style.width = total / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
+            progress.style.width = total / bucket.amount * 100 + "%"; // Populate this with a calculated value
 
-                name.appendChild(document.createTextNode(buckets[i].name));
+            name.appendChild(document.createTextNode(bucket.name));
 
-                progressWrapper.appendChild(progress);
-                progressCol.appendChild(progressWrapper);
+            progressWrapper.appendChild(progress);
+            progressCol.appendChild(progressWrapper);
 
-                col.appendChild(name);
-                col.appendChild(progressCol);
+            col.appendChild(name);
+            col.appendChild(progressCol);
 
-                document.getElementById("buckets-list").appendChild(col);
-            });
+            document.getElementById("buckets-list").appendChild(col);
         });
     }
 }
