@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 10, 2016 at 12:54 PM
+-- Generation Time: May 10, 2016 at 01:54 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -84,7 +84,14 @@ CREATE TABLE IF NOT EXISTS `income` (
   `amount` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `income`
+--
+
+INSERT INTO `income` (`ID`, `user`, `time`, `payer`, `amount`) VALUES
+(1, 8, '2016-05-10 17:00:32', 'BYU', 500);
 
 -- --------------------------------------------------------
 
@@ -95,10 +102,10 @@ CREATE TABLE IF NOT EXISTS `income` (
 CREATE TABLE IF NOT EXISTS `sharing` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
-  `receiver` int(11) NOT NULL,
+  `sharee` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `user` (`user`,`receiver`),
-  KEY `receiver` (`receiver`)
+  KEY `user` (`user`,`sharee`),
+  KEY `receiver` (`sharee`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -147,7 +154,7 @@ ALTER TABLE `income`
 -- Constraints for table `sharing`
 --
 ALTER TABLE `sharing`
-  ADD CONSTRAINT `sharing_ibfk_2` FOREIGN KEY (`receiver`) REFERENCES `users` (`ID`),
+  ADD CONSTRAINT `sharing_ibfk_2` FOREIGN KEY (`sharee`) REFERENCES `users` (`ID`),
   ADD CONSTRAINT `sharing_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`ID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

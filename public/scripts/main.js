@@ -42,7 +42,25 @@ function init() {
         setActiveNavigation("income");
     } else if (page == "/settings") {
         setActiveNavigation("settings");
+
+        getSharing(populateSharing);
     }
+}
+
+function share() {
+    body = {
+        sharee: $("#sharee").val(),
+    };
+
+    $.ajax("/api/sharing", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/settings";
+        }
+    });
 }
 
 function logout() {
@@ -89,18 +107,18 @@ function getExpenses(callback) {
     });
 }
 
-function getExpensesTotal(bucketID, callback) {
+function getExpensesTotal(bucket, callback) {
     getExpenses(function(expenses) {
         var total = 0;
 
         for (var i in expenses) {
-            if (expenses[i].bucket == bucketID) {
+            if (expenses[i].bucket == bucket.id) {
                 total += parseInt(expenses[i].amount);
             }
         }
 
         if (callback) {
-            callback(total);
+            callback(total, bucket);
         } else {
             return total;
         }
@@ -165,10 +183,10 @@ function getBuckets(callback) {
     });
 }
 
-function getBucketID(bucket, callback) {
-    $.get("/api/bucket/" + bucket, function(data) {
+function getBucketByName(bucket, callback) {
+    $.get("/api/bucket/" + bucket.name, function(data) {
         if (callback) {
-            callback(data.id);
+            callback(data);
         } else {
             return data;
         }
@@ -177,32 +195,38 @@ function getBucketID(bucket, callback) {
 
 function populateBuckets(buckets) {
     for (var i in buckets) {
-        getBucketID(buckets[i].name, function(id) {
-            getExpensesTotal(id, function(total) {
-                var col = document.createElement("div");
-                var name = document.createElement("div");
-                var progressCol = document.createElement("div");
-                var progressWrapper = document.createElement("div");
-                var progress = document.createElement("div");
+        console.log(buckets[i]);
+        getExpensesTotal(buckets[i], function(total, bucket) {
+            console.log(bucket.name, total)
 
-                col.className = "col-xs-12";
-                name.className = "col-xs-4";
-                progressCol.className = "col-xs-8";
-                progressWrapper.className = "progress";
+            var col = document.createElement("div");
+            var name = document.createElement("div");
+            var progressCol = document.createElement("div");
+            var progressWrapper = document.createElement("div");
+            var progress = document.createElement("div");
+
+            col.className = "col-xs-12";
+            name.className = "col-xs-4";
+            progressCol.className = "col-xs-8";
+            progressWrapper.className = "progress";
+
+            if (total > bucket.amount) {
+                progress.className = "progress-bar progress-bar-danger";
+            } else {
                 progress.className = "progress-bar progress-bar-warning";
+            }
 
-                progress.style.width = total / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
+            progress.style.width = total / bucket.amount * 100 + "%"; // Populate this with a calculated value
 
-                name.appendChild(document.createTextNode(buckets[i].name));
+            name.appendChild(document.createTextNode(bucket.name));
 
-                progressWrapper.appendChild(progress);
-                progressCol.appendChild(progressWrapper);
+            progressWrapper.appendChild(progress);
+            progressCol.appendChild(progressWrapper);
 
-                col.appendChild(name);
-                col.appendChild(progressCol);
+            col.appendChild(name);
+            col.appendChild(progressCol);
 
-                document.getElementById("buckets-list").appendChild(col);
-            });
+            document.getElementById("buckets-list").appendChild(col);
         });
     }
 }
@@ -274,5 +298,54 @@ function populateIncome(income) {
         li.appendChild(row);
 
         document.getElementById("income-list").appendChild(li);
+    }
+}
+
+function getUserEmail(id, callback) {
+    $.get("/api/user/id/" + id, function(data) {
+        if (callback) {
+            callback(data);
+        } else {
+            return data;
+        }
+    });
+}
+
+function getSharing(callback) {
+    $.get("/api/sharing", function(data) {
+        if (callback) {
+            callback(data);
+        } else {
+            return data;
+        }
+    });
+}
+
+function populateSharing(allShares) {
+    console.log(allShares);
+
+    for (var i in allShares) {
+        var li = document.createElement("li");
+        var row = document.createElement("div");
+        var payer = document.createElement("div");
+        var amount = document.createElement("div");
+        var amountSpan = document.createElement("span");
+
+        li.className = "list-group-item";
+        row.className = "row list-row";
+        payer.className = "col-xs-10";
+        amount.className = "col-xs-2";
+        amountSpan.className = "badge";
+
+        payer.appendChild(document.createTextNode(allShares[i].payer));
+        amountSpan.appendChild(document.createTextNode("$" + allShares[i].amount));
+
+        amount.appendChild(amountSpan);
+
+        row.appendChild(payer);
+        row.appendChild(amount);
+        li.appendChild(row);
+
+        document.getElementById("shares-list").appendChild(li);
     }
 }

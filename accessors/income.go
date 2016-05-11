@@ -42,7 +42,35 @@ func (ag *AccessorGroup) GetIncome(c echo.Context, email string) ([]Income, erro
 		return []Income{}, err
 	}
 
-	rows, err := ag.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID)
+	allIncome, err = ag.GetIncomeByUserID(c, allIncome, userID)
+	if err != nil {
+		return []Income{}, err
+	}
+
+	allShares, err := ag.GetSharing(c, email)
+	if err != nil {
+		return []Income{}, err
+	}
+
+	for i := range allShares {
+		if allShares[i].User != userID {
+			allIncome, err = ag.GetIncomeByUserID(c, allIncome, allShares[i].User)
+			if err != nil {
+				return []Income{}, err
+			}
+		} else if allShares[i].Sharee != userID {
+			allIncome, err = ag.GetIncomeByUserID(c, allIncome, allShares[i].Sharee)
+			if err != nil {
+				return []Income{}, err
+			}
+		}
+	}
+
+	return allIncome, nil
+}
+
+func (ag *AccessorGroup) GetIncomeByUserID(c echo.Context, allIncome []Income, id int) ([]Income, error) {
+	rows, err := ag.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE())", id)
 	if err != nil {
 		return []Income{}, err
 	}

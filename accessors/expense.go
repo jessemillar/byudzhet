@@ -37,14 +37,42 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 }
 
 func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, error) {
-	expenses := []Expense{}
+	allExpenses := []Expense{}
 
 	userID, err := ag.GetUserID(email)
 	if err != nil {
 		return []Expense{}, err
 	}
 
-	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID)
+	allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, userID)
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	allShares, err := ag.GetSharing(c, email)
+	if err != nil {
+		return []Expense{}, err
+	}
+
+	for i := range allShares {
+		if allShares[i].User != userID {
+			allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, allShares[i].User)
+			if err != nil {
+				return []Expense{}, err
+			}
+		} else if allShares[i].Sharee != userID {
+			allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, allShares[i].Sharee)
+			if err != nil {
+				return []Expense{}, err
+			}
+		}
+	}
+
+	return allExpenses, nil
+}
+
+func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, id int) ([]Expense, error) {
+	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", id)
 	if err != nil {
 		return []Expense{}, err
 	}
