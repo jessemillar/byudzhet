@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/labstack/echo"
