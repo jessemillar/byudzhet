@@ -1,7 +1,6 @@
 package helpers
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/labstack/echo"
@@ -18,6 +17,6 @@ func MakeCookie(c echo.Context, name string, value string) {
 func CheckCookie(c echo.Context) {
 	_, err := ValidateJWT(c)
 	if err != nil {
-		c.Redirect(http.StatusMovedPermanently, "/")
+		// c.Redirect(http.StatusMovedPermanently, "/")
 	}
 }
