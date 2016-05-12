@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 10, 2016 at 01:54 PM
+-- Generation Time: May 11, 2016 at 05:09 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -33,14 +33,7 @@ CREATE TABLE IF NOT EXISTS `buckets` (
   `name` varchar(140) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `buckets`
---
-
-INSERT INTO `buckets` (`ID`, `user`, `amount`, `name`) VALUES
-(1, 8, 100, 'Poots');
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -57,18 +50,9 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `recipient` varchar(50) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`ID`),
-  KEY `user` (`user`)
+  KEY `user` (`user`),
+  KEY `bucket` (`bucket`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
-
---
--- Dumping data for table `expenses`
---
-
-INSERT INTO `expenses` (`ID`, `user`, `time`, `bucket`, `amount`, `recipient`, `note`) VALUES
-(15, 8, '2016-05-10 00:47:23', 0, 350, 'Target', 'PS4'),
-(16, 8, '2016-04-10 00:47:32', 0, 50, 'Target', 'Uncharted 4'),
-(17, 8, '2016-05-10 02:12:54', 1, 10, 'Smith''s', 'Antacid'),
-(18, 10, '2016-05-10 14:56:45', 0, 200, 'Stuff', 'Poots');
 
 -- --------------------------------------------------------
 
@@ -84,14 +68,7 @@ CREATE TABLE IF NOT EXISTS `income` (
   `amount` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `income`
---
-
-INSERT INTO `income` (`ID`, `user`, `time`, `payer`, `amount`) VALUES
-(1, 8, '2016-05-10 17:00:32', 'BYU', 500);
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -106,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `sharing` (
   PRIMARY KEY (`ID`),
   KEY `user` (`user`,`sharee`),
   KEY `receiver` (`sharee`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -119,14 +96,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(140) NOT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`ID`, `email`) VALUES
-(8, 'hellojessemillar@gmail.com'),
-(10, '');
 
 --
 -- Constraints for dumped tables
