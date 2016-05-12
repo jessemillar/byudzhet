@@ -20,7 +20,7 @@ func Login(c echo.Context) error {
 }
 
 func Buckets(c echo.Context) error {
-	helpers.CheckCookie(c)
+	// helpers.CheckCookie(c)
 
 	return c.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
 }
