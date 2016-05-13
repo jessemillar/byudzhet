@@ -12,6 +12,7 @@ import (
 	"github.com/jessemillar/byudzhet/controllers"
 	"github.com/jessemillar/byudzhet/helpers"
 	"github.com/jessemillar/byudzhet/views"
+	"github.com/jessemillar/health"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
@@ -39,7 +40,8 @@ func main() {
 
 	e.Get("/callback", cg.CallbackHandler)
 
-	e.Get("/api/health", cg.Health)
+	e.Get("/health", health.Check)
+
 	e.Get("/api/user/id/:id", cg.GetUserByID)
 	e.Get("/api/user/email/:email", cg.GetUserByEmail)
 	e.Get("/api/expense", cg.GetExpense)
