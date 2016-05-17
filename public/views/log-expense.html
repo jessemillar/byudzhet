@@ -23,6 +23,15 @@
                     <input type="text" class="form-control" id="note" placeholder="Bought because reasons">
                 </div>
                 <div class="form-group">
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="bucket-dropdown" data-toggle="dropdown">
+                            Bucket
+                            <span class="caret"></span>
+                        </button>
+                        <ul id="bucket-dropdown-options" class="dropdown-menu"></ul>
+                    </div>
+                </div>
+                <div class="form-group">
                     <button type="submit" class="btn btn-default save-button" onclick="logExpense()">Log Expense</button>
                 </div>
             </div>

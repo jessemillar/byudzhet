@@ -1,5 +1,4 @@
-// Make the app work as a single-page app on iOS devices
-(function(a, b, c) {
+(function(a, b, c) { // Make the app work as a single-page app on iOS devices
     if (c in b && b[c]) {
         var d, e = a.location,
             f = /^(a|html)$/i;
@@ -29,6 +28,7 @@ function init() {
     } else if (page == "/expenses/log") {
         setActiveNavigation("expenses");
 
+        getBuckets(populateBucketsDropdown);
         document.getElementById("amount").focus();
     } else if (page == "/income") {
         setActiveNavigation("income");
@@ -208,6 +208,28 @@ function populateBuckets(buckets) {
             document.getElementById("buckets-list").appendChild(col);
         });
     }
+}
+
+function populateBucketsDropdown(buckets) {
+    for (var i in buckets) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+
+        a.href = "#";
+        a.onclick = function() {
+            selectBucketFromDropdown(buckets[i].name)
+        };
+
+        a.appendChild(document.createTextNode(buckets[i].name));
+        li.appendChild(a);
+
+        document.getElementById("bucket-dropdown-options").appendChild(li);
+    }
+}
+
+function selectBucketFromDropdown(bucket) {
+    console.log("Stuff");
+    $("#bucket-dropdown").html($(bucket).text() + " <span class='caret'></span>");
 }
 
 function logIncome() {
