@@ -42,25 +42,7 @@ function init() {
         setActiveNavigation("income");
     } else if (page == "/settings") {
         setActiveNavigation("settings");
-
-        getSharing(populateSharing);
     }
-}
-
-function share() {
-    body = {
-        sharee: $("#sharee").val(),
-    };
-
-    $.ajax("/api/sharing", {
-        "data": JSON.stringify(body),
-        "type": "POST",
-        "processData": false,
-        "contentType": "application/json",
-        "success": function(data) {
-            window.location.href = "/settings";
-        }
-    });
 }
 
 function logout() {
@@ -195,10 +177,7 @@ function getBucketByName(bucket, callback) {
 
 function populateBuckets(buckets) {
     for (var i in buckets) {
-        console.log(buckets[i]);
         getExpensesTotal(buckets[i], function(total, bucket) {
-            console.log(bucket.name, total)
-
             var col = document.createElement("div");
             var name = document.createElement("div");
             var progressCol = document.createElement("div");
@@ -309,43 +288,4 @@ function getUserEmail(id, callback) {
             return data;
         }
     });
-}
-
-function getSharing(callback) {
-    $.get("/api/sharing", function(data) {
-        if (callback) {
-            callback(data);
-        } else {
-            return data;
-        }
-    });
-}
-
-function populateSharing(allShares) {
-    console.log(allShares);
-
-    for (var i in allShares) {
-        var li = document.createElement("li");
-        var row = document.createElement("div");
-        var payer = document.createElement("div");
-        var amount = document.createElement("div");
-        var amountSpan = document.createElement("span");
-
-        li.className = "list-group-item";
-        row.className = "row list-row";
-        payer.className = "col-xs-10";
-        amount.className = "col-xs-2";
-        amountSpan.className = "badge";
-
-        payer.appendChild(document.createTextNode(allShares[i].payer));
-        amountSpan.appendChild(document.createTextNode("$" + allShares[i].amount));
-
-        amount.appendChild(amountSpan);
-
-        row.appendChild(payer);
-        row.appendChild(amount);
-        li.appendChild(row);
-
-        document.getElementById("shares-list").appendChild(li);
-    }
 }

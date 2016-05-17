@@ -1,10 +1,6 @@
 package accessors
 
-import (
-	"errors"
-
-	"github.com/labstack/echo"
-)
+import "github.com/labstack/echo"
 
 type Bucket struct {
 	ID     int    `json:"id"`
@@ -50,25 +46,6 @@ func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, erro
 		return []Bucket{}, err
 	}
 
-	allShares, err := ag.GetSharing(c, email)
-	if err != nil {
-		return []Bucket{}, err
-	}
-
-	for i := range allShares {
-		if allShares[i].User != userID {
-			allBuckets, err = ag.GetBucketByUserID(c, allBuckets, allShares[i].User)
-			if err != nil {
-				return []Bucket{}, err
-			}
-		} else if allShares[i].Sharee != userID {
-			allBuckets, err = ag.GetBucketByUserID(c, allBuckets, allShares[i].Sharee)
-			if err != nil {
-				return []Bucket{}, err
-			}
-		}
-	}
-
 	return allBuckets, nil
 }
 
@@ -110,30 +87,7 @@ func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, 
 		return Bucket{}, err
 	}
 
-	allShares, err := ag.GetSharing(c, email)
-	if err != nil {
-		return Bucket{}, err
-	}
-
-	for i := range allShares {
-		if allShares[i].User != userID {
-			bucket, err = ag.GetBucketByNameAndID(c, c.Param("name"), allShares[i].User)
-			if err != nil {
-				return Bucket{}, err
-			}
-
-			return bucket, nil
-		} else if allShares[i].Sharee != userID {
-			bucket, err = ag.GetBucketByNameAndID(c, c.Param("name"), allShares[i].Sharee)
-			if err != nil {
-				return Bucket{}, err
-			}
-
-			return bucket, nil
-		}
-	}
-
-	return Bucket{}, errors.New("There is no bucket with the name \"" + c.Param("name") + "\"")
+	return bucket, nil
 }
 
 func (ag *AccessorGroup) GetBucketByNameAndID(c echo.Context, name string, id int) (Bucket, error) {

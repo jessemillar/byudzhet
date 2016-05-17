@@ -49,25 +49,6 @@ func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, er
 		return []Expense{}, err
 	}
 
-	allShares, err := ag.GetSharing(c, email)
-	if err != nil {
-		return []Expense{}, err
-	}
-
-	for i := range allShares {
-		if allShares[i].User != userID {
-			allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, allShares[i].User)
-			if err != nil {
-				return []Expense{}, err
-			}
-		} else if allShares[i].Sharee != userID {
-			allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, allShares[i].Sharee)
-			if err != nil {
-				return []Expense{}, err
-			}
-		}
-	}
-
 	return allExpenses, nil
 }
 

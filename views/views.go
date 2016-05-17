@@ -60,9 +60,3 @@ func Settings(c echo.Context) error {
 
 	return c.Render(http.StatusOK, "settings", os.Getenv("AUTH0_CALLBACK"))
 }
-
-func Share(c echo.Context) error {
-	helpers.CheckCookie(c)
-
-	return c.Render(http.StatusOK, "share", os.Getenv("AUTH0_CALLBACK"))
-}
