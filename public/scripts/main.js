@@ -1,3 +1,6 @@
+var allBuckets; // An array for searching through buckets
+var selectedBucket; // A global for keeping track of which bucket is selected in #bucket-dropdown
+
 (function(a, b, c) { // Make the app work as a single-page app on iOS devices
     if (c in b && b[c]) {
         var d, e = a.location,
@@ -10,8 +13,15 @@
     }
 })(document, window.navigator, "standalone");
 
+$(function() { // Populate #bucket-dropdown with selected item
+    $("body").on('click', '.dropdown-menu li a', function() {
+        selectedBucket = $(this).text();
+        $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
+    });
+});
+
 function init() {
-    page = window.location.pathname;
+    page = window.location.pathname; // Get the page we're on
 
     if (page == "/buckets") {
         setActiveNavigation("buckets");
@@ -62,11 +72,22 @@ function setActiveNavigation(button) {
 }
 
 function logExpense() {
+    for (var i in allBuckets) { // Find the ID of the selected bucket
+        if (allBuckets[i].name == selectedBucket) {
+            selectedBucket = allBuckets[i].id;
+        }
+    }
+
+    console.log(selectedBucket, allBuckets);
+
     body = {
+        bucket: selectedBucket.toString(),
         amount: $("#amount").val(),
         recipient: $("#recipient").val(),
         note: $("#note").val()
     };
+
+    console.log(body);
 
     $.ajax("/api/expense", {
         "data": JSON.stringify(body),
@@ -211,25 +232,21 @@ function populateBuckets(buckets) {
 }
 
 function populateBucketsDropdown(buckets) {
+    allBuckets = buckets;
+
     for (var i in buckets) {
         var li = document.createElement("li");
         var a = document.createElement("a");
 
         a.href = "#";
-        a.onclick = function() {
-            selectBucketFromDropdown(buckets[i].name)
-        };
 
         a.appendChild(document.createTextNode(buckets[i].name));
         li.appendChild(a);
 
         document.getElementById("bucket-dropdown-options").appendChild(li);
-    }
-}
 
-function selectBucketFromDropdown(bucket) {
-    console.log("Stuff");
-    $("#bucket-dropdown").html($(bucket).text() + " <span class='caret'></span>");
+        $('#bucket-dropdown-options').trigger("chosen:updated");
+    }
 }
 
 function logIncome() {
