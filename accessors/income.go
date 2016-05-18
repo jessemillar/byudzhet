@@ -47,25 +47,6 @@ func (ag *AccessorGroup) GetIncome(c echo.Context, email string) ([]Income, erro
 		return []Income{}, err
 	}
 
-	allShares, err := ag.GetSharing(c, email)
-	if err != nil {
-		return []Income{}, err
-	}
-
-	for i := range allShares {
-		if allShares[i].User != userID {
-			allIncome, err = ag.GetIncomeByUserID(c, allIncome, allShares[i].User)
-			if err != nil {
-				return []Income{}, err
-			}
-		} else if allShares[i].Sharee != userID {
-			allIncome, err = ag.GetIncomeByUserID(c, allIncome, allShares[i].Sharee)
-			if err != nil {
-				return []Income{}, err
-			}
-		}
-	}
-
 	return allIncome, nil
 }
 

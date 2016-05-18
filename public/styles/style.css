@@ -38,7 +38,11 @@ html {
 
 button {
     display: block;
-    width  : 100%;
+}
+
+.dropdown-menu,
+button {
+    width: 100%;
 }
 
 .bottom-navigation {

@@ -1,5 +1,7 @@
-// Make the app work as a single-page app on iOS devices
-(function(a, b, c) {
+var allBuckets; // An array for searching through buckets
+var selectedBucket; // A global for keeping track of which bucket is selected in #bucket-dropdown
+
+(function(a, b, c) { // Make the app work as a single-page app on iOS devices
     if (c in b && b[c]) {
         var d, e = a.location,
             f = /^(a|html)$/i;
@@ -11,8 +13,15 @@
     }
 })(document, window.navigator, "standalone");
 
+$(function() { // Populate #bucket-dropdown with selected item
+    $("body").on('click', '.dropdown-menu li a', function() {
+        selectedBucket = $(this).text();
+        $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
+    });
+});
+
 function init() {
-    page = window.location.pathname;
+    page = window.location.pathname; // Get the page we're on
 
     if (page == "/buckets") {
         setActiveNavigation("buckets");
@@ -29,6 +38,7 @@ function init() {
     } else if (page == "/expenses/log") {
         setActiveNavigation("expenses");
 
+        getBuckets(populateBucketsDropdown);
         document.getElementById("amount").focus();
     } else if (page == "/income") {
         setActiveNavigation("income");
@@ -42,25 +52,7 @@ function init() {
         setActiveNavigation("income");
     } else if (page == "/settings") {
         setActiveNavigation("settings");
-
-        getSharing(populateSharing);
     }
-}
-
-function share() {
-    body = {
-        sharee: $("#sharee").val(),
-    };
-
-    $.ajax("/api/sharing", {
-        "data": JSON.stringify(body),
-        "type": "POST",
-        "processData": false,
-        "contentType": "application/json",
-        "success": function(data) {
-            window.location.href = "/settings";
-        }
-    });
 }
 
 function logout() {
@@ -80,11 +72,22 @@ function setActiveNavigation(button) {
 }
 
 function logExpense() {
+    for (var i in allBuckets) { // Find the ID of the selected bucket
+        if (allBuckets[i].name == selectedBucket) {
+            selectedBucket = allBuckets[i].id;
+        }
+    }
+
+    console.log(selectedBucket, allBuckets);
+
     body = {
+        bucket: selectedBucket.toString(),
         amount: $("#amount").val(),
         recipient: $("#recipient").val(),
         note: $("#note").val()
     };
+
+    console.log(body);
 
     $.ajax("/api/expense", {
         "data": JSON.stringify(body),
@@ -195,10 +198,7 @@ function getBucketByName(bucket, callback) {
 
 function populateBuckets(buckets) {
     for (var i in buckets) {
-        console.log(buckets[i]);
         getExpensesTotal(buckets[i], function(total, bucket) {
-            console.log(bucket.name, total)
-
             var col = document.createElement("div");
             var name = document.createElement("div");
             var progressCol = document.createElement("div");
@@ -228,6 +228,24 @@ function populateBuckets(buckets) {
 
             document.getElementById("buckets-list").appendChild(col);
         });
+    }
+}
+
+function populateBucketsDropdown(buckets) {
+    allBuckets = buckets;
+
+    for (var i in buckets) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+
+        a.href = "#";
+
+        a.appendChild(document.createTextNode(buckets[i].name));
+        li.appendChild(a);
+
+        document.getElementById("bucket-dropdown-options").appendChild(li);
+
+        $('#bucket-dropdown-options').trigger("chosen:updated");
     }
 }
 
@@ -309,43 +327,4 @@ function getUserEmail(id, callback) {
             return data;
         }
     });
-}
-
-function getSharing(callback) {
-    $.get("/api/sharing", function(data) {
-        if (callback) {
-            callback(data);
-        } else {
-            return data;
-        }
-    });
-}
-
-function populateSharing(allShares) {
-    console.log(allShares);
-
-    for (var i in allShares) {
-        var li = document.createElement("li");
-        var row = document.createElement("div");
-        var payer = document.createElement("div");
-        var amount = document.createElement("div");
-        var amountSpan = document.createElement("span");
-
-        li.className = "list-group-item";
-        row.className = "row list-row";
-        payer.className = "col-xs-10";
-        amount.className = "col-xs-2";
-        amountSpan.className = "badge";
-
-        payer.appendChild(document.createTextNode(allShares[i].payer));
-        amountSpan.appendChild(document.createTextNode("$" + allShares[i].amount));
-
-        amount.appendChild(amountSpan);
-
-        row.appendChild(payer);
-        row.appendChild(amount);
-        li.appendChild(row);
-
-        document.getElementById("shares-list").appendChild(li);
-    }
 }

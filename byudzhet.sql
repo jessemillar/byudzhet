@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 11, 2016 at 05:09 PM
+-- Generation Time: May 17, 2016 at 07:16 PM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -73,21 +73,6 @@ CREATE TABLE IF NOT EXISTS `income` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `sharing`
---
-
-CREATE TABLE IF NOT EXISTS `sharing` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `user` int(11) NOT NULL,
-  `sharee` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `user` (`user`,`sharee`),
-  KEY `receiver` (`sharee`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -118,13 +103,6 @@ ALTER TABLE `expenses`
 --
 ALTER TABLE `income`
   ADD CONSTRAINT `income_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`ID`);
-
---
--- Constraints for table `sharing`
---
-ALTER TABLE `sharing`
-  ADD CONSTRAINT `sharing_ibfk_2` FOREIGN KEY (`sharee`) REFERENCES `users` (`ID`),
-  ADD CONSTRAINT `sharing_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`ID`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
