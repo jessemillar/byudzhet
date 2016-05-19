@@ -6,6 +6,7 @@ type Bucket struct {
 	ID     int    `json:"id"`
 	User   int    `json:"user"`
 	Amount int    `json:"amount,string"`
+	Spent  int    `json:"spent"`
 	Name   string `json:"name"`
 }
 
@@ -49,8 +50,20 @@ func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, erro
 	return allBuckets, nil
 }
 
-func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, id int) ([]Bucket, error) {
-	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", id)
+func (ag *AccessorGroup) GetBucketSpent(userID int, bucketID int) (int, error) {
+	spent := 0
+
+	// Get the amount that's been spent
+	err := ag.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND bucket=?", userID, bucketID).Scan(&spent)
+	if err != nil {
+		return 0, err
+	}
+
+	return spent, nil
+}
+
+func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, userID int) ([]Bucket, error) {
+	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", userID)
 	if err != nil {
 		return []Bucket{}, err
 	}
@@ -60,10 +73,19 @@ func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, 
 	for rows.Next() {
 		bucket := Bucket{}
 
+		// Get general info about the bucket
 		err := rows.Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
 		if err != nil {
 			return []Bucket{}, err
 		}
+
+		// Get the amount that's been spent
+		spent, err := ag.GetBucketSpent(userID, bucket.ID)
+		if err != nil {
+			return []Bucket{}, err
+		}
+
+		bucket.Spent = spent
 
 		allBuckets = append(allBuckets, bucket)
 	}
@@ -82,7 +104,7 @@ func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, 
 		return Bucket{}, err
 	}
 
-	bucket, err := ag.GetBucketByNameAndID(c, c.Param("name"), userID)
+	bucket, err := ag.GetBucketByNameAndUserID(c, c.Param("name"), userID)
 	if err != nil {
 		return Bucket{}, err
 	}
@@ -90,10 +112,22 @@ func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, 
 	return bucket, nil
 }
 
-func (ag *AccessorGroup) GetBucketByNameAndID(c echo.Context, name string, id int) (Bucket, error) {
+func (ag *AccessorGroup) GetBucketByNameAndUserID(c echo.Context, name string, userID int) (Bucket, error) {
 	bucket := Bucket{}
 
-	_ = ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", id, name).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
+	// Get general info about the bucket
+	err := ag.Database.QueryRow("SELECT * FROM buckets WHERE user=? AND name=?", userID, name).Scan(&bucket.ID, &bucket.User, &bucket.Amount, &bucket.Name)
+	if err != nil {
+		return Bucket{}, err
+	}
+
+	// Get the amount that's been spent
+	spent, err := ag.GetBucketSpent(userID, bucket.ID)
+	if err != nil {
+		return Bucket{}, err
+	}
+
+	bucket.Spent = spent
 
 	return bucket, nil
 }
