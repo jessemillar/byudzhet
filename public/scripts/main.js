@@ -18,6 +18,10 @@ $(function() { // Populate #bucket-dropdown with selected item
         selectedBucket = $(this).text();
         $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
     });
+
+    $("#amount").keypress(function() {
+        $("#amount").val("0.01");
+    });
 });
 
 function init() {
@@ -113,29 +117,33 @@ function getExpenses(callback) {
 function populateExpenses(expenses) {
     for (var i in expenses) {
         var li = document.createElement("li");
-        var row = document.createElement("div");
+        var topRow = document.createElement("div");
+        var bottomRow = document.createElement("div");
         var recipient = document.createElement("div");
         var note = document.createElement("div");
         var amount = document.createElement("div");
         var amountSpan = document.createElement("span");
 
         li.className = "list-group-item";
-        row.className = "row list-row";
-        recipient.className = "col-xs-3";
-        note.className = "col-xs-6";
-        amount.className = "col-xs-3";
+        topRow.className = "row list-row";
+        recipient.className = "col-xs-7 list-title";
+        amount.className = "col-xs-5 badge-amount";
         amountSpan.className = "badge";
+        bottomRow.className = "row list-row";
+        note.className = "col-xs-12";
 
         recipient.appendChild(document.createTextNode(expenses[i].recipient));
-        note.appendChild(document.createTextNode(expenses[i].note));
         amountSpan.appendChild(document.createTextNode("$" + expenses[i].amount));
+        note.appendChild(document.createTextNode(expenses[i].note));
 
         amount.appendChild(amountSpan);
 
-        row.appendChild(recipient);
-        row.appendChild(note);
-        row.appendChild(amount);
-        li.appendChild(row);
+        topRow.appendChild(recipient);
+        topRow.appendChild(amount);
+        bottomRow.appendChild(note);
+
+        li.appendChild(topRow);
+        li.appendChild(bottomRow);
 
         document.getElementById("expenses-list").appendChild(li);
     }
@@ -188,9 +196,9 @@ function populateBuckets(buckets) {
         var progress = document.createElement("div");
 
         col.className = "col-xs-12";
-        name.className = "col-xs-3";
-        ratio.className = "col-xs-3";
-        progressCol.className = "col-xs-6";
+        name.className = "col-xs-5";
+        ratio.className = "col-xs-5";
+        progressCol.className = "col-xs-2";
         progressWrapper.className = "progress";
 
         if (buckets[i].spent > buckets[i].amount) {
@@ -208,8 +216,8 @@ function populateBuckets(buckets) {
         progressCol.appendChild(progressWrapper);
 
         col.appendChild(name);
-        col.appendChild(progressCol);
         col.appendChild(ratio);
+        col.appendChild(progressCol);
 
         document.getElementById("buckets-list").appendChild(col);
     }
@@ -286,8 +294,8 @@ function populateIncome(income) {
 
         li.className = "list-group-item";
         row.className = "row list-row";
-        payer.className = "col-xs-9";
-        amount.className = "col-xs-3";
+        payer.className = "col-xs-8";
+        amount.className = "col-xs-4 badge-amount";
         amountSpan.className = "badge";
 
         payer.appendChild(document.createTextNode(income[i].payer));

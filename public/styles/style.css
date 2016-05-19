@@ -21,8 +21,16 @@ body,
 html {
     color           : #fff;
     background-color: #3D9970;
-    text-align      : center;
+    /*text-align      : center;*/
     padding-bottom  : 28px;
+}
+
+.list-title {
+    font-weight: bold;
+}
+
+.badge-amount {
+    text-align: right;
 }
 
 .list-group-item {
