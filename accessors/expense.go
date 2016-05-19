@@ -53,7 +53,7 @@ func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, er
 }
 
 func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, id int) ([]Expense, error) {
-	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", id)
+	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", id)
 	if err != nil {
 		return []Expense{}, err
 	}
