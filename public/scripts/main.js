@@ -18,10 +18,6 @@ $(function() { // Populate #bucket-dropdown with selected item
         selectedBucket = $(this).text();
         $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
     });
-
-    $("#amount").keypress(function() {
-        $("#amount").val("0.01");
-    });
 });
 
 function init() {
@@ -188,17 +184,23 @@ function getBucketByName(bucket, callback) {
 
 function populateBuckets(buckets) {
     for (var i in buckets) {
-        var col = document.createElement("div");
+        var li = document.createElement("li");
+        var topRow = document.createElement("div");
+        var bottomRow = document.createElement("div");
         var name = document.createElement("div");
         var ratio = document.createElement("div");
+        var ratioSpan = document.createElement("span");
         var progressCol = document.createElement("div");
         var progressWrapper = document.createElement("div");
         var progress = document.createElement("div");
 
-        col.className = "col-xs-12";
-        name.className = "col-xs-5";
-        ratio.className = "col-xs-5";
-        progressCol.className = "col-xs-2";
+        li.className = "list-group-item";
+        topRow.className = "row list-row";
+        name.className = "col-xs-7 list-title";
+        ratio.className = "col-xs-5 badge-amount";
+        ratioSpan.className = "badge";
+        bottomRow.className = "row list-row";
+        progressCol.className = "col-xs-12";
         progressWrapper.className = "progress";
 
         if (buckets[i].spent > buckets[i].amount) {
@@ -210,16 +212,21 @@ function populateBuckets(buckets) {
         progress.style.width = buckets[i].spent / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
 
         name.appendChild(document.createTextNode(buckets[i].name));
-        ratio.appendChild(document.createTextNode("$" + buckets[i].spent + " / " + "$" + buckets[i].amount));
+        ratioSpan.appendChild(document.createTextNode("$" + buckets[i].spent + " / " + "$" + buckets[i].amount));
+
+        ratio.appendChild(ratioSpan);
 
         progressWrapper.appendChild(progress);
         progressCol.appendChild(progressWrapper);
 
-        col.appendChild(name);
-        col.appendChild(ratio);
-        col.appendChild(progressCol);
+        topRow.appendChild(name);
+        topRow.appendChild(ratio);
+        bottomRow.appendChild(progressCol);
 
-        document.getElementById("buckets-list").appendChild(col);
+        li.appendChild(topRow);
+        li.appendChild(bottomRow);
+
+        document.getElementById("buckets-list").appendChild(li);
     }
 }
 

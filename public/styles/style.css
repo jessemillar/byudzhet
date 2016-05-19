@@ -21,7 +21,6 @@ body,
 html {
     color           : #fff;
     background-color: #3D9970;
-    /*text-align      : center;*/
     padding-bottom  : 28px;
 }
 
@@ -31,6 +30,11 @@ html {
 
 .badge-amount {
     text-align: right;
+}
+
+.progress {
+    margin-bottom: 0;
+    margin-top   : 5px;
 }
 
 .list-group-item {
