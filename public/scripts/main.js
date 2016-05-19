@@ -55,6 +55,10 @@ function init() {
     }
 }
 
+function hideLoader() {
+    $("#loader").hide();
+}
+
 function logout() {
     document.cookie = "id_token=;expires=Thu, 01 Jan 1970 00:00:01 GMT;"; // Delete the cookie by making it expire
     window.location.href = "/";
@@ -143,6 +147,8 @@ function populateExpenses(expenses) {
 
         document.getElementById("expenses-list").appendChild(li);
     }
+
+    hideLoader();
 }
 
 function makeBucket() {
@@ -205,8 +211,10 @@ function populateBuckets(buckets) {
 
         if (buckets[i].spent > buckets[i].amount) {
             progress.className = "progress-bar progress-bar-danger";
-        } else {
+        } else if (buckets[i].spent > buckets[i].amount * 0.75) {
             progress.className = "progress-bar progress-bar-warning";
+        } else {
+            progress.className = "progress-bar progress-bar-success";
         }
 
         progress.style.width = buckets[i].spent / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
@@ -228,6 +236,8 @@ function populateBuckets(buckets) {
 
         document.getElementById("buckets-list").appendChild(li);
     }
+
+    hideLoader();
 }
 
 function populateBucketsDropdown(buckets) {
@@ -316,6 +326,8 @@ function populateIncome(income) {
 
         document.getElementById("income-list").appendChild(li);
     }
+
+    hideLoader();
 }
 
 function getUserEmail(id, callback) {
