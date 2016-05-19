@@ -140,8 +140,8 @@ function populateExpenses(expenses) {
         li.className = "list-group-item";
         row.className = "row list-row";
         recipient.className = "col-xs-3";
-        note.className = "col-xs-7";
-        amount.className = "col-xs-2";
+        note.className = "col-xs-6";
+        amount.className = "col-xs-3";
         amountSpan.className = "badge";
 
         recipient.appendChild(document.createTextNode(expenses[i].recipient));
@@ -302,8 +302,8 @@ function populateIncome(income) {
 
         li.className = "list-group-item";
         row.className = "row list-row";
-        payer.className = "col-xs-10";
-        amount.className = "col-xs-2";
+        payer.className = "col-xs-9";
+        amount.className = "col-xs-3";
         amountSpan.className = "badge";
 
         payer.appendChild(document.createTextNode(income[i].payer));
