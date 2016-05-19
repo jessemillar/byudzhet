@@ -3,13 +3,13 @@ package accessors
 import "github.com/labstack/echo"
 
 type Expense struct {
-	ID        int    `json:"id"`
-	User      int    `json:"user"`
-	Time      string `json:"time"`
-	Bucket    int    `json:"bucket,string"`
-	Amount    int    `json:"amount,string"`
-	Recipient string `json:"recipient"`
-	Note      string `json:"note"`
+	ID        int     `json:"id"`
+	User      int     `json:"user"`
+	Time      string  `json:"time"`
+	Bucket    int     `json:"bucket"`
+	Amount    float64 `json:"amount"`
+	Recipient string  `json:"recipient"`
+	Note      string  `json:"note"`
 }
 
 func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, error) {
@@ -28,7 +28,7 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
-	_, err = ag.Database.Query("INSERT INTO expenses (user, bucket, amount, recipient, note) VALUES (?,?,?,?,?)", expense.User, expense.Bucket, expense.Amount, expense.Recipient, expense.Note)
+	_, err = ag.Database.Query("INSERT INTO expenses (user, bucket, amount, recipient, note) VALUES (?,?,?,?,?)", expense.User, expense.Bucket, expense.Amount*100, expense.Recipient, expense.Note)
 	if err != nil {
 		return Expense{}, err
 	}
@@ -67,6 +67,8 @@ func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, 
 		if err != nil {
 			return []Expense{}, err
 		}
+
+		expense.Amount = float64(expense.Amount) / 100
 
 		expenses = append(expenses, expense)
 	}

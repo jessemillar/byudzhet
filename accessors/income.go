@@ -3,11 +3,11 @@ package accessors
 import "github.com/labstack/echo"
 
 type Income struct {
-	ID     int    `json:"id"`
-	User   int    `json:"user"`
-	Time   string `json:"time"`
-	Payer  string `json:"payer"`
-	Amount int    `json:"amount,string"`
+	ID     int     `json:"id"`
+	User   int     `json:"user"`
+	Time   string  `json:"time"`
+	Payer  string  `json:"payer"`
+	Amount float64 `json:"amount"`
 }
 
 func (ag *AccessorGroup) LogIncome(c echo.Context, email string) (Income, error) {
@@ -26,7 +26,7 @@ func (ag *AccessorGroup) LogIncome(c echo.Context, email string) (Income, error)
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
-	_, err = ag.Database.Query("INSERT INTO income (user, payer, amount) VALUES (?,?,?)", income.User, income.Payer, income.Amount)
+	_, err = ag.Database.Query("INSERT INTO income (user, payer, amount) VALUES (?,?,?)", income.User, income.Payer, income.Amount*100)
 	if err != nil {
 		return Income{}, err
 	}
@@ -65,6 +65,8 @@ func (ag *AccessorGroup) GetIncomeByUserID(c echo.Context, allIncome []Income, i
 		if err != nil {
 			return []Income{}, err
 		}
+
+		income.Amount = float64(income.Amount) / 100
 
 		allIncome = append(allIncome, income)
 	}

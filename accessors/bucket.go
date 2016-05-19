@@ -3,11 +3,11 @@ package accessors
 import "github.com/labstack/echo"
 
 type Bucket struct {
-	ID     int    `json:"id"`
-	User   int    `json:"user"`
-	Amount int    `json:"amount,string"`
-	Spent  int    `json:"spent"`
-	Name   string `json:"name"`
+	ID     int     `json:"id"`
+	User   int     `json:"user"`
+	Amount float64 `json:"amount"`
+	Spent  float64 `json:"spent"`
+	Name   string  `json:"name"`
 }
 
 func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error) {
@@ -26,7 +26,7 @@ func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
-	_, err = ag.Database.Query("INSERT INTO buckets (user, amount, name) VALUES (?,?,?)", bucket.User, bucket.Amount, bucket.Name)
+	_, err = ag.Database.Query("INSERT INTO buckets (user, amount, name) VALUES (?,?,?)", bucket.User, bucket.Amount*100, bucket.Name)
 	if err != nil {
 		return Bucket{}, err
 	}
@@ -79,13 +79,15 @@ func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, 
 			return []Bucket{}, err
 		}
 
+		bucket.Amount = float64(bucket.Amount) / 100
+
 		// Get the amount that's been spent
 		spent, err := ag.GetBucketSpent(userID, bucket.ID)
 		if err != nil {
 			return []Bucket{}, err
 		}
 
-		bucket.Spent = spent
+		bucket.Spent = float64(spent) / 100
 
 		allBuckets = append(allBuckets, bucket)
 	}
@@ -127,7 +129,7 @@ func (ag *AccessorGroup) GetBucketByNameAndUserID(c echo.Context, name string, u
 		return Bucket{}, err
 	}
 
-	bucket.Spent = spent
+	bucket.Spent = float64(spent) / 100
 
 	return bucket, nil
 }
