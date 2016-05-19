@@ -63,7 +63,7 @@ func (ag *AccessorGroup) GetBucketSpent(userID int, bucketID int) (int, error) {
 }
 
 func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, userID int) ([]Bucket, error) {
-	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=?", userID)
+	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=? ORDER BY name", userID)
 	if err != nil {
 		return []Bucket{}, err
 	}
