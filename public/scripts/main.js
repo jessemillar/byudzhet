@@ -78,6 +78,22 @@ function setActiveNavigation(button) {
     document.getElementById(button).className += " active";
 }
 
+function setProjectedIncome() {
+    body = {
+        amount: $("#amount").val()
+    };
+
+    $.ajax("/api/projected", {
+        "data": JSON.stringify(body),
+        "type": "POST",
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/settings";
+        }
+    });
+}
+
 function logExpense() {
     for (var i in allBuckets) { // Find the ID of the selected bucket
         if (allBuckets[i].name == selectedBucket) {
@@ -327,14 +343,4 @@ function populateIncome(income) {
     }
 
     hideLoader();
-}
-
-function getUserEmail(id, callback) {
-    $.get("/api/user/id/" + id, function(data) {
-        if (callback) {
-            callback(data);
-        } else {
-            return data;
-        }
-    });
 }

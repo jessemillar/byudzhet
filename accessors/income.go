@@ -50,8 +50,8 @@ func (ag *AccessorGroup) GetIncome(c echo.Context, email string) ([]Income, erro
 	return allIncome, nil
 }
 
-func (ag *AccessorGroup) GetIncomeByUserID(c echo.Context, allIncome []Income, id int) ([]Income, error) {
-	rows, err := ag.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", id)
+func (ag *AccessorGroup) GetIncomeByUserID(c echo.Context, allIncome []Income, userId int) ([]Income, error) {
+	rows, err := ag.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userId)
 	if err != nil {
 		return []Income{}, err
 	}
