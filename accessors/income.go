@@ -3,11 +3,11 @@ package accessors
 import "github.com/labstack/echo"
 
 type Income struct {
-	ID     int     `json:"id"`
-	User   int     `json:"user"`
+	ID     int     `json:"id,string"`
+	User   int     `json:"user,string"`
 	Time   string  `json:"time"`
 	Payer  string  `json:"payer"`
-	Amount float64 `json:"amount"`
+	Amount float64 `json:"amount,string"`
 }
 
 func (ag *AccessorGroup) LogIncome(c echo.Context, email string) (Income, error) {

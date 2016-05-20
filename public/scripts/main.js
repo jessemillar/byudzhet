@@ -82,16 +82,12 @@ function logExpense() {
         }
     }
 
-    console.log(selectedBucket, allBuckets);
-
     body = {
         bucket: selectedBucket.toString(),
         amount: $("#amount").val(),
         recipient: $("#recipient").val(),
         note: $("#note").val()
     };
-
-    console.log(body);
 
     $.ajax("/api/expense", {
         "data": JSON.stringify(body),

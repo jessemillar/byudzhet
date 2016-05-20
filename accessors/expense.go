@@ -3,11 +3,11 @@ package accessors
 import "github.com/labstack/echo"
 
 type Expense struct {
-	ID        int     `json:"id"`
-	User      int     `json:"user"`
+	ID        int     `json:"id,string"`
+	User      int     `json:"user,string"`
 	Time      string  `json:"time"`
-	Bucket    int     `json:"bucket"`
-	Amount    float64 `json:"amount"`
+	Bucket    int     `json:"bucket,string"`
+	Amount    float64 `json:"amount,string"`
 	Recipient string  `json:"recipient"`
 	Note      string  `json:"note"`
 }

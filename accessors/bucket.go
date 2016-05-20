@@ -3,10 +3,10 @@ package accessors
 import "github.com/labstack/echo"
 
 type Bucket struct {
-	ID     int     `json:"id"`
-	User   int     `json:"user"`
-	Amount float64 `json:"amount"`
-	Spent  float64 `json:"spent"`
+	ID     int     `json:"id,string"`
+	User   int     `json:"user,string"`
+	Amount float64 `json:"amount,string"`
+	Spent  float64 `json:"spent,string"`
 	Name   string  `json:"name"`
 }
 
