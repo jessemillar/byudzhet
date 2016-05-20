@@ -37,7 +37,17 @@ html {
     margin-top   : 5px;
 }
 
-.list-group-item {
+.panel {
+    margin-bottom: 0;
+    margin-top   : 25px;
+}
+
+.lone-panel {
+    margin-top: 0;
+}
+
+.list-group-item,
+.panel-body {
     color: #111;
 }
 

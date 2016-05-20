@@ -9,6 +9,25 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
+                <div class="panel panel-default lone-panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Projected Monthly Income</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">$</div>
+                                <input type="number" min="0.01" step="0.01" class="form-control" id="amount" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-warning btn-lg" onclick="logout()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
                 <button type="button" class="btn btn-danger btn-lg" onclick="logout()">Logout</button>
             </div>
         </div>

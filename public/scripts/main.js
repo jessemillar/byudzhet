@@ -14,6 +14,8 @@ var selectedBucket; // A global for keeping track of which bucket is selected in
 })(document, window.navigator, "standalone");
 
 $(function() { // Populate #bucket-dropdown with selected item
+    $(".after-load").hide(); // Hide things that shouldn't display until after loading is complete
+
     $("body").on('click', '.dropdown-menu li a', function() {
         selectedBucket = $(this).text();
         $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
@@ -57,6 +59,7 @@ function init() {
 
 function hideLoader() {
     $("#loader").hide();
+    $(".after-load").show(); // Hide things that shouldn't display until after loading is complete
 }
 
 function logout() {
