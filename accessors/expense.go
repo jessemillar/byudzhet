@@ -12,9 +12,9 @@ type Expense struct {
 	Note      string  `json:"note"`
 }
 
-func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, error) {
+func (ag *AccessorGroup) LogExpense(context echo.Context, email string) (Expense, error) {
 	expense := Expense{}
-	err := c.Bind(&expense)
+	err := context.Bind(&expense)
 	if err != nil {
 		return Expense{}, err
 	}
@@ -36,7 +36,7 @@ func (ag *AccessorGroup) LogExpense(c echo.Context, email string) (Expense, erro
 	return Expense{}, nil
 }
 
-func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, error) {
+func (ag *AccessorGroup) GetExpense(context echo.Context, email string) ([]Expense, error) {
 	allExpenses := []Expense{}
 
 	userID, err := ag.GetUserID(email)
@@ -44,7 +44,7 @@ func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, er
 		return []Expense{}, err
 	}
 
-	allExpenses, err = ag.GetExpenseByUserID(c, allExpenses, userID)
+	allExpenses, err = ag.GetExpenseByUserID(allExpenses, userID)
 	if err != nil {
 		return []Expense{}, err
 	}
@@ -52,8 +52,8 @@ func (ag *AccessorGroup) GetExpense(c echo.Context, email string) ([]Expense, er
 	return allExpenses, nil
 }
 
-func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, id int) ([]Expense, error) {
-	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", id)
+func (ag *AccessorGroup) GetExpenseByUserID(expenses []Expense, userID int) ([]Expense, error) {
+	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
 	if err != nil {
 		return []Expense{}, err
 	}
@@ -79,4 +79,17 @@ func (ag *AccessorGroup) GetExpenseByUserID(c echo.Context, expenses []Expense, 
 	}
 
 	return expenses, nil
+}
+
+func (ag *AccessorGroup) GetExpenseTotal(userID int) (float64, error) {
+	var total float64
+
+	err := ag.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&total)
+	if err != nil {
+		return 0, err
+	}
+
+	total = total / 100
+
+	return total, nil
 }

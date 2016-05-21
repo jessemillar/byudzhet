@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2016 at 01:41 PM
+-- Generation Time: May 20, 2016 at 10:04 AM
 -- Server version: 5.5.49-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.16
 
@@ -29,11 +29,11 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `buckets` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
-  `amount` decimal(10,0) NOT NULL,
+  `amount` int(11) NOT NULL,
   `name` varchar(140) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
 
 -- --------------------------------------------------------
 
@@ -46,13 +46,13 @@ CREATE TABLE IF NOT EXISTS `expenses` (
   `user` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `bucket` int(11) NOT NULL,
-  `amount` decimal(10,0) NOT NULL,
+  `amount` int(11) NOT NULL,
   `recipient` varchar(50) NOT NULL,
   `note` text NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`),
   KEY `bucket` (`bucket`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
 
 -- --------------------------------------------------------
 
@@ -65,10 +65,23 @@ CREATE TABLE IF NOT EXISTS `income` (
   `user` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `payer` varchar(140) NOT NULL,
-  `amount` decimal(10,0) NOT NULL,
+  `amount` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `user` (`user`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projected`
+--
+
+CREATE TABLE IF NOT EXISTS `projected` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

@@ -1,5 +1,6 @@
 var allBuckets; // An array for searching through buckets
 var selectedBucket; // A global for keeping track of which bucket is selected in #bucket-dropdown
+var projected = false;
 
 (function(a, b, c) { // Make the app work as a single-page app on iOS devices
     if (c in b && b[c]) {
@@ -34,6 +35,7 @@ function init() {
     } else if (page == "/expenses") {
         setActiveNavigation("expenses");
 
+        getProjectedIncome(populateProjectedIncome);
         getExpenses(populateExpenses);
     } else if (page == "/expenses/log") {
         setActiveNavigation("expenses");
@@ -43,20 +45,74 @@ function init() {
     } else if (page == "/income") {
         setActiveNavigation("income");
 
+        getProjectedIncome(populateProjectedIncome);
         getIncome(populateIncome);
     } else if (page == "/income/log") {
         setActiveNavigation("income");
 
         document.getElementById("payer").focus();
-    } else if (page == "/income") {
-        setActiveNavigation("income");
     } else if (page == "/settings") {
+        getProjectedIncome(populateProjectedIncome);
+
         setActiveNavigation("settings");
+    }
+}
+
+function getProjectedIncome(callback) {
+    $.get("/api/projected", function(data) {
+        if (data.amount > 0) {
+            projected = true;
+
+            if (callback) {
+                callback(data);
+            } else {
+                return data;
+            }
+        }
+    });
+}
+
+function populateProjectedIncome(data) {
+    if (page == "/expenses") {
+        var progress = document.createElement("div");
+
+        if (data.spent < data.amount * 0.5) {
+            progress.className = "progress-bar progress-bar-danger";
+        } else if (data.spent < data.amount * 0.75) {
+            progress.className = "progress-bar progress-bar-warning";
+        } else {
+            progress.className = "progress-bar progress-bar-success";
+        }
+
+        progress.style.width = data.spent / data.amount * 100 + "%"; // Populate this with a calculated value
+
+        document.getElementById("projected-progress").appendChild(progress);
+
+        $("#projected-ratio").text("$" + data.spent + " / $" + data.amount);
+    } else if (page == "/income") {
+        var progress = document.createElement("div");
+
+        if (data.earned < data.amount * 0.5) {
+            progress.className = "progress-bar progress-bar-danger";
+        } else if (data.earned < data.amount * 0.75) {
+            progress.className = "progress-bar progress-bar-warning";
+        } else {
+            progress.className = "progress-bar progress-bar-success";
+        }
+
+        progress.style.width = data.earned / data.amount * 100 + "%"; // Populate this with a calculated value
+
+        document.getElementById("projected-progress").appendChild(progress);
+
+        $("#projected-ratio").text("$" + data.earned + " / $" + data.amount);
+    } else if (page == "/settings") {
+        $("#amount").val(data.amount);
     }
 }
 
 function hideLoader() {
     $("#loader").hide();
+    $(".after-load").show(); // Hide things that shouldn't display until after loading is complete
 }
 
 function logout() {
@@ -73,6 +129,30 @@ function setActiveNavigation(button) {
 
     // Make the button we care about active
     document.getElementById(button).className += " active";
+}
+
+function setProjectedIncome() {
+    body = {
+        amount: $("#amount").val()
+    };
+
+    var httpType;
+
+    if (projected) {
+        httpType = "PUT";
+    } else {
+        httpType = "POST";
+    }
+
+    $.ajax("/api/projected", {
+        "data": JSON.stringify(body),
+        "type": httpType,
+        "processData": false,
+        "contentType": "application/json",
+        "success": function(data) {
+            window.location.href = "/settings";
+        }
+    });
 }
 
 function logExpense() {
@@ -324,14 +404,4 @@ function populateIncome(income) {
     }
 
     hideLoader();
-}
-
-function getUserEmail(id, callback) {
-    $.get("/api/user/id/" + id, function(data) {
-        if (callback) {
-            callback(data);
-        } else {
-            return data;
-        }
-    });
 }

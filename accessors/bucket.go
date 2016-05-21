@@ -10,9 +10,9 @@ type Bucket struct {
 	Name   string  `json:"name"`
 }
 
-func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error) {
+func (ag *AccessorGroup) MakeBucket(context echo.Context, email string) (Bucket, error) {
 	bucket := Bucket{}
-	err := c.Bind(&bucket)
+	err := context.Bind(&bucket)
 	if err != nil {
 		return Bucket{}, err
 	}
@@ -34,7 +34,7 @@ func (ag *AccessorGroup) MakeBucket(c echo.Context, email string) (Bucket, error
 	return Bucket{}, nil
 }
 
-func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, error) {
+func (ag *AccessorGroup) GetBucket(context echo.Context, email string) ([]Bucket, error) {
 	allBuckets := []Bucket{}
 
 	userID, err := ag.GetUserID(email)
@@ -42,7 +42,7 @@ func (ag *AccessorGroup) GetBucket(c echo.Context, email string) ([]Bucket, erro
 		return []Bucket{}, err
 	}
 
-	allBuckets, err = ag.GetBucketByUserID(c, allBuckets, userID)
+	allBuckets, err = ag.GetBucketByUserID(context, allBuckets, userID)
 	if err != nil {
 		return []Bucket{}, err
 	}
@@ -62,7 +62,7 @@ func (ag *AccessorGroup) GetBucketSpent(userID int, bucketID int) (int, error) {
 	return spent, nil
 }
 
-func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, userID int) ([]Bucket, error) {
+func (ag *AccessorGroup) GetBucketByUserID(context echo.Context, allBuckets []Bucket, userID int) ([]Bucket, error) {
 	rows, err := ag.Database.Query("SELECT * FROM buckets WHERE user=? ORDER BY name", userID)
 	if err != nil {
 		return []Bucket{}, err
@@ -100,13 +100,13 @@ func (ag *AccessorGroup) GetBucketByUserID(c echo.Context, allBuckets []Bucket, 
 	return allBuckets, nil
 }
 
-func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, error) {
+func (ag *AccessorGroup) GetBucketByName(context echo.Context, email string) (Bucket, error) {
 	userID, err := ag.GetUserID(email)
 	if err != nil {
 		return Bucket{}, err
 	}
 
-	bucket, err := ag.GetBucketByNameAndUserID(c, c.Param("name"), userID)
+	bucket, err := ag.GetBucketByNameAndUserID(context, context.Param("name"), userID)
 	if err != nil {
 		return Bucket{}, err
 	}
@@ -114,7 +114,7 @@ func (ag *AccessorGroup) GetBucketByName(c echo.Context, email string) (Bucket, 
 	return bucket, nil
 }
 
-func (ag *AccessorGroup) GetBucketByNameAndUserID(c echo.Context, name string, userID int) (Bucket, error) {
+func (ag *AccessorGroup) GetBucketByNameAndUserID(context echo.Context, name string, userID int) (Bucket, error) {
 	bucket := Bucket{}
 
 	// Get general info about the bucket

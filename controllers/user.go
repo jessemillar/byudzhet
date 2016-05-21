@@ -7,52 +7,52 @@ import (
 	"github.com/labstack/echo"
 )
 
-func (cg *ControllerGroup) GetUserByID(c echo.Context) error {
-	_, err := helpers.ValidateJWT(c)
+func (cg *ControllerGroup) GetUserByID(context echo.Context) error {
+	_, err := helpers.ValidateJWT(context)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.GetUserByID(c.Param("id"))
+	response, err := cg.Accessors.GetUserByID(context.Param("id"))
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, response)
+	return context.JSON(http.StatusOK, response)
 }
 
-func (cg *ControllerGroup) GetUserByEmail(c echo.Context) error {
-	token, err := helpers.ValidateJWT(c)
+func (cg *ControllerGroup) GetUserByEmail(context echo.Context) error {
+	token, err := helpers.ValidateJWT(context)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
 	email := ""
 
-	if len(c.Param("email")) > 0 {
-		email = c.Param("email")
+	if len(context.Param("email")) > 0 {
+		email = context.Param("email")
 	} else {
 		email = token.Email
 	}
 
 	response, err := cg.Accessors.GetUserByEmail(email)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, response)
+	return context.JSON(http.StatusOK, response)
 }
 
-func (cg *ControllerGroup) MakeUser(c echo.Context) error {
-	token, err := helpers.ValidateJWT(c)
+func (cg *ControllerGroup) MakeUser(context echo.Context) error {
+	token, err := helpers.ValidateJWT(context)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
 	response, err := cg.Accessors.MakeUser(token.Email)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, response)
+	return context.JSON(http.StatusOK, response)
 }

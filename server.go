@@ -48,11 +48,15 @@ func main() {
 	e.Get("/api/bucket", cg.GetBucket)
 	e.Get("/api/bucket/:name", cg.GetBucketByName)
 	e.Get("/api/income", cg.GetIncome)
+	e.Get("/api/projected", cg.GetProjectedIncome)
 
 	e.Post("/api/user", cg.MakeUser)
 	e.Post("/api/expense", cg.LogExpense)
 	e.Post("/api/bucket", cg.MakeBucket)
 	e.Post("/api/income", cg.LogIncome)
+	e.Post("/api/projected", cg.SetProjectedIncome)
+
+	e.Put("/api/projected", cg.UpdateProjectedIncome)
 
 	// Views
 	e.Static("/*", "public")
