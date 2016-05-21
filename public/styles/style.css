@@ -24,12 +24,22 @@ html {
     padding-bottom  : 28px;
 }
 
+.after-load {
+    display: none;
+}
+
 .list-title {
     font-weight: bold;
 }
 
 .badge-amount {
     text-align: right;
+}
+
+.panel-body .badge-amount,
+.panel-body .list-title {
+    padding-left : 0;
+    padding-right: 0;
 }
 
 .progress {

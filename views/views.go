@@ -8,55 +8,55 @@ import (
 	"github.com/labstack/echo"
 )
 
-func Login(c echo.Context) error {
-	_, err := helpers.ValidateJWT(c)
+func Login(context echo.Context) error {
+	_, err := helpers.ValidateJWT(context)
 	if err != nil {
-		return c.Render(http.StatusOK, "login", os.Getenv("AUTH0_CALLBACK"))
+		return context.Render(http.StatusOK, "login", os.Getenv("AUTH0_CALLBACK"))
 	}
 
-	c.Redirect(http.StatusMovedPermanently, "/buckets")
+	context.Redirect(http.StatusMovedPermanently, "/buckets")
 
-	return c.String(http.StatusOK, "Done")
+	return context.String(http.StatusOK, "Done")
 }
 
-func Buckets(c echo.Context) error {
-	helpers.CheckCookie(c)
+func Buckets(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func MakeBucket(c echo.Context) error {
-	helpers.CheckCookie(c)
+func MakeBucket(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "make-bucket", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "make-bucket", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func Expenses(c echo.Context) error {
-	helpers.CheckCookie(c)
+func Expenses(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "expenses", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "expenses", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func LogExpense(c echo.Context) error {
-	helpers.CheckCookie(c)
+func LogExpense(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "log-expense", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "log-expense", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func Income(c echo.Context) error {
-	helpers.CheckCookie(c)
+func Income(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "income", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "income", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func LogIncome(c echo.Context) error {
-	helpers.CheckCookie(c)
+func LogIncome(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "log-income", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "log-income", os.Getenv("AUTH0_CALLBACK"))
 }
 
-func Settings(c echo.Context) error {
-	helpers.CheckCookie(c)
+func Settings(context echo.Context) error {
+	helpers.CheckCookie(context)
 
-	return c.Render(http.StatusOK, "settings", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "settings", os.Getenv("AUTH0_CALLBACK"))
 }

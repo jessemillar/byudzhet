@@ -17,8 +17,8 @@ type User struct {
 	Nickname string
 }
 
-func ValidateJWT(c echo.Context) (User, error) {
-	cookie, err := c.Cookie("id_token")
+func ValidateJWT(context echo.Context) (User, error) {
+	cookie, err := context.Cookie("id_token")
 	if err != nil {
 		return User{}, errors.New("User not authorized")
 	}

@@ -16,12 +16,15 @@
         </div>
         {{template "loader"}}
         <div class="panel panel-default after-load">
-            <div class="panel-heading">
-                <h3 class="panel-title">Earned vs. Projected</h3>
-            </div>
             <div class="panel-body">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 35%"></div>
+                <div class="col-xs-12">
+                    <div class="row list-row">
+                        <div class="col-xs-7 list-title">Earned vs. Projected</div>
+                        <div class="col-xs-5 badge-amount"><span id="projected-ratio" class="badge"></span></div>
+                    </div>
+                    <div class="row list-row">
+                        <div id="projected-progress" class="progress"></div>
+                    </div>
                 </div>
             </div>
         </div>

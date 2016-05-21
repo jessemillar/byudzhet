@@ -13,7 +13,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
+func (cg *ControllerGroup) CallbackHandler(context echo.Context) error {
 	domain := "jessemillar.auth0.com"
 
 	// Instantiating the OAuth2 package to exchange the Code for a Token
@@ -29,38 +29,38 @@ func (cg *ControllerGroup) CallbackHandler(c echo.Context) error {
 	}
 
 	// Getting the Code that we got from Auth0
-	code := c.QueryParam("code")
+	code := context.QueryParam("code")
 
 	// Exchanging the code for a token
 	token, err := conf.Exchange(oauth2.NoContext, code)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
+		return context.String(http.StatusInternalServerError, err.Error())
 	}
 
 	// Getting the user information
 	client := conf.Client(oauth2.NoContext, token)
 	resp, err := client.Get("https://" + domain + "/userinfo")
 	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
+		return context.String(http.StatusInternalServerError, err.Error())
 	}
 
 	// Reading the body
 	raw, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
 	if err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
+		return context.String(http.StatusInternalServerError, err.Error())
 	}
 
 	// Unmarshal the JSON of the Auth0 profile
 	var profile map[string]interface{}
 	if err := json.Unmarshal(raw, &profile); err != nil {
-		return c.String(http.StatusInternalServerError, err.Error())
+		return context.String(http.StatusInternalServerError, err.Error())
 	}
 
-	helpers.MakeCookie(c, "id_token", token.Extra("id_token").(string))
+	helpers.MakeCookie(context, "id_token", token.Extra("id_token").(string))
 
 	// Redirect to logged in page
-	c.Redirect(http.StatusMovedPermanently, "/buckets")
+	context.Redirect(http.StatusMovedPermanently, "/buckets")
 
-	return c.String(http.StatusOK, "Callback finished") // We'll never actually hit this...?
+	return context.String(http.StatusOK, "Callback finished") // We'll never actually hit this...?
 }

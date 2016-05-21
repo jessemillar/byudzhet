@@ -7,30 +7,30 @@ import (
 	"github.com/labstack/echo"
 )
 
-func (cg *ControllerGroup) LogIncome(c echo.Context) error {
-	token, err := helpers.ValidateJWT(c)
+func (cg *ControllerGroup) LogIncome(context echo.Context) error {
+	token, err := helpers.ValidateJWT(context)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.LogIncome(c, token.Email)
+	response, err := cg.Accessors.LogIncome(context, token.Email)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, response)
+	return context.JSON(http.StatusOK, response)
 }
 
-func (cg *ControllerGroup) GetIncome(c echo.Context) error {
-	token, err := helpers.ValidateJWT(c)
+func (cg *ControllerGroup) GetIncome(context echo.Context) error {
+	token, err := helpers.ValidateJWT(context)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.GetIncome(c, token.Email)
+	response, err := cg.Accessors.GetIncome(context, token.Email)
 	if err != nil {
-		return c.String(http.StatusBadRequest, err.Error())
+		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, response)
+	return context.JSON(http.StatusOK, response)
 }

@@ -56,7 +56,7 @@ func main() {
 	e.Post("/api/income", cg.LogIncome)
 	e.Post("/api/projected", cg.SetProjectedIncome)
 
-	// e.Put("/api/projected", cg.UpdateProjectedIncome)
+	e.Put("/api/projected", cg.UpdateProjectedIncome)
 
 	// Views
 	e.Static("/*", "public")
