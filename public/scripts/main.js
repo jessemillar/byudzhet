@@ -53,8 +53,16 @@ function init() {
     } else if (page == "/income") {
         setActiveNavigation("income");
     } else if (page == "/settings") {
+        getProjectedIncome();
+
         setActiveNavigation("settings");
     }
+}
+
+function getProjectedIncome() {
+    $.get("/api/projected", function(data) {
+        console.log(data);
+    });
 }
 
 function hideLoader() {
