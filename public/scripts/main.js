@@ -88,7 +88,7 @@ function populateProjectedIncome(data) {
 
         document.getElementById("projected-progress").appendChild(progress);
 
-        $("#projected-ratio").text("$" + data.spent + " / $" + data.amount);
+        $("#projected-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
     } else if (page == "/income") {
         var progress = document.createElement("div");
 
@@ -104,7 +104,7 @@ function populateProjectedIncome(data) {
 
         document.getElementById("projected-progress").appendChild(progress);
 
-        $("#projected-ratio").text("$" + data.earned + " / $" + data.amount);
+        $("#projected-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
     } else if (page == "/settings") {
         $("#amount").val(data.amount);
     }
@@ -304,7 +304,7 @@ function populateBuckets(buckets) {
         progress.style.width = buckets[i].spent / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
 
         name.appendChild(document.createTextNode(buckets[i].name));
-        ratioSpan.appendChild(document.createTextNode("$" + buckets[i].spent + " / " + "$" + trailingZero(buckets[i].amount)));
+        ratioSpan.appendChild(document.createTextNode("$" + trailingZero(buckets[i].spent) + " / " + "$" + trailingZero(buckets[i].amount)));
 
         ratio.appendChild(ratioSpan);
 
