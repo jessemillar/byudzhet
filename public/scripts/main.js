@@ -10,7 +10,7 @@ var projected = false;
             d = a.target;
             while (!f.test(d.nodeName)) d = d.parentNode;
             "href" in d && (chref = d.href).replace(e.href, "").indexOf("#") && (!/^[a-z\+\.\-]+:/i.test(chref) || chref.indexOf(e.protocol + "//" + e.host) === 0) && (a.preventDefault(), e.href = d.href)
-        }, !1)
+        }, !1);
     }
 })(document, window.navigator, "standalone");
 
@@ -55,6 +55,11 @@ function init() {
         setActiveNavigation("income");
 
         document.getElementById("payer").focus();
+    } else if (page == "/history") {
+        setActiveNavigation("history");
+
+        getProjectedIncome(populateProjectedIncome);
+        getIncome(populateIncome);
     } else if (page == "/settings") {
         getProjectedIncome(populateProjectedIncome);
 
@@ -77,9 +82,9 @@ function getProjectedIncome(callback) {
 }
 
 function populateProjectedIncome(data) {
-    if (page == "/expenses") {
-        var progress = document.createElement("div");
+    var progress = document.createElement("div");
 
+    if (page == "/expenses") {
         if (data.spent < data.amount * 0.5) {
             progress.className = "progress-bar progress-bar-danger";
         } else if (data.spent < data.amount * 0.75) {
@@ -94,8 +99,6 @@ function populateProjectedIncome(data) {
 
         $("#projected-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
     } else if (page == "/income") {
-        var progress = document.createElement("div");
-
         if (data.earned < data.amount * 0.5) {
             progress.className = "progress-bar progress-bar-danger";
         } else if (data.earned < data.amount * 0.75) {

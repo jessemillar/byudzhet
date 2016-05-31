@@ -85,7 +85,7 @@ button {
     width           : 100%;
     height          : 49px;
     border-top      : solid 1px #dddddd;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     z-index         : 999;
 }
 
@@ -99,7 +99,7 @@ button {
     display   : inline-block;
     width     : 19%;
     height    : 100%;
-    color     : #dddddd;
+    color     : #8899a6;
     text-align: center;
 }
 
@@ -113,7 +113,7 @@ button {
 
 .navigation-text {
     position : relative;
-    bottom   : 3px;
+    bottom   : 2px;
     left     : 0;
     width    : 100%;
     font-size: 12px;

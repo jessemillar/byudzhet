@@ -55,6 +55,12 @@ func LogIncome(context echo.Context) error {
 	return context.Render(http.StatusOK, "log-income", os.Getenv("AUTH0_CALLBACK"))
 }
 
+func History(context echo.Context) error {
+	helpers.CheckCookie(context)
+
+	return context.Render(http.StatusOK, "history", os.Getenv("AUTH0_CALLBACK"))
+}
+
 func Settings(context echo.Context) error {
 	helpers.CheckCookie(context)
 
