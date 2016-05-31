@@ -190,6 +190,14 @@ function getExpenses(callback) {
     });
 }
 
+function trailingZero(amount) {
+    if (String(amount).match(/\d+\.\d\b/)) {
+        return String(amount) + "0";
+    }
+
+    return amount;
+}
+
 function populateExpenses(expenses) {
     for (var i in expenses) {
         var li = document.createElement("li");
@@ -209,7 +217,7 @@ function populateExpenses(expenses) {
         note.className = "col-xs-12";
 
         recipient.appendChild(document.createTextNode(expenses[i].recipient));
-        amountSpan.appendChild(document.createTextNode("$" + expenses[i].amount));
+        amountSpan.appendChild(document.createTextNode("$" + trailingZero(expenses[i].amount)));
         note.appendChild(document.createTextNode(expenses[i].note));
 
         amount.appendChild(amountSpan);
@@ -296,7 +304,7 @@ function populateBuckets(buckets) {
         progress.style.width = buckets[i].spent / buckets[i].amount * 100 + "%"; // Populate this with a calculated value
 
         name.appendChild(document.createTextNode(buckets[i].name));
-        ratioSpan.appendChild(document.createTextNode("$" + buckets[i].spent + " / " + "$" + buckets[i].amount));
+        ratioSpan.appendChild(document.createTextNode("$" + buckets[i].spent + " / " + "$" + trailingZero(buckets[i].amount)));
 
         ratio.appendChild(ratioSpan);
 
@@ -392,7 +400,7 @@ function populateIncome(income) {
         amountSpan.className = "badge";
 
         payer.appendChild(document.createTextNode(income[i].payer));
-        amountSpan.appendChild(document.createTextNode("$" + income[i].amount));
+        amountSpan.appendChild(document.createTextNode("$" + trailingZero(income[i].amount)));
 
         amount.appendChild(amountSpan);
 
