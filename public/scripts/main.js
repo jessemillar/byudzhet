@@ -19,6 +19,10 @@ $(function() { // Populate #bucket-dropdown with selected item
         selectedBucket = $(this).text();
         $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
     });
+
+    $("#amount").on("input", function(e) {
+        $("#amount").val($("#amount").val().replace(/[^\d]/g, '').replace(/(\d\d?)$/, '.$1'));
+    });
 });
 
 function init() {
@@ -106,7 +110,7 @@ function populateProjectedIncome(data) {
 
         $("#projected-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
     } else if (page == "/settings") {
-        $("#amount").val(data.amount);
+        $("#amount").val(trailingZero(data.amount));
     }
 }
 
