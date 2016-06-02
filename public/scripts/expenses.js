@@ -64,7 +64,7 @@ function populateExpenses(expenses) {
         li.appendChild(topRow);
         li.appendChild(bottomRow);
 
-        document.getElementById("expenses-list").appendChild(li);
+        $("#expenses-page #expenses-list").append(li);
     }
 
     doneLoading("expenses");

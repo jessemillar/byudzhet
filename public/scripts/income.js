@@ -109,39 +109,40 @@ function getProjectedIncome(callback) {
 }
 
 function populateProjectedIncome(data) {
-    if (currentTab == "expenses") {
-        var progress = document.createElement("div");
+    // Set projected income value on expenses tab
+    var expensesProgress = document.createElement("div");
 
-        if (data.spent < data.amount * 0.5) {
-            progress.className = "progress-bar progress-bar-success";
-        } else if (data.spent < data.amount * 0.75) {
-            progress.className = "progress-bar progress-bar-warning";
-        } else {
-            progress.className = "progress-bar progress-bar-danger";
-        }
-
-        progress.style.width = data.spent / data.amount * 100 + "%"; // Populate this with a calculated value
-
-        document.getElementById("projected-progress").appendChild(progress);
-
-        $("#projected-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
-    } else if (currentTab == "income") {
-        var progress = document.createElement("div");
-
-        if (data.earned < data.amount * 0.5) {
-            progress.className = "progress-bar progress-bar-danger";
-        } else if (data.earned < data.amount * 0.75) {
-            progress.className = "progress-bar progress-bar-warning";
-        } else {
-            progress.className = "progress-bar progress-bar-success";
-        }
-
-        progress.style.width = data.earned / data.amount * 100 + "%"; // Populate this with a calculated value
-
-        document.getElementById("projected-progress").appendChild(progress);
-
-        $("#projected-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
-    } else if (currentTab == "settings") {
-        $("#amount").val(trailingZero(data.amount));
+    if (data.spent < data.amount * 0.5) {
+        expensesProgress.className = "progress-bar progress-bar-success";
+    } else if (data.spent < data.amount * 0.75) {
+        expensesProgress.className = "progress-bar progress-bar-warning";
+    } else {
+        expensesProgress.className = "progress-bar progress-bar-danger";
     }
+
+    expensesProgress.style.width = data.spent / data.amount * 100 + "%"; // Populate this with a calculated value
+
+    $("#expenses-page > .projected-progress").append(expensesProgress);
+
+    $("#projected-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
+
+    // Set projected income value on income tab
+    var incomeProgress = document.createElement("div");
+
+    if (data.earned < data.amount * 0.5) {
+        incomeProgress.className = "progress-bar progress-bar-danger";
+    } else if (data.earned < data.amount * 0.75) {
+        incomeProgress.className = "progress-bar progress-bar-warning";
+    } else {
+        incomeProgress.className = "progress-bar progress-bar-success";
+    }
+
+    incomeProgress.style.width = data.earned / data.amount * 100 + "%"; // Populate this with a calculated value
+
+    document.getElementById("projected-progress").appendChild(incomeProgress);
+
+    $("#projected-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
+
+    // Set projected income value on settings tab
+    $("#amount").val(trailingZero(data.amount));
 }

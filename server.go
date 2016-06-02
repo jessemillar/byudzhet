@@ -61,7 +61,7 @@ func main() {
 	// Views
 	e.Static("/*", "public")
 	e.Get("/", views.Login)
-	e.Get("/index", views.Index)
+	e.Get("/frontend", views.Frontend)
 
 	fmt.Printf("Byudzhet is listening on %s\n", port)
 	e.Run(standard.New(port))
