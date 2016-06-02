@@ -1,42 +1,32 @@
 {{define "income"}}
-<!DOCTYPE html>
-<html>
 
-{{template "head"}}
-
-<body onload="init()">
-    {{template "navigation"}}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="/income/log">
-                    <button type="button" class="btn btn-warning btn-lg">Log Income</button>
-                </a>
-            </div>
+<div id="income-page" class="container" style="display: none">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="#log-income">
+                <button type="button" class="btn btn-warning btn-lg">Log Income</button>
+            </a>
         </div>
-        {{template "loader"}}
-        <div class="panel panel-default after-load">
-            <div class="panel-body">
-                <div class="col-xs-12">
-                    <div class="row list-row">
-                        <div class="col-xs-7 list-title">Earned vs. Projected</div>
-                        <div class="col-xs-5 badge-amount"><span id="projected-ratio" class="badge"></span></div>
-                    </div>
-                    <div class="row list-row">
-                        <div id="projected-progress" class="progress"></div>
-                    </div>
+    </div>
+    {{template "loader"}}
+    <div class="panel panel-default after-load">
+        <div class="panel-body">
+            <div class="col-xs-12">
+                <div class="row list-row">
+                    <div class="col-xs-7 list-title">Earned vs. Projected</div>
+                    <div class="col-xs-5 badge-amount"><span id="projected-ratio" class="badge"></span></div>
+                </div>
+                <div class="row list-row">
+                    <div id="projected-progress" class="progress"></div>
                 </div>
             </div>
         </div>
-        <div class="row after-load">
-            <div class="col-xs-12">
-                <ul id="income-list" class="list-group"></ul>
-            </div>
+    </div>
+    <div class="row after-load">
+        <div class="col-xs-12">
+            <ul id="income-list" class="list-group"></ul>
         </div>
     </div>
-</body>
+</div>
 
-{{template "auth0" .}}
-
-</html>
 {{end}}

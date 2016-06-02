@@ -1,42 +1,32 @@
 {{define "expenses"}}
-<!DOCTYPE html>
-<html>
 
-{{template "head"}}
-
-<body onload="init()">
-    {{template "navigation"}}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="/expenses/log">
-                    <button type="button" class="btn btn-warning btn-lg">Log Expense</button>
-                </a>
-            </div>
+<div id="expenses-page" class="container" style="display: none">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="#log-expense">
+                <button type="button" class="btn btn-warning btn-lg">Log Expense</button>
+            </a>
         </div>
-        {{template "loader"}}
-        <div class="panel panel-default after-load">
-            <div class="panel-body">
-                <div class="col-xs-12">
-                    <div class="row list-row">
-                        <div class="col-xs-7 list-title">Spending vs. Projected</div>
-                        <div class="col-xs-5 badge-amount"><span id="projected-ratio" class="badge"></span></div>
-                    </div>
-                    <div class="row list-row">
-                        <div id="projected-progress" class="progress"></div>
-                    </div>
+    </div>
+    {{template "loader"}}
+    <div class="panel panel-default after-load">
+        <div class="panel-body">
+            <div class="col-xs-12">
+                <div class="row list-row">
+                    <div class="col-xs-7 list-title">Spending vs. Projected</div>
+                    <div class="col-xs-5 badge-amount"><span id="projected-ratio" class="badge"></span></div>
+                </div>
+                <div class="row list-row">
+                    <div id="projected-progress" class="progress"></div>
                 </div>
             </div>
         </div>
-        <div class="row after-load">
-            <div class="col-xs-12">
-                <ul id="expenses-list" class="list-group"></ul>
-            </div>
+    </div>
+    <div class="row after-load">
+        <div class="col-xs-12">
+            <ul id="expenses-list" class="list-group"></ul>
         </div>
     </div>
-</body>
+</div>
 
-{{template "auth0" .}}
-
-</html>
 {{end}}

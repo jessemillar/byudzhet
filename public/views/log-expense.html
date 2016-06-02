@@ -1,44 +1,34 @@
 {{define "log-expense"}}
-<!DOCTYPE html>
-<html>
 
-{{template "head"}}
-
-<body onload="init()">
-    {{template "navigation"}}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1">
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">$</div>
-                        <input type="number" pattern="[0-9]*" class="form-control" id="amount" placeholder="0.00">
-                    </div>
+<div id="log-expense-page" class="container" style="display: none">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">$</div>
+                    <input type="number" pattern="[0-9]*" class="form-control" id="amount" placeholder="0.00">
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="recipient" placeholder="Target, Smith's, etc.">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="recipient" placeholder="Target, Smith's, etc.">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="note" placeholder="Bought because reasons">
+            </div>
+            <div class="form-group">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="bucket-dropdown" data-toggle="dropdown">
+                        Bucket
+                        <span class="caret"></span>
+                    </button>
+                    <ul id="bucket-dropdown-options" class="dropdown-menu"></ul>
                 </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="note" placeholder="Bought because reasons">
-                </div>
-                <div class="form-group">
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="bucket-dropdown" data-toggle="dropdown">
-                            Bucket
-                            <span class="caret"></span>
-                        </button>
-                        <ul id="bucket-dropdown-options" class="dropdown-menu"></ul>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-warning save-button" onclick="logExpense()">Log Expense</button>
-                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning save-button" onclick="logExpense()">Log Expense</button>
             </div>
         </div>
     </div>
-</body>
+</div>
 
-{{template "auth0" .}}
-
-</html>
 {{end}}

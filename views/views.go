@@ -14,49 +14,13 @@ func Login(context echo.Context) error {
 		return context.Render(http.StatusOK, "login", os.Getenv("AUTH0_CALLBACK"))
 	}
 
-	context.Redirect(http.StatusMovedPermanently, "/buckets")
+	context.Redirect(http.StatusMovedPermanently, "/index")
 
 	return context.String(http.StatusOK, "Done")
 }
 
-func Buckets(context echo.Context) error {
+func Index(context echo.Context) error {
 	helpers.CheckCookie(context)
 
-	return context.Render(http.StatusOK, "buckets", os.Getenv("AUTH0_CALLBACK"))
-}
-
-func MakeBucket(context echo.Context) error {
-	helpers.CheckCookie(context)
-
-	return context.Render(http.StatusOK, "make-bucket", os.Getenv("AUTH0_CALLBACK"))
-}
-
-func Expenses(context echo.Context) error {
-	helpers.CheckCookie(context)
-
-	return context.Render(http.StatusOK, "expenses", os.Getenv("AUTH0_CALLBACK"))
-}
-
-func LogExpense(context echo.Context) error {
-	helpers.CheckCookie(context)
-
-	return context.Render(http.StatusOK, "log-expense", os.Getenv("AUTH0_CALLBACK"))
-}
-
-func Income(context echo.Context) error {
-	helpers.CheckCookie(context)
-
-	return context.Render(http.StatusOK, "income", os.Getenv("AUTH0_CALLBACK"))
-}
-
-func LogIncome(context echo.Context) error {
-	helpers.CheckCookie(context)
-
-	return context.Render(http.StatusOK, "log-income", os.Getenv("AUTH0_CALLBACK"))
-}
-
-func Settings(context echo.Context) error {
-	helpers.CheckCookie(context)
-
-	return context.Render(http.StatusOK, "settings", os.Getenv("AUTH0_CALLBACK"))
+	return context.Render(http.StatusOK, "index", os.Getenv("AUTH0_CALLBACK"))
 }
