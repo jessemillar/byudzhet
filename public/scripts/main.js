@@ -81,11 +81,11 @@ function populateProjectedIncome(data) {
         var progress = document.createElement("div");
 
         if (data.spent < data.amount * 0.5) {
-            progress.className = "progress-bar progress-bar-danger";
+            progress.className = "progress-bar progress-bar-success";
         } else if (data.spent < data.amount * 0.75) {
             progress.className = "progress-bar progress-bar-warning";
         } else {
-            progress.className = "progress-bar progress-bar-success";
+            progress.className = "progress-bar progress-bar-danger";
         }
 
         progress.style.width = data.spent / data.amount * 100 + "%"; // Populate this with a calculated value
