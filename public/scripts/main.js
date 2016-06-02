@@ -1,7 +1,7 @@
 var allBuckets; // An array for searching through buckets
 var selectedBucket; // A global for keeping track of which bucket is selected in #bucket-dropdown
 var projected = false;
-var currentTab = "buckets";
+var currentTab = "";
 
 (function(a, b, c) { // Make the app work as a single-page app on iOS devices
     if (c in b && b[c]) {
