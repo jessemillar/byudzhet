@@ -54,7 +54,7 @@ func (ag *AccessorGroup) GetIncomeEarned(userID int) (float64, error) {
 	var earned float64
 
 	// Get the amount that's been earned
-	err := ag.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM income WHERE user=?", userID).Scan(&earned)
+	err := ag.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&earned)
 	if err != nil {
 		return 0, err
 	}
