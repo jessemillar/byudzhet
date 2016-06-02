@@ -10,7 +10,7 @@ var projected = false;
             d = a.target;
             while (!f.test(d.nodeName)) d = d.parentNode;
             "href" in d && (chref = d.href).replace(e.href, "").indexOf("#") && (!/^[a-z\+\.\-]+:/i.test(chref) || chref.indexOf(e.protocol + "//" + e.host) === 0) && (a.preventDefault(), e.href = d.href)
-        }, !1)
+        }, !1);
     }
 })(document, window.navigator, "standalone");
 
@@ -335,7 +335,7 @@ function populateBucketsDropdown(buckets) {
         var li = document.createElement("li");
         var a = document.createElement("a");
 
-        a.href = "#";
+        a.href = "javascript:void(0)"; // Don't reload the page on iOS
 
         a.appendChild(document.createTextNode(buckets[i].name));
         li.appendChild(a);
