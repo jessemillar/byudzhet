@@ -91,7 +91,7 @@ function populateIncome(income) {
         document.getElementById("income-list").appendChild(li);
     }
 
-    hideLoader("income");
+    doneLoading("income");
 }
 
 function getProjectedIncome(callback) {
@@ -109,7 +109,7 @@ function getProjectedIncome(callback) {
 }
 
 function populateProjectedIncome(data) {
-    if (page == "/expenses") {
+    if (currentTab == "expenses") {
         var progress = document.createElement("div");
 
         if (data.spent < data.amount * 0.5) {
@@ -125,7 +125,7 @@ function populateProjectedIncome(data) {
         document.getElementById("projected-progress").appendChild(progress);
 
         $("#projected-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
-    } else if (page == "/income") {
+    } else if (currentTab == "income") {
         var progress = document.createElement("div");
 
         if (data.earned < data.amount * 0.5) {
@@ -141,7 +141,7 @@ function populateProjectedIncome(data) {
         document.getElementById("projected-progress").appendChild(progress);
 
         $("#projected-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
-    } else if (page == "/settings") {
+    } else if (currentTab == "settings") {
         $("#amount").val(trailingZero(data.amount));
     }
 }

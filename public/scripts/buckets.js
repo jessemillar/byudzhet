@@ -84,7 +84,7 @@ function populateBuckets(buckets) {
         document.getElementById("buckets-list").appendChild(li);
     }
 
-    hideLoader("buckets");
+    doneLoading("buckets");
 }
 
 function populateBucketsDropdown(buckets) {
@@ -99,8 +99,7 @@ function populateBucketsDropdown(buckets) {
         a.appendChild(document.createTextNode(buckets[i].name));
         li.appendChild(a);
 
-        document.getElementById("bucket-dropdown-options").appendChild(li);
-
-        $('#bucket-dropdown-options').trigger("chosen:updated");
+        $("#make-bucket-page > .bucket-dropdown-options").append(li);
+        $("#make-bucket-page > .bucket-dropdown-options").trigger("chosen:updated");
     }
 }

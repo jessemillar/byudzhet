@@ -67,5 +67,5 @@ function populateExpenses(expenses) {
         document.getElementById("expenses-list").appendChild(li);
     }
 
-    hideLoader("expenses");
+    doneLoading("expenses");
 }

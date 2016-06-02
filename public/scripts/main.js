@@ -1,7 +1,7 @@
 var allBuckets; // An array for searching through buckets
 var selectedBucket; // A global for keeping track of which bucket is selected in #bucket-dropdown
 var projected = false;
-var currentTab = "#buckets";
+var currentTab = "buckets";
 
 (function(a, b, c) { // Make the app work as a single-page app on iOS devices
     if (c in b && b[c]) {
@@ -15,13 +15,13 @@ var currentTab = "#buckets";
     }
 })(document, window.navigator, "standalone");
 
-$(function() { // Populate #bucket-dropdown with selected item
-    $("body").on('click', '.dropdown-menu li a', function() {
+$(function() {
+    $("body").on('click', '.dropdown-menu li a', function() { // Populate #bucket-dropdown with selected item
         selectedBucket = $(this).text();
         $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
     });
 
-    $("#amount").on("input", function(e) {
+    $("#amount").on("input", function(e) { // Make the amount inputs auto-insert the decimal
         $("#amount").val($("#amount").val().replace(/[^\d]/g, '').replace(/(\d\d?)$/, '.$1'));
     });
 });

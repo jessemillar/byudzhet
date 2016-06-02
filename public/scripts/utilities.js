@@ -10,50 +10,49 @@ function setCurrentTab(tab) {
     currentTab = "#" + tab;
 }
 
-function load(bootpageCall) {
-    page = currentTab; // Get the page we're on
+function load() {
+    getBuckets(populateBuckets);
+    getBuckets(populateBucketsDropdown);
+    getProjectedIncome(populateProjectedIncome);
+    getIncome(populateIncome);
 
-    if (page == "#buckets") {
-        if (!bootpageCall) {
-            bootpage.switch("buckets-page");
-        }
-
-        setActiveNavigation("buckets");
-
-        getBuckets(populateBuckets);
-    } else if (page == "#makeBucket") {
-        setActiveNavigation("buckets");
-
+    if (currentTab == "buckets") {
+        bootpage.switch("buckets-page");
+        //
+        setActiveNavigation("buckets-navigation-icon");
+        //
+        //     getBuckets(populateBuckets);
+    } else if (currentTab == "makeBucket") {
+        setActiveNavigation("buckets-navigation-icon");
+        //
         document.getElementById("name").focus();
-    } else if (page == "#expenses") {
-        setActiveNavigation("expenses");
-
-        getProjectedIncome(populateProjectedIncome);
-        getExpenses(populateExpenses);
-    } else if (page == "#logExpense") {
-        setActiveNavigation("expenses");
-
-        getBuckets(populateBucketsDropdown);
+    } else if (currentTab == "expenses") {
+        setActiveNavigation("expenses-navigation-icon");
+        //
+        //     getProjectedIncome(populateProjectedIncome);
+        //     getExpenses(populateExpenses);
+    } else if (currentTab == "logExpense") {
+        setActiveNavigation("expenses-navigation-icon");
+        //
+        //     getBuckets(populateBucketsDropdown);
         document.getElementById("amount").focus();
-    } else if (page == "#income") {
-        setActiveNavigation("income");
-
-        getProjectedIncome(populateProjectedIncome);
-        getIncome(populateIncome);
-    } else if (page == "#logIncome") {
-        setActiveNavigation("income");
-
+    } else if (currentTab == "income") {
+        setActiveNavigation("income-navigation-icon");
+        //
+        //     getProjectedIncome(populateProjectedIncome);
+        //     getIncome(populateIncome);
+    } else if (currentTab == "logIncome") {
+        setActiveNavigation("income-navigation-icon");
+        //
         document.getElementById("payer").focus();
-    } else if (page == "#settings") {
-        getProjectedIncome(populateProjectedIncome);
-
-        setActiveNavigation("settings");
+    } else if (currentTab == "settings") {
+        //     getProjectedIncome(populateProjectedIncome);
+        //
+        setActiveNavigation("settings-navigation-icon");
     }
 }
 
-function hideLoader(page) {
-    console.log("Hiding loader", "." + page + "-page > .loader");
-
+function doneLoading(page) {
     $("#" + page + "-page > .loader").hide();
     $("#" + page + "-page > .after-load").show(); // Hide things that shouldn't display until after loading is complete
 }
@@ -65,10 +64,11 @@ function logout() {
 
 function setActiveNavigation(button) {
     // Reset all buttons
-    document.getElementById("buckets").className = "navigation-button";
-    document.getElementById("expenses").className = "navigation-button";
-    document.getElementById("income").className = "navigation-button";
-    document.getElementById("settings").className = "navigation-button";
+    document.getElementById("buckets-navigation-icon").className = "navigation-button";
+    document.getElementById("expenses-navigation-icon").className = "navigation-button";
+    document.getElementById("income-navigation-icon").className = "navigation-button";
+    document.getElementById("history-navigation-icon").className = "navigation-button";
+    document.getElementById("settings-navigation-icon").className = "navigation-button";
 
     // Make the button we care about active
     document.getElementById(button).className += " active";

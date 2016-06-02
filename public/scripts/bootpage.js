@@ -9,6 +9,4 @@ bootpage.switch = function(page) {
 
     document.getElementById(page).style.display = "block"; // Hide the current page
     self.currentPage = page;
-
-    load(true);
 };
