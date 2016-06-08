@@ -1,8 +1,6 @@
-# Byudzhet
+# Byudzhet [![CircleCI](https://circleci.com/gh/jessemillar/byudzhet.svg?style=svg)](https://circleci.com/gh/jessemillar/byudzhet)
 
-![Circle CI Build Status](https://circleci.com/gh/jessemillar/byudzhet/tree/master.svg?style=shield)
-
-### Setup
+## Setup
 ```
 export AUTH0_CLIENT_ID="12345id"
 export AUTH0_CLIENT_SECRET="sekret"
