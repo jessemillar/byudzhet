@@ -297,6 +297,8 @@ function populateBuckets(buckets) {
         progressCol.className = "col-xs-12";
         progressWrapper.className = "progress";
 
+        console.log(buckets[i].name, "-", buckets[i].spent, buckets[i].amount * 0.75)
+
         if (buckets[i].spent > buckets[i].amount) {
             progress.className = "progress-bar progress-bar-danger";
         } else if (buckets[i].spent > buckets[i].amount * 0.75) {
