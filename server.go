@@ -4,9 +4,8 @@ import (
 	// Don't forget this first import or nothing will work
 	_ "crypto/sha512"
 	"html/template"
+	"log"
 	"os"
-
-	"fmt"
 
 	"github.com/jessemillar/byudzhet/accessors"
 	"github.com/jessemillar/byudzhet/controllers"
@@ -63,6 +62,6 @@ func main() {
 	e.Get("/", views.Login)
 	e.Get("/frontend", views.Frontend)
 
-	fmt.Printf("Byudzhet is listening on %s\n", port)
+	log.Println("Byudzhet is listening on " + port)
 	e.Run(standard.New(port))
 }

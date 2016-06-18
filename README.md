@@ -1,8 +1,7 @@
-# Byudzhet
+# byudzhet
+[![CircleCI](https://img.shields.io/circleci/project/jessemillar/byudzhet.svg)](https://circleci.com/gh/jessemillar/byudzhet) [![Codecov](https://img.shields.io/codecov/c/github/jessemillar/byudzhet.svg)](https://codecov.io/gh/jessemillar/byudzhet) [![Apache 2 License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://raw.githubusercontent.com/jessemillar/byudzhet/master/LICENSE)
 
-![Circle CI Build Status](https://circleci.com/gh/jessemillar/byudzhet/tree/master.svg?style=shield)
-
-### Setup
+## Setup
 ```
 export AUTH0_CLIENT_ID="12345id"
 export AUTH0_CLIENT_SECRET="sekret"
