@@ -80,9 +80,9 @@ function populateProjectedIncome(data) {
     if (page == "/expenses") {
         var progress = document.createElement("div");
 
-        if (data.spent < data.amount * 0.5) {
+        if (Number(data.spent) < Number(data.amount * 0.5)) {
             progress.className = "progress-bar progress-bar-success";
-        } else if (data.spent < data.amount * 0.75) {
+        } else if (Number(data.spent) < Number(data.amount * 0.75)) {
             progress.className = "progress-bar progress-bar-warning";
         } else {
             progress.className = "progress-bar progress-bar-danger";
@@ -96,9 +96,9 @@ function populateProjectedIncome(data) {
     } else if (page == "/income") {
         var progress = document.createElement("div");
 
-        if (data.earned < data.amount * 0.5) {
+        if (Number(data.earned) < Number(data.amount * 0.5)) {
             progress.className = "progress-bar progress-bar-danger";
-        } else if (data.earned < data.amount * 0.75) {
+        } else if (Number(data.earned) < Number(data.amount * 0.75)) {
             progress.className = "progress-bar progress-bar-warning";
         } else {
             progress.className = "progress-bar progress-bar-success";
@@ -297,11 +297,9 @@ function populateBuckets(buckets) {
         progressCol.className = "col-xs-12";
         progressWrapper.className = "progress";
 
-        console.log(buckets[i].name, "-", buckets[i].spent, buckets[i].amount * 0.75)
-
-        if (buckets[i].spent > buckets[i].amount) {
+        if (Number(buckets[i].spent) > Number(buckets[i].amount)) {
             progress.className = "progress-bar progress-bar-danger";
-        } else if (buckets[i].spent > buckets[i].amount * 0.75) {
+        } else if (Number(buckets[i].spent) > Number(buckets[i].amount * 0.75)) {
             progress.className = "progress-bar progress-bar-warning";
         } else {
             progress.className = "progress-bar progress-bar-success";
