@@ -15,30 +15,42 @@ function setCurrentTab(tab) {
     currentTab = tab;
 
     if (currentTab == "buckets") {
-        bootpage.switch("buckets-page");
+        bootpage.show("buckets-page");
         setActiveNavigation("buckets-navigation-icon");
     } else if (currentTab == "make-bucket") {
-        bootpage.switch("make-bucket-page");
+        bootpage.show("make-bucket-page");
         setActiveNavigation("buckets-navigation-icon");
-        document.getElementById("name").focus();
+        focusMakeBucket();
     } else if (currentTab == "expenses") {
-        bootpage.switch("expenses-page");
+        bootpage.show("expenses-page");
         setActiveNavigation("expenses-navigation-icon");
     } else if (currentTab == "log-expense") {
-        bootpage.switch("log-expense-page");
+        bootpage.show("log-expense-page");
         setActiveNavigation("expenses-navigation-icon");
-        document.getElementById("amount").focus();
+        focusLogExpense();
     } else if (currentTab == "income") {
-        bootpage.switch("income-page");
+        bootpage.show("income-page");
         setActiveNavigation("income-navigation-icon");
     } else if (currentTab == "log-income") {
-        bootpage.switch("log-income-page");
+        bootpage.show("log-income-page");
         setActiveNavigation("income-navigation-icon");
-        document.getElementById("payer").focus();
+        focusLogIncome();
     } else if (currentTab == "settings") {
-        bootpage.switch("settings-page");
+        bootpage.show("settings-page");
         setActiveNavigation("settings-navigation-icon");
     }
+}
+
+function focusMakeBucket() {
+    document.getElementById("make-bucket-name").focus();
+}
+
+function focusLogExpense() {
+    document.getElementById("log-expense-amount").focus();
+}
+
+function focusLogIncome() {
+    document.getElementById("log-income-payer").focus();
 }
 
 function setActiveNavigation(button) {

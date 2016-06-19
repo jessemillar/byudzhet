@@ -7,9 +7,9 @@ function logExpense() {
 
     body = {
         bucket: selectedBucket.toString(),
-        amount: $("#amount").val(),
-        recipient: $("#recipient").val(),
-        note: $("#note").val()
+        amount: $("#log-expense-amount").val(),
+        recipient: $("#log-expense-recipient").val(),
+        note: $("#log-expense-note").val()
     };
 
     $.ajax("/api/expense", {
@@ -18,7 +18,8 @@ function logExpense() {
         "processData": false,
         "contentType": "application/json",
         "success": function(data) {
-            window.location.href = "/expenses";
+            window.location.href = "/frontend#expenses";
+            location.reload();
         }
     });
 }

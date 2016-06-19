@@ -6,22 +6,22 @@
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-addon">$</div>
-                    <input type="number" pattern="[0-9]*" class="form-control" class="amount" placeholder="0.00">
+                    <input type="number" pattern="[0-9]*" class="form-control" id="log-expense-amount" placeholder="0.00">
                 </div>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" class="recipient" placeholder="Target, Smith's, etc.">
+                <input type="text" class="form-control" id="log-expense-recipient" placeholder="Target, Smith's, etc.">
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" class="note" placeholder="Bought because reasons">
+                <input type="text" class="form-control" id="log-expense-note" placeholder="Bought because reasons">
             </div>
             <div class="form-group">
                 <div class="dropdown">
-                    <button class="btn btn-default dropdown-toggle" type="button" class="bucket-dropdown" data-toggle="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" id="bucket-dropdown" data-toggle="dropdown">
                         Bucket
                         <span class="caret"></span>
                     </button>
-                    <ul class="bucket-dropdown-options" class="dropdown-menu"></ul>
+                    <ul id="bucket-dropdown-options" class="dropdown-menu"></ul>
                 </div>
             </div>
             <div class="form-group">

@@ -21,7 +21,15 @@ $(function() {
         $("#bucket-dropdown").html($(this).text() + " <span class='caret'></span>");
     });
 
-    $("#amount").on("input", function(e) { // Make the amount inputs auto-insert the decimal
-        $("#amount").val($("#amount").val().replace(/[^\d]/g, '').replace(/(\d\d?)$/, '.$1'));
+    $("#make-bucket-amount").on("input", function(e) { // Make the input auto-insert the decimal
+        $("#make-bucket-amount").val($("#make-bucket-amount").val().replace(/[^\d]/g, '').replace(/(\d\d?)$/, '.$1'));
+    });
+
+    $("#log-income-amount").on("input", function(e) { // Make the input auto-insert the decimal
+        $("#log-income-amount").val($("#log-income-amount").val().replace(/[^\d]/g, '').replace(/(\d\d?)$/, '.$1'));
+    });
+
+    $("#log-expense-amount").on("input", function(e) { // Make the input auto-insert the decimal
+        $("#log-expense-amount").val($("#log-expense-amount").val().replace(/[^\d]/g, '').replace(/(\d\d?)$/, '.$1'));
     });
 });

@@ -1,7 +1,7 @@
 function makeBucket() {
     body = {
-        amount: $("#amount").val(),
-        name: $("#name").val()
+        amount: $("#make-bucket-amount").val(),
+        name: $("#make-bucket-name").val()
     };
 
     $.ajax("/api/bucket", {
@@ -10,7 +10,8 @@ function makeBucket() {
         "processData": false,
         "contentType": "application/json",
         "success": function(data) {
-            window.location.href = "/buckets";
+            window.location.href = "/frontend#buckets";
+            location.reload();
         }
     });
 }
@@ -56,9 +57,9 @@ function populateBuckets(buckets) {
         progressCol.className = "col-xs-12";
         progressWrapper.className = "progress";
 
-        if (buckets[i].spent > buckets[i].amount) {
+        if (Number(buckets[i].spent) > Number(buckets[i].amount)) {
             progress.className = "progress-bar progress-bar-danger";
-        } else if (buckets[i].spent > buckets[i].amount * 0.75) {
+        } else if (Number(buckets[i].spent) > Number(buckets[i].amount * 0.75)) {
             progress.className = "progress-bar progress-bar-warning";
         } else {
             progress.className = "progress-bar progress-bar-success";
@@ -99,7 +100,7 @@ function populateBucketsDropdown(buckets) {
         a.appendChild(document.createTextNode(buckets[i].name));
         li.appendChild(a);
 
-        $("#make-bucket-page > .bucket-dropdown-options").append(li);
-        $("#make-bucket-page > .bucket-dropdown-options").trigger("chosen:updated");
+        $("#bucket-dropdown-options").append(li);
+        $("#bucket-dropdown-options").trigger("chosen:updated");
     }
 }

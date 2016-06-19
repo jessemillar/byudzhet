@@ -1,7 +1,7 @@
 function logIncome() {
     body = {
-        amount: $("#amount").val(),
-        payer: $("#payer").val(),
+        amount: $("#log-income-amount").val(),
+        payer: $("#log-income-payer").val(),
     };
 
     $.ajax("/api/income", {
@@ -10,7 +10,8 @@ function logIncome() {
         "processData": false,
         "contentType": "application/json",
         "success": function(data) {
-            window.location.href = "/income";
+            window.location.href = "/frontend#income";
+            location.reload();
         }
     });
 }
@@ -60,7 +61,8 @@ function setProjectedIncome() {
         "processData": false,
         "contentType": "application/json",
         "success": function(data) {
-            window.location.href = "/settings";
+            window.location.href = "/frontend#settings";
+            location.reload();
         }
     });
 }
@@ -112,9 +114,9 @@ function populateProjectedIncome(data) {
     // Set projected income value on expenses tab
     var expensesProgress = document.createElement("div");
 
-    if (data.spent < data.amount * 0.5) {
+    if (Number(data.spent) < Number(data.amount * 0.5)) {
         expensesProgress.className = "progress-bar progress-bar-success";
-    } else if (data.spent < data.amount * 0.75) {
+    } else if (Number(data.spent) < Number(data.amount * 0.75)) {
         expensesProgress.className = "progress-bar progress-bar-warning";
     } else {
         expensesProgress.className = "progress-bar progress-bar-danger";
@@ -122,16 +124,16 @@ function populateProjectedIncome(data) {
 
     expensesProgress.style.width = data.spent / data.amount * 100 + "%"; // Populate this with a calculated value
 
-    $("#expenses-page > .projected-progress").append(expensesProgress);
+    $("#expenses-progress").append(expensesProgress);
 
-    $("#projected-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
+    $("#expenses-ratio").text("$" + trailingZero(data.spent) + " / $" + trailingZero(data.amount));
 
     // Set projected income value on income tab
     var incomeProgress = document.createElement("div");
 
-    if (data.earned < data.amount * 0.5) {
+    if (Number(data.earned) < Number(data.amount * 0.5)) {
         incomeProgress.className = "progress-bar progress-bar-danger";
-    } else if (data.earned < data.amount * 0.75) {
+    } else if (Number(data.earned) < Number(data.amount * 0.75)) {
         incomeProgress.className = "progress-bar progress-bar-warning";
     } else {
         incomeProgress.className = "progress-bar progress-bar-success";
@@ -139,9 +141,9 @@ function populateProjectedIncome(data) {
 
     incomeProgress.style.width = data.earned / data.amount * 100 + "%"; // Populate this with a calculated value
 
-    document.getElementById("projected-progress").appendChild(incomeProgress);
+    $("#income-progress").append(incomeProgress);
 
-    $("#projected-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
+    $("#income-ratio").text("$" + trailingZero(data.earned) + " / $" + trailingZero(data.amount));
 
     // Set projected income value on settings tab
     $("#amount").val(trailingZero(data.amount));
