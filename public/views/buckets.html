@@ -1,29 +1,19 @@
 {{define "buckets"}}
-<!DOCTYPE html>
-<html>
 
-{{template "head"}}
-
-<body onload="init()">
-    {{template "navigation"}}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <a href="/buckets/make">
-                    <button type="button" class="btn btn-warning btn-lg">New Bucket</button>
-                </a>
-            </div>
-        </div>
-        {{template "loader"}}
-        <div class="row after-load">
-            <div class="col-xs-12">
-                <ul id="buckets-list" class="list-group"></ul>
-            </div>
+<div id="buckets-page" class="container" style="display: none">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="#make-bucket">
+                <button type="button" class="btn btn-warning btn-lg" onclick="bootpage.show('make-bucket-page', focusMakeBucket);">New Bucket</button>
+            </a>
         </div>
     </div>
-</body>
+    {{template "loader"}}
+    <div class="row after-load">
+        <div class="col-xs-12">
+            <ul id="buckets-list" class="list-group"></ul>
+        </div>
+    </div>
+</div>
 
-{{template "auth0" .}}
-
-</html>
 {{end}}

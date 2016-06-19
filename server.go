@@ -60,13 +60,7 @@ func main() {
 	// Views
 	e.Static("/*", "public")
 	e.Get("/", views.Login)
-	e.Get("/buckets", views.Buckets)
-	e.Get("/buckets/make", views.MakeBucket)
-	e.Get("/expenses", views.Expenses)
-	e.Get("/expenses/log", views.LogExpense)
-	e.Get("/income", views.Income)
-	e.Get("/income/log", views.LogIncome)
-	e.Get("/settings", views.Settings)
+	e.Get("/frontend", views.Frontend)
 
 	log.Println("Byudzhet is listening on " + port)
 	e.Run(standard.New(port))

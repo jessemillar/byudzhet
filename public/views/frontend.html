@@ -1,0 +1,14 @@
+{{define "frontend"}}
+<!DOCTYPE html>
+<html>
+
+{{template "head"}}
+
+<body onload="load()">
+    {{template "navigation"}} {{template "buckets"}} {{template "expenses"}} {{template "income"}} {{template "log-expense"}} {{template "log-income"}} {{template "make-bucket"}} {{template "settings"}}
+</body>
+
+{{template "auth0" .}}
+
+</html>
+{{end}}

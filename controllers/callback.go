@@ -60,7 +60,7 @@ func (cg *ControllerGroup) CallbackHandler(context echo.Context) error {
 	helpers.MakeCookie(context, "id_token", token.Extra("id_token").(string))
 
 	// Redirect to logged in page
-	context.Redirect(http.StatusMovedPermanently, "/buckets")
+	context.Redirect(http.StatusMovedPermanently, "/frontend")
 
 	return context.String(http.StatusOK, "Callback finished") // We'll never actually hit this...?
 }

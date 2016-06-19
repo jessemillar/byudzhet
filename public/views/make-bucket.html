@@ -1,32 +1,22 @@
 {{define "make-bucket"}}
-<!DOCTYPE html>
-<html>
 
-{{template "head"}}
-
-<body onload="init()">
-    {{template "navigation"}}
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-10 col-xs-offset-1">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="name" placeholder="Groceries, Fun, etc.">
+<div id="make-bucket-page" class="container" style="display: none">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="form-group">
+                <input type="text" class="form-control" id="make-bucket-name" placeholder="Groceries, Fun, etc.">
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">$</div>
+                    <input type="number" pattern="[0-9]*" class="form-control" id="make-bucket-amount" placeholder="0.00">
                 </div>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon">$</div>
-                        <input type="number" pattern="[0-9]*" class="form-control" id="amount" placeholder="0.00">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-warning save-button" onclick="makeBucket()">Make Bucket</button>
-                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-warning save-button" onclick="makeBucket()">Make Bucket</button>
             </div>
         </div>
     </div>
-</body>
+</div>
 
-{{template "auth0" .}}
-
-</html>
 {{end}}
