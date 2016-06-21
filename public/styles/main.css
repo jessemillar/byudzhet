@@ -22,6 +22,7 @@ html {
     color           : #fff;
     background-color: #3D9970;
     padding-bottom  : 28px;
+    font-family     : "Open Sans", sans-serif;
 }
 
 .after-load {
@@ -34,6 +35,10 @@ html {
 
 .badge-amount {
     text-align: right;
+}
+
+.badge {
+    letter-spacing: 0.75px;
 }
 
 .panel-body .badge-amount,
@@ -86,6 +91,7 @@ button {
     height          : 49px;
     border-top      : solid 1px #dddddd;
     background-color: #f9f9f9;
+    text-align      : center;
     z-index         : 999;
 }
 
@@ -96,11 +102,7 @@ button {
 .navigation-button,
 .navigation-button a,
 .navigation-button a:visited {
-    display   : inline-block;
-    width     : 19%;
-    height    : 100%;
-    color     : #dddddd;
-    text-align: center;
+    color: #dddddd;
 }
 
 .navigation-icon {
@@ -112,9 +114,10 @@ button {
 }
 
 .navigation-text {
-    position : relative;
-    bottom   : 3px;
-    left     : 0;
-    width    : 100%;
-    font-size: 12px;
+    position       : relative;
+    bottom         : 3px;
+    left           : 0;
+    width          : 100%;
+    font-size      : 12px;
+    text-decoration: none !important;
 }

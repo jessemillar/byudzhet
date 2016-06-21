@@ -58,7 +58,6 @@ function setActiveNavigation(button) {
     document.getElementById("buckets-navigation-icon").className = "navigation-button";
     document.getElementById("expenses-navigation-icon").className = "navigation-button";
     document.getElementById("income-navigation-icon").className = "navigation-button";
-    document.getElementById("history-navigation-icon").className = "navigation-button";
     document.getElementById("settings-navigation-icon").className = "navigation-button";
 
     // Make the button we care about active
