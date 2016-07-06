@@ -37,10 +37,6 @@ html {
     text-align: right;
 }
 
-.badge {
-    letter-spacing: 0.75px;
-}
-
 .panel-body .badge-amount,
 .panel-body .list-title {
     padding-left : 0;
@@ -95,6 +91,10 @@ button {
     z-index         : 999;
 }
 
+.bottom-navigation a {
+    text-decoration: none;
+}
+
 .bottom-navigation .active {
     color: #3D9970;
 }
@@ -114,10 +114,9 @@ button {
 }
 
 .navigation-text {
-    position       : relative;
-    bottom         : 3px;
-    left           : 0;
-    width          : 100%;
-    font-size      : 12px;
-    text-decoration: none !important;
+    position : relative;
+    bottom   : 3px;
+    left     : 0;
+    width    : 100%;
+    font-size: 12px;
 }
