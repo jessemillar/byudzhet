@@ -8,7 +8,7 @@ import (
 	"os"
 
 	"github.com/jessemillar/byudzhet/accessors"
-	"github.com/jessemillar/byudzhet/controllers"
+	"github.com/jessemillar/byudzhet/handlers"
 	"github.com/jessemillar/byudzhet/helpers"
 	"github.com/jessemillar/byudzhet/views"
 	"github.com/jessemillar/health"
@@ -25,7 +25,7 @@ func main() {
 	ag.Open("mysql", database)
 
 	// Constructs a new controller group and gives it the accessor group
-	cg := new(controllers.ControllerGroup)
+	cg := new(handlers.ControllerGroup)
 	cg.Accessors = ag
 
 	t := &helpers.Template{

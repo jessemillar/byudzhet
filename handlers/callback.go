@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	// Don't forget this first import or nothing will work

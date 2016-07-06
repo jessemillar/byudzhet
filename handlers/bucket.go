@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"net/http"
@@ -7,13 +7,13 @@ import (
 	"github.com/labstack/echo"
 )
 
-func (cg *ControllerGroup) GetProjectedIncome(context echo.Context) error {
+func (cg *ControllerGroup) GetBucket(context echo.Context) error {
 	token, err := helpers.ValidateJWT(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.GetProjectedIncome(context, token.Email)
+	response, err := cg.Accessors.GetBucket(context, token.Email)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
@@ -21,13 +21,13 @@ func (cg *ControllerGroup) GetProjectedIncome(context echo.Context) error {
 	return context.JSON(http.StatusOK, response)
 }
 
-func (cg *ControllerGroup) SetProjectedIncome(context echo.Context) error {
+func (cg *ControllerGroup) MakeBucket(context echo.Context) error {
 	token, err := helpers.ValidateJWT(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.SetProjectedIncome(context, token.Email)
+	response, err := cg.Accessors.MakeBucket(context, token.Email)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
@@ -35,13 +35,13 @@ func (cg *ControllerGroup) SetProjectedIncome(context echo.Context) error {
 	return context.JSON(http.StatusOK, response)
 }
 
-func (cg *ControllerGroup) UpdateProjectedIncome(context echo.Context) error {
+func (cg *ControllerGroup) GetBucketByName(context echo.Context) error {
 	token, err := helpers.ValidateJWT(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.UpdateProjectedIncome(context, token.Email)
+	response, err := cg.Accessors.GetBucketByName(context, token.Email)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
