@@ -6,9 +6,9 @@ type User struct {
 }
 
 // GetUserByEmail returns a user from the database by email
-func (ag *AccessorGroup) GetUserByEmail(email string) (User, error) {
+func (accessorGroup *AccessorGroup) GetUserByEmail(email string) (User, error) {
 	user := &User{}
-	err := ag.Database.QueryRow("SELECT * FROM users WHERE email=?", email).Scan(&user.ID, &user.Email)
+	err := accessorGroup.Database.QueryRow("SELECT * FROM users WHERE email=?", email).Scan(&user.ID, &user.Email)
 
 	if err != nil {
 		return User{}, err
@@ -18,9 +18,9 @@ func (ag *AccessorGroup) GetUserByEmail(email string) (User, error) {
 }
 
 // GetUserByID returns a user from the database by userID
-func (ag *AccessorGroup) GetUserByID(email string) (User, error) {
+func (accessorGroup *AccessorGroup) GetUserByID(email string) (User, error) {
 	user := &User{}
-	err := ag.Database.QueryRow("SELECT * FROM users WHERE id=?", email).Scan(&user.ID, &user.Email)
+	err := accessorGroup.Database.QueryRow("SELECT * FROM users WHERE id=?", email).Scan(&user.ID, &user.Email)
 
 	if err != nil {
 		return User{}, err
@@ -30,8 +30,8 @@ func (ag *AccessorGroup) GetUserByID(email string) (User, error) {
 }
 
 // GetUserID returns a user from the database by userID
-func (ag *AccessorGroup) GetUserID(email string) (int, error) {
-	user, err := ag.GetUserByEmail(email)
+func (accessorGroup *AccessorGroup) GetUserID(email string) (int, error) {
+	user, err := accessorGroup.GetUserByEmail(email)
 	if err != nil {
 		return 0, err
 	}
@@ -40,13 +40,13 @@ func (ag *AccessorGroup) GetUserID(email string) (int, error) {
 }
 
 // MakeUser adds a user to the database
-func (ag *AccessorGroup) MakeUser(email string) (User, error) {
-	_, err := ag.Database.Query("INSERT INTO users (email) VALUES (?)", email)
+func (accessorGroup *AccessorGroup) MakeUser(email string) (User, error) {
+	_, err := accessorGroup.Database.Query("INSERT INTO users (email) VALUES (?)", email)
 	if err != nil {
 		return User{}, err
 	}
 
-	user, err := ag.GetUserByEmail(email)
+	user, err := accessorGroup.GetUserByEmail(email)
 	if err != nil {
 		return User{}, err
 	}

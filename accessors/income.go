@@ -10,14 +10,14 @@ type Income struct {
 	Amount float64 `json:"amount,string"`
 }
 
-func (ag *AccessorGroup) LogIncome(context echo.Context, email string) (Income, error) {
+func (accessorGroup *AccessorGroup) LogIncome(context echo.Context, email string) (Income, error) {
 	income := Income{}
 	err := context.Bind(&income)
 	if err != nil {
 		return Income{}, err
 	}
 
-	userID, err := ag.GetUserID(email)
+	userID, err := accessorGroup.GetUserID(email)
 	if err != nil {
 		return Income{}, err
 	}
@@ -26,7 +26,7 @@ func (ag *AccessorGroup) LogIncome(context echo.Context, email string) (Income, 
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
-	_, err = ag.Database.Query("INSERT INTO income (user, payer, amount) VALUES (?,?,?)", income.User, income.Payer, income.Amount*100)
+	_, err = accessorGroup.Database.Query("INSERT INTO income (user, payer, amount) VALUES (?,?,?)", income.User, income.Payer, income.Amount*100)
 	if err != nil {
 		return Income{}, err
 	}
@@ -34,15 +34,15 @@ func (ag *AccessorGroup) LogIncome(context echo.Context, email string) (Income, 
 	return Income{}, nil
 }
 
-func (ag *AccessorGroup) GetIncome(context echo.Context, email string) ([]Income, error) {
+func (accessorGroup *AccessorGroup) GetIncome(context echo.Context, email string) ([]Income, error) {
 	allIncome := []Income{}
 
-	userID, err := ag.GetUserID(email)
+	userID, err := accessorGroup.GetUserID(email)
 	if err != nil {
 		return []Income{}, err
 	}
 
-	allIncome, err = ag.GetIncomeByUserID(context, allIncome, userID)
+	allIncome, err = accessorGroup.GetIncomeByUserID(context, allIncome, userID)
 	if err != nil {
 		return []Income{}, err
 	}
@@ -50,11 +50,11 @@ func (ag *AccessorGroup) GetIncome(context echo.Context, email string) ([]Income
 	return allIncome, nil
 }
 
-func (ag *AccessorGroup) GetIncomeEarned(userID int) (float64, error) {
+func (accessorGroup *AccessorGroup) GetIncomeEarned(userID int) (float64, error) {
 	var earned float64
 
 	// Get the amount that's been earned
-	err := ag.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&earned)
+	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&earned)
 	if err != nil {
 		return 0, err
 	}
@@ -62,8 +62,8 @@ func (ag *AccessorGroup) GetIncomeEarned(userID int) (float64, error) {
 	return earned, nil
 }
 
-func (ag *AccessorGroup) GetIncomeByUserID(context echo.Context, allIncome []Income, userID int) ([]Income, error) {
-	rows, err := ag.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
+func (accessorGroup *AccessorGroup) GetIncomeByUserID(context echo.Context, allIncome []Income, userID int) ([]Income, error) {
+	rows, err := accessorGroup.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
 	if err != nil {
 		return []Income{}, err
 	}
