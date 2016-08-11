@@ -12,14 +12,14 @@ type Expense struct {
 	Note      string  `json:"note"`
 }
 
-func (ag *AccessorGroup) LogExpense(context echo.Context, email string) (Expense, error) {
+func (accessorGroup *AccessorGroup) LogExpense(context echo.Context, email string) (Expense, error) {
 	expense := Expense{}
 	err := context.Bind(&expense)
 	if err != nil {
 		return Expense{}, err
 	}
 
-	userID, err := ag.GetUserID(email)
+	userID, err := accessorGroup.GetUserID(email)
 	if err != nil {
 		return Expense{}, err
 	}
@@ -28,7 +28,7 @@ func (ag *AccessorGroup) LogExpense(context echo.Context, email string) (Expense
 
 	// TODO: Make sure the information passed in is complete and don't submit if it's not
 
-	_, err = ag.Database.Query("INSERT INTO expenses (user, bucket, amount, recipient, note) VALUES (?,?,?,?,?)", expense.User, expense.Bucket, expense.Amount*100, expense.Recipient, expense.Note)
+	_, err = accessorGroup.Database.Query("INSERT INTO expenses (user, bucket, amount, recipient, note) VALUES (?,?,?,?,?)", expense.User, expense.Bucket, expense.Amount*100, expense.Recipient, expense.Note)
 	if err != nil {
 		return Expense{}, err
 	}
@@ -36,15 +36,15 @@ func (ag *AccessorGroup) LogExpense(context echo.Context, email string) (Expense
 	return Expense{}, nil
 }
 
-func (ag *AccessorGroup) GetExpense(context echo.Context, email string) ([]Expense, error) {
+func (accessorGroup *AccessorGroup) GetExpense(context echo.Context, email string) ([]Expense, error) {
 	allExpenses := []Expense{}
 
-	userID, err := ag.GetUserID(email)
+	userID, err := accessorGroup.GetUserID(email)
 	if err != nil {
 		return []Expense{}, err
 	}
 
-	allExpenses, err = ag.GetExpenseByUserID(allExpenses, userID)
+	allExpenses, err = accessorGroup.GetExpenseByUserID(allExpenses, userID)
 	if err != nil {
 		return []Expense{}, err
 	}
@@ -52,8 +52,8 @@ func (ag *AccessorGroup) GetExpense(context echo.Context, email string) ([]Expen
 	return allExpenses, nil
 }
 
-func (ag *AccessorGroup) GetExpenseByUserID(expenses []Expense, userID int) ([]Expense, error) {
-	rows, err := ag.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
+func (accessorGroup *AccessorGroup) GetExpenseByUserID(expenses []Expense, userID int) ([]Expense, error) {
+	rows, err := accessorGroup.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
 	if err != nil {
 		return []Expense{}, err
 	}
@@ -81,10 +81,10 @@ func (ag *AccessorGroup) GetExpenseByUserID(expenses []Expense, userID int) ([]E
 	return expenses, nil
 }
 
-func (ag *AccessorGroup) GetExpenseTotal(userID int) (float64, error) {
+func (accessorGroup *AccessorGroup) GetExpenseTotal(userID int) (float64, error) {
 	var total float64
 
-	err := ag.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&total)
+	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&total)
 	if err != nil {
 		return 0, err
 	}

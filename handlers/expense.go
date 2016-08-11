@@ -7,13 +7,13 @@ import (
 	"github.com/labstack/echo"
 )
 
-func (cg *ControllerGroup) LogExpense(context echo.Context) error {
+func (handlerGroup *HandlerGroup) LogExpense(context echo.Context) error {
 	token, err := helpers.ValidateJWT(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.LogExpense(context, token.Email)
+	response, err := handlerGroup.Accessors.LogExpense(context, token.Email)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
@@ -21,13 +21,13 @@ func (cg *ControllerGroup) LogExpense(context echo.Context) error {
 	return context.JSON(http.StatusOK, response)
 }
 
-func (cg *ControllerGroup) GetExpense(context echo.Context) error {
+func (handlerGroup *HandlerGroup) GetExpense(context echo.Context) error {
 	token, err := helpers.ValidateJWT(context)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}
 
-	response, err := cg.Accessors.GetExpense(context, token.Email)
+	response, err := handlerGroup.Accessors.GetExpense(context, token.Email)
 	if err != nil {
 		return context.String(http.StatusBadRequest, err.Error())
 	}

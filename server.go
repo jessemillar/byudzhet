@@ -21,41 +21,41 @@ func main() {
 	database := os.Getenv("DATABASE_USERNAME") + ":" + os.Getenv("DATABASE_PASSWORD") + "@tcp(" + os.Getenv("DATABASE_HOST") + ":" + os.Getenv("DATABASE_PORT") + ")/" + os.Getenv("DATABASE_NAME")
 
 	// Construct a new accessor group and connects it to the database
-	ag := new(accessors.AccessorGroup)
-	ag.Open("mysql", database)
+	accessorGroup := new(accessors.AccessorGroup)
+	accessorGroup.Open("mysql", database)
 
 	// Constructs a new controller group and gives it the accessor group
-	cg := new(handlers.ControllerGroup)
-	cg.Accessors = ag
+	handlerGroup := new(handlers.HandlerGroup)
+	handlerGroup.Accessors = accessorGroup
 
-	t := &helpers.Template{
+	templateEngine := &helpers.Template{
 		Templates: template.Must(template.ParseGlob("public/*/*.html")),
 	}
 
 	port := ":8000"
 	e := echo.New()
 	e.Pre(middleware.RemoveTrailingSlash())
-	e.SetRenderer(t)
+	e.SetRenderer(templateEngine)
 
-	e.Get("/callback", cg.CallbackHandler)
+	e.Get("/callback", handlerGroup.CallbackHandler)
 
 	e.Get("/health", health.Check)
 
-	e.Get("/api/user/id/:id", cg.GetUserByID)
-	e.Get("/api/user/email/:email", cg.GetUserByEmail)
-	e.Get("/api/expense", cg.GetExpense)
-	e.Get("/api/bucket", cg.GetBucket)
-	e.Get("/api/bucket/:name", cg.GetBucketByName)
-	e.Get("/api/income", cg.GetIncome)
-	e.Get("/api/projected", cg.GetProjectedIncome)
+	e.Get("/api/user/id/:id", handlerGroup.GetUserByID)
+	e.Get("/api/user/email/:email", handlerGroup.GetUserByEmail)
+	e.Get("/api/expense", handlerGroup.GetExpense)
+	e.Get("/api/bucket", handlerGroup.GetBucket)
+	e.Get("/api/bucket/:name", handlerGroup.GetBucketByName)
+	e.Get("/api/income", handlerGroup.GetIncome)
+	e.Get("/api/projected", handlerGroup.GetProjectedIncome)
 
-	e.Post("/api/user", cg.MakeUser)
-	e.Post("/api/expense", cg.LogExpense)
-	e.Post("/api/bucket", cg.MakeBucket)
-	e.Post("/api/income", cg.LogIncome)
-	e.Post("/api/projected", cg.SetProjectedIncome)
+	e.Post("/api/user", handlerGroup.MakeUser)
+	e.Post("/api/expense", handlerGroup.LogExpense)
+	e.Post("/api/bucket", handlerGroup.MakeBucket)
+	e.Post("/api/income", handlerGroup.LogIncome)
+	e.Post("/api/projected", handlerGroup.SetProjectedIncome)
 
-	e.Put("/api/projected", cg.UpdateProjectedIncome)
+	e.Put("/api/projected", handlerGroup.UpdateProjectedIncome)
 
 	// Views
 	e.Static("/*", "public")
