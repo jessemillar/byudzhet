@@ -5,7 +5,7 @@
 ```
 export AUTH0_CLIENT_ID="12345id"
 export AUTH0_CLIENT_SECRET="sekret"
-export AUTH0_CALLBACK="http://byudzhet.jessemillar.com/callback"
+export AUTH0_CALLBACK="http://byudzhet.jessemillar.com:8000/callback"
 
 export DATABASE_HOST="byudzhet.jessemillar.com"
 export DATABASE_NAME="user"
