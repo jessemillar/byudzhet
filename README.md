@@ -1,9 +1,6 @@
 # byudzhet
 [![CircleCI](https://img.shields.io/circleci/project/jessemillar/byudzhet.svg)](https://circleci.com/gh/jessemillar/byudzhet) [![Codecov](https://img.shields.io/codecov/c/github/jessemillar/byudzhet.svg)](https://codecov.io/gh/jessemillar/byudzhet) [![Apache 2 License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://raw.githubusercontent.com/jessemillar/byudzhet/master/LICENSE)
 
-## Notes
-This is the frontend of the project. To make it fully work, you'll need [the backend](https://github.com/jessemillar/byudzhet-server) as well.
-
 ## Setup
 ```
 export AUTH0_CLIENT_ID="12345id"
