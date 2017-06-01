@@ -54,7 +54,7 @@ func (accessorGroup *AccessorGroup) GetBucketSpent(userID int, bucketID int) (in
 	spent := 0
 
 	// Get the amount that's been spent
-	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND bucket=? AND MONTH(time) = MONTH(CURDATE())", userID, bucketID).Scan(&spent)
+	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND bucket=? AND MONTH(time)=MONTH(CURDATE()) AND YEAR(time)=YEAR(CURDATE())", userID, bucketID).Scan(&spent)
 	if err != nil {
 		return 0, err
 	}

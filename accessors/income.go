@@ -54,7 +54,7 @@ func (accessorGroup *AccessorGroup) GetIncomeEarned(userID int) (float64, error)
 	var earned float64
 
 	// Get the amount that's been earned
-	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&earned)
+	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM income WHERE user=? AND MONTH(time)=MONTH(CURDATE()) AND YEAR(time)=YEAR(CURDATE())", userID).Scan(&earned)
 	if err != nil {
 		return 0, err
 	}
@@ -63,7 +63,7 @@ func (accessorGroup *AccessorGroup) GetIncomeEarned(userID int) (float64, error)
 }
 
 func (accessorGroup *AccessorGroup) GetIncomeByUserID(context echo.Context, allIncome []Income, userID int) ([]Income, error) {
-	rows, err := accessorGroup.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
+	rows, err := accessorGroup.Database.Query("SELECT * FROM income WHERE user=? AND MONTH(time)=MONTH(CURDATE()) AND YEAR(time)=YEAR(CURDATE()) ORDER BY time DESC", userID)
 	if err != nil {
 		return []Income{}, err
 	}
