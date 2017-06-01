@@ -53,7 +53,7 @@ func (accessorGroup *AccessorGroup) GetExpense(context echo.Context, email strin
 }
 
 func (accessorGroup *AccessorGroup) GetExpenseByUserID(expenses []Expense, userID int) ([]Expense, error) {
-	rows, err := accessorGroup.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE()) ORDER BY time DESC", userID)
+	rows, err := accessorGroup.Database.Query("SELECT * FROM expenses WHERE user=? AND MONTH(time)=MONTH(CURDATE()) AND YEAR(time)=YEAR(CURDATE()) ORDER BY time DESC", userID)
 	if err != nil {
 		return []Expense{}, err
 	}
@@ -84,7 +84,7 @@ func (accessorGroup *AccessorGroup) GetExpenseByUserID(expenses []Expense, userI
 func (accessorGroup *AccessorGroup) GetExpenseTotal(userID int) (float64, error) {
 	var total float64
 
-	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND MONTH(time) = MONTH(CURDATE())", userID).Scan(&total)
+	err := accessorGroup.Database.QueryRow("SELECT COALESCE(SUM(amount),0) FROM expenses WHERE user=? AND MONTH(time)=MONTH(CURDATE()) AND YEAR(time)=YEAR(CURDATE())", userID).Scan(&total)
 	if err != nil {
 		return 0, err
 	}

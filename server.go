@@ -11,7 +11,6 @@ import (
 	"github.com/jessemillar/byudzhet/handlers"
 	"github.com/jessemillar/byudzhet/helpers"
 	"github.com/jessemillar/byudzhet/views"
-	"github.com/jessemillar/health"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/engine/standard"
 	"github.com/labstack/echo/middleware"
@@ -39,7 +38,7 @@ func main() {
 
 	e.Get("/callback", handlerGroup.CallbackHandler)
 
-	e.Get("/health", health.Check)
+	//	e.Get("/health", health.Check)
 
 	e.Get("/api/user/id/:id", handlerGroup.GetUserByID)
 	e.Get("/api/user/email/:email", handlerGroup.GetUserByEmail)
