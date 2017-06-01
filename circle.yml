@@ -2,11 +2,6 @@ machine:
   services:
     - docker
 
-test:
-  post:
-    - ./coverage.sh
-    - bash <(curl -s https://codecov.io/bash)
-
 deployment:
   production:
     branch: master
@@ -16,4 +11,3 @@ deployment:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       - docker push jessemillar/byudzhet:$CIRCLE_SHA1
       - docker push jessemillar/byudzhet:latest
-      - ./deploy.sh
