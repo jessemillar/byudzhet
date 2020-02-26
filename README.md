@@ -1,3 +1,5 @@
+> This project is now deprecated in favor of [Mint](https://mint.com).
+
 # byudzhet
 [![CircleCI](https://img.shields.io/circleci/project/jessemillar/byudzhet.svg)](https://circleci.com/gh/jessemillar/byudzhet) [![Codecov](https://img.shields.io/codecov/c/github/jessemillar/byudzhet.svg)](https://codecov.io/gh/jessemillar/byudzhet) [![Apache 2 License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://raw.githubusercontent.com/jessemillar/byudzhet/master/LICENSE)
 
